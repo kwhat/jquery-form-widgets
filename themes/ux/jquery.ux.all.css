@@ -1,0 +1,15 @@
+/*
+ * jQuery UX CSS Framework @VERSION
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ *
+ */
+ 
+@import "jquery.ux.checkbox.css";
+@import "jquery.ux.collapsible.css";
+@import "jquery.ux.error.css";
+@import "jquery.ux.filebox.css";
+@import "jquery.ux.radio.css";
+@import "jquery.ux.selectbox.css";
+@import "jquery.ux.textbox.css";

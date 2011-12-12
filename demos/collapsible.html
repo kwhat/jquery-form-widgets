@@ -1,0 +1,340 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>JQuery UI Form</title>
+	
+	<link rel="stylesheet" type="text/css" href="../themes/base/jquery-ui-1.9m6.css" />
+	
+	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.collapsible.css" />
+
+	
+	<script type="text/javascript" src="../jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="../jquery-ui-1.9m6.min.js"></script>
+
+	<script type="text/javascript" src="../ux/jquery.ux.collapsible.js"></script>
+	
+	<script type="text/JavaScript">
+		$(document).ready(
+			function() {
+				$('#nav_profile').collapsible();
+
+				$('#nav_item1').click(function() {
+					if ($('#profile_form').not(':visible')) {
+						$('#wrap_settings').find('form:visible').fadeOut(250, function() {
+							$('#form_profile').fadeIn(250);
+						});
+					}
+				});
+				$('#nav_item2').click(function() {
+					if ($('#form_email').not(':visible')) {
+						$('#wrap_settings').find('form:visible').fadeOut(250, function() {
+							console.log('callback ' + $('#item_email').length);
+							$('#form_email').fadeIn(250);
+						});
+					}
+				});
+				$('#nav_item3').click(function() {
+					if ($('#form_password').not(':visible')) {
+						$('#wrap_settings').find('form:visible').fadeOut(250, function() {
+							$('#form_password').fadeIn(250);
+						});
+					}
+				});
+				$('#nav_item4').click(function() {
+					if ($('#form_downloads').not(':visible')) {
+						$('#wrap_settings').find('form:visible').fadeOut(250, function() {
+							$('#form_downloads').fadeIn(250);
+						});
+					}
+				});
+				
+				$('#loading').hide('fade', {}, 500);
+				$('#form').show('fade', {}, 500 );
+			}
+		);
+	</script>
+</head>
+
+<body>
+	
+	<div id="wrapper" style="width: 600px;">
+		<div id="loading">
+			<img src="images/loading.gif" style="position: absolute; top: 50%; left: 50%;" />
+		</div>
+		
+		<div id="collapsible" style="display: none;">
+
+			<div id="navigation" style="float: left; width: 180px; padding: 5px; z-index: 1; border-right-style: none;" class="ui-widget-content ui-corner-tl ui-corner-bl">
+				<dl id="nav_group1" class="ui-helper-hidden">
+					<dt id="item_profile">Profile</dt>
+					<dd id="item_email">Email</dd>
+					<dd id="item_password">Password</dd>
+					<dd id="item_downloads">Downloads</dd>
+				</dl>
+			</div>
+
+
+			<div style="height: 400px; margin-left: 190px; padding: 15px;" class="ui-widget-content ui-corner-bottom ui-corner-tr">
+				<div id="loading">
+					<img src="/images/loading.gif" style="position: absolute; top: 50%; left: 50%;"/>
+				</div>
+
+				<form id="form_profile" class="ui-helper-hidden">
+					<fieldset>
+						<table style="margin: auto; width: 70%;">
+							<tr>
+								<td>
+									<label for="first_name">Account Type:</label>
+								</td>
+								<td>
+									<table style="width: 100%">
+										<tr>
+											<td>
+												<input type="radio" name="gender" id="male" value="male" checked="checked"/>
+												<label for="male">Internal</label>
+											</td>
+											<td>
+												<input type="radio" name="gender" id="female" value="female"/>
+												<label for="female">Facebook</label>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<label for="first_name">First Name:</label>
+								</td>
+								<td>
+									<input type="text" name="first_name" id="first_name" maxlength="32" style="width: 100%;"/>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<label for="last_name">Last Name:</label>
+								</td>
+								<td>
+									<input type="text" name="last_name" id="last_name" maxlength="32" style="width: 100%;"/>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<label for="birthday">Birthday:</label>
+								</td>
+								<td>
+									<input type="text" name="birthday" id="birthday" class="date" style="width: 100%"/>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<label for="postal_code">Postal Code:</label>
+								</td>
+								<td>
+									<input type="text" name="postal_code" id="postal_code" maxlength="10" style="width: 100%"/>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<label for="country">Country:</label>
+								</td>
+								<td>
+								    <select name="country" id="country" style="width: 100%">
+								        <option value="">Select one...</option>
+							    		<option value="1">Item 1</option>
+							    		<option value="2">Item 2</option>
+							    		<option value="3">Item 3</option>
+							    		<option value="4">Item 4</option>
+								    </select>
+								</td>
+							</tr>
+
+							<tr>
+								<td colspan="2" style="text-align: right;">
+									<input id="save" type="submit" value="Save"/>
+								</td>
+							</tr>
+						</table>
+					</fieldset>
+				</form>
+
+
+				<form id="form_email" class="ui-helper-hidden">
+					<fieldset>
+						<table style="margin: auto; width: 70%;">
+							<tr>
+								<td>
+									<label>Current Email:</label>
+								</td>
+								<td>
+									<span>Current Email:</span>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<label>Email Status:</label>
+								</td>
+								<td>
+									<span>Unverified</span>
+								</td>
+							</tr>
+
+							<tr>
+								<td colspan="2">
+
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<label for="new_email">New Email:</label>
+								</td>
+								<td>
+									<input type="text" name="new_email" id="new_email" style="width: 100%"/>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<label for="confirm_email">Confirm Email:</label>
+								</td>
+								<td>
+									<input type="text" name="confirm_email" id="confirm_email" style="width: 100%"/>
+								</td>
+							</tr>
+
+							<tr>
+								<td colspan="2" style="text-align: right;">
+									<input id="save" type="submit" value="Save"/>
+								</td>
+							</tr>
+						</table>
+					</fieldset>
+				</form>
+
+
+				<form id="form_password" class="ui-helper-hidden">
+					<fieldset>
+						<table style="margin: auto; width: 70%;">
+							<tr>
+								<td>
+									<label>Current Email:</label>
+								</td>
+								<td>
+									<span>Current Email:</span>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<label>Email Status:</label>
+								</td>
+								<td>
+									<span>Unverified</span>
+								</td>
+							</tr>
+
+							<tr>
+								<td colspan="2">
+
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<label for="new_email">New Email:</label>
+								</td>
+								<td>
+									<input type="text" name="new_email" id="new_email" style="width: 100%"/>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<label for="confirm_email">Confirm Email:</label>
+								</td>
+								<td>
+									<input type="text" name="confirm_email" id="confirm_email" style="width: 100%"/>
+								</td>
+							</tr>
+
+							<tr>
+								<td colspan="2" style="text-align: right;">
+									<input id="save" type="submit" value="Save"/>
+								</td>
+							</tr>
+						</table>
+					</fieldset>
+				</form>
+
+
+				<fieldset id="form_downloads" class="ui-helper-hidden">
+						<table style="margin: auto; width: 70%;">
+							<tr>
+								<td>
+									<label>Current Email:</label>
+								</td>
+								<td>
+									<span>Current Email:</span>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<label>Email Status:</label>
+								</td>
+								<td>
+									<span>Unverified</span>
+								</td>
+							</tr>
+
+							<tr>
+								<td colspan="2">
+
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<label for="new_email">New Email:</label>
+								</td>
+								<td>
+									<input type="text" name="new_email" id="new_email" style="width: 100%"/>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<label for="confirm_email">Confirm Email:</label>
+								</td>
+								<td>
+									<input type="text" name="confirm_email" id="confirm_email" style="width: 100%"/>
+								</td>
+							</tr>
+
+							<tr>
+								<td colspan="2" style="text-align: right;">
+									<input id="save" type="submit" value="Save"/>
+								</td>
+							</tr>
+						</table>
+					</fieldset>
+
+			</div>
+
+
+
+		</div>
+	</div>
+
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+/*
+ * jQuery UX Error @VERSION
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ *
+ */
+ 
+.ux-filebox {
+	/* FIXME: Need to use something not quite white for the background */
+	background: #FFFFFF/*{bgColorDefault}*/ url(images/ui-bg_glass_65_ffffff_1x400.png)/*{bgImgUrlDefault}*/ 50%/*{bgDefaultXPos}*/ 50%/*{bgDefaultYPos}*/ repeat-x/*{bgDefaultRepeat}*/;
+	
+	min-width: 100px;
+	overflow: hidden;
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	/* padding-right: 25px; Provides space for the icon */
+	cursor: default;
+}
+
+.ux-filebox-input {
+	position: absolute;
+	top:-9999px;
+	left:-9999px;
+	opacity: 0;
+	filter: alpha(opacity: 0);
+	-moz-opacity: 0;
+	-khtml-opacity: 0;
+}
+
+.ux-filebox-label {
+	display: inline-block;
+	white-space: nowrap;
+}
+
+.ux-filebox-icon {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 23px;
+	height: 100%;
+	
+	/* FIXME: Doesnt handle mouse over correctly */
+	border-left: solid 1px #d3d3d3/*{borderColorDefault}*/;
+	background: #e6e6e6/*{bgColorDefault}*/ url(images/ui-bg_glass_75_e6e6e6_1x400.png)/*{bgImgUrlDefault}*/ 50%/*{bgDefaultXPos}*/ 50%/*{bgDefaultYPos}*/ repeat-x/*{bgDefaultRepeat}*/;
+}

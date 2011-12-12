@@ -1,0 +1,3 @@
+jQuery UX Authors
+
+Alexander Barker (alex@1stleg.com)

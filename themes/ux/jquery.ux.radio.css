@@ -1,0 +1,23 @@
+/*
+ * jQuery UX Error @VERSION
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ *
+ */
+ 
+.ux-radio {
+	width: 17px;
+	height: 17px;
+	margin-right: 0px;
+	vertical-align: text-bottom;
+}
+
+.ux-icon-empty {
+	background-position: -240px 0;
+}
+
+/* Hacks to fix the icon positioning being off */
+.ui-icon-bullet {
+	background-position: -79px -144px;
+}
