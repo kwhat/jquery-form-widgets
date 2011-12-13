@@ -7,14 +7,15 @@
 	<title>JQuery UI Form</title>
 	
 	<link rel="stylesheet" type="text/css" href="../themes/base/jquery-ui-1.9m6.css" />
-	
+
+	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.common.css" />
+	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.error.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.textbox.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.datebox.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.filebox.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.selectbox.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.checkbox.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.radio.css" />
-	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.error.css" />
 	
 	
 	<script type="text/javascript" src="../jquery-1.7.1.min.js"></script>
@@ -69,22 +70,22 @@
 				<fieldset style="padding: 10px;"">
 					<legend>jQuery UI Form</legend>
 					
-					<table style="width: 100%;"> 
+					<table style="width: 100%;">
 						<tr>
 							<td>
 								<label for="text_box">Text Box</label>
 							</td>
 							<td>
-								<input type="text" name="text_box" id="text_box" maxlength="32" style="width: 100%;" />
+								<input type="text" name="text_box" id="text_box" maxlength="32" />
 							</td>
 						</tr>
-						
+
 						<tr>
 							<td>
 								<label for="password_box">Password Box</label>
 							</td>
 							<td>
-								<input type="password" name="password_box" id="password_box" maxlength="16" style="width: 100%;" />
+								<input type="password" name="password_box" id="password_box" maxlength="16" />
 							</td>
 						</tr>
 
@@ -93,17 +94,17 @@
 								<label for="disabled_box">Disabled Box</label>
 							</td>
 							<td>
-								<input type="text" name="disabled_box" id="disabled_box" value="disabled" maxlength="32" style="width: 100%;" disabled="disabled" />
+								<input type="text" name="disabled_box" id="disabled_box" value="disabled" maxlength="32" disabled="disabled" />
 							</td>
 						</tr>
-						
+
 
 						<tr>
 							<td>
 								<label for="select_inline">Select Inline</label>
 							</td>
 							<td>
-							    <select name="select_dropdown" id="select_inline" multiple="multiple" size="4" style="width: 100%;">
+							    <select name="select_dropdown" id="select_inline" multiple="multiple" size="4">
 							        <optgroup label="Section 1">
 							    		<option value="1">Item 1</option>
 							    		<option value="2" selected="selected">Item 2</option>
@@ -120,12 +121,13 @@
 							</td>
 						</tr>
 
+
 						<tr>
 							<td>
 								<label for="select_dropdown">Select Dropdown</label>
 							</td>
 							<td>
-							    <select name="select_dropdown" id="select_dropdown" style="width: 100%;">
+							    <select name="select_dropdown" id="select_dropdown" style="width: 50%;">
 							        <option value="">Select one...</option>
 							        <optgroup label="Section 1">
 							    		<option value="1">Item 1</option>

@@ -8,9 +8,9 @@
  *
  */
 (function( $, undefined ) {
-	$.widget("ux.checkbox", {
-		version: "@VERSION",
-		defaultElement: "<input>",
+	$.widget('ux.checkbox', {
+		version: '@VERSION',
+		defaultElement: '<input>',
 		_create: function() {
 			var self = this;
 			
@@ -21,7 +21,7 @@
 			//Create the widget
 			this.ux_element = $('<a/>')
 				.css('display', 'inline-block')
-				.addClass('ux-checkbox ui-state-default ui-corner-all');
+				.addClass('ui-state-default ui-corner-all ux-checkbox');
 			
 			//Create the checkbox that will be placed in the widget
 			this.icon = $('<a/>')

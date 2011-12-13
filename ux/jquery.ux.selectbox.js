@@ -9,9 +9,9 @@
  */
 
 (function( $, undefined ) {
-	$.widget("ux.selectbox", {
-		version: "@VERSION",
-		defaultElement: "<select>",
+	$.widget('ux.selectbox', {
+		version: '@VERSION',
+		defaultElement: '<select>',
 		options: {
 			duration: 'normal',
 			showAnim: 'blind',
@@ -37,20 +37,19 @@
 				$.each(options, function() {
 					if ($(this).is('optgroup')) {
 						$('<li/>')
-							.addClass($(this).attr('class') || '')
+							/*.addClass($(this).attr('class') || '')*/
 							.addClass('ux-selectbox-optgroup')
 							.text($(this).attr('label'))
 							.appendTo(self.menu);
 					}
 					else {
 						var li = $('<li/>')
-							.addClass($(this).attr('class') || '')
+							/*.addClass($(this).attr('class') || '')*/
 							.addClass('ux-selectbox-option');
 						
 						$('<a/>')
 							.attr('rel', $(this).val())
 							.text($(this).text())
-							.addClass($(this).is(':selected') ? 'ui-state-highlight' : '')
 							.appendTo(li);
 						
 						self.menu.append(li);
@@ -79,18 +78,31 @@
 								.change();
 						}
 					})
-					.addClass('ui-widget ui-state-default ui-corner-all ux-selectbox-menu');
+					.attr('title', this.element.attr('title') || '')
+					.attr('tabindex', this.element.attr('tabindex') || '')
+					.addClass('ui-widget ui-state-default ui-corner-all ux-selectbox-menu')
+					.children()
+					.bind({
+						'mouseover.ux.selectbox': function() {
+							self.menu.addClass('ui-state-hover');
+						},
+						'mouseout.ux.selectbox': function() {
+							self.menu.removeClass('ui-state-hover');
+						},
+						'focusin.ux.selectbox': function() {
+							$(this).addClass('ui-state-focus');
+						},
+						'focusout.ux.selectbox': function() {
+							$(this).removeClass('ui-state-focus');
+						}
+					});
 			}
 			else {
 				//Create the selectbox widget
-				/*
-					.attr('class', $(this.element).attr('class') || '')
-					.attr('style', $(this.element).attr('style') || '')
-					.attr('title', $(this.element).attr('title') || '')
-					.attr('tabindex', $(this.element).attr('tabindex'))
-				*/
 				this.ux_element = $('<a/>')
-					.addClass('ux-selectbox ui-state-default ui-widget ui-corner-all');
+					.attr('title', this.element.attr('title') || '')
+					.attr('tabindex', this.element.attr('tabindex') || '')
+					.addClass('ui-state-default ui-widget ui-corner-all ux-selectbox');
 
 				//Create the label
 				this.label = $('<a/>')
@@ -281,7 +293,7 @@
 			$.each(selected, function() {
 				//Hightlight the currently selected item.
 				self.menu
-					.find('a[rel="' + $(this).val() + '"]')
+					.find('.ui-menu-item a[rel="' + $(this).val() + '"]')
 					.addClass('ui-state-highlight');
 
 

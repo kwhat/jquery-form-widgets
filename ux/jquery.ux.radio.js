@@ -9,7 +9,7 @@
  */
 (function( $, undefined ) {
 	$.widget ('ux.radio', {
-		version: "@VERSION",
+		version: '@VERSION',
 		_create: function() {
 			var self = this;
 			
@@ -20,7 +20,7 @@
 			//Create the widget
 			this.ux_element = $('<a/>')
 				.css('display', 'inline-block')
-				.addClass('ux-radio ui-state-default ui-corner-all');
+				.addClass('ui-state-default ui-corner-all ux-radio');
 			
 			//Create the radio button that will be placed in the widget
 			this.icon = $('<a/>')

@@ -7,11 +7,10 @@
  */
  
 .ux-textbox {
+	display: inline;
+	width: 100%;
+	padding: 0;
+	
 	/* FIXME: Need to use something not quite white for the background */
 	background: #FFFFFF/*{bgColorDefault}*/ url(images/ui-bg_glass_65_ffffff_1x400.png)/*{bgImgUrlDefault}*/ 50%/*{bgDefaultXPos}*/ 50%/*{bgDefaultYPos}*/ repeat-x/*{bgDefaultRepeat}*/;
-	
-	min-width: 100px;
-	padding: 0;
-	position: relative;
-	display: inline-block;
 }

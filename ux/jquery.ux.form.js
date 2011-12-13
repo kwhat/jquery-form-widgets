@@ -41,7 +41,7 @@
 	};
 	
 	$.widget('ux.form', {
-		version: "@VERSION",
+		version: '@VERSION',
 		options: {
 			ajax: false,
 			

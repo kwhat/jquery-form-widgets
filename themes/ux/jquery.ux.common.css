@@ -1,14 +1,11 @@
 /*
- * jQuery UX Checkbox @VERSION
+ * jQuery UX Common @VERSION
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  */
-
-.ux-checkbox {
-	width: 17px;
-	height: 17px;
-	margin-right: 0px;
-	vertical-align: text-bottom;
+ 
+.ux-icon-empty {
+	background-position: -240px 0;
 }

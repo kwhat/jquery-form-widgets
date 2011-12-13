@@ -9,7 +9,7 @@
  */
 (function( $, undefined ) {
 	$.widget('ux.error', {
-		version: "@VERSION",
+		version: '@VERSION',
 		options: {
 			error: false,
 			delay: 200,

@@ -46,4 +46,5 @@
 	background: #e6e6e6/*{bgColorDefault}*/ url(images/ui-bg_glass_75_e6e6e6_1x400.png)/*{bgImgUrlDefault}*/ 50%/*{bgDefaultXPos}*/ 50%/*{bgDefaultYPos}*/ repeat-x/*{bgDefaultRepeat}*/;
 }
 
+/* JQuery UI Datepicker z-index fix */
 .ui-datepicker { width: 17em; padding: .2em .2em 0; z-index: 9999 !important; }

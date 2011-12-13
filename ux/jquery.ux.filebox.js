@@ -9,8 +9,8 @@
  */
 (function( $, undefined ) {
 	$.widget('ux.filebox', {
-		version: "@VERSION",
-		defaultElement: "<input>",
+		version: '@VERSION',
+		defaultElement: '<input>',
 		_create: function() {
 			var self = this;
 			

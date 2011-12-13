@@ -8,15 +8,15 @@
  *
  */
 (function( $, undefined ) {
-	$.widget("ux.collapsible", {
-		version: "@VERSION",
-		defaultElement: "<dl>",
+	$.widget('ux.collapsible', {
+		version: '@VERSION',
+		defaultElement: '<dl>',
 		_create: function() {
 			var self = this,
 				children = this.element.children();
 			
 			self.ux_element = $('<div/>')
-				.addClass('ux-collapsible ui-widget');
+				.addClass('ui-widget ux-collapsible');
 			
 			self.wrapper = $('<div/>');
 			
