@@ -84,10 +84,10 @@
 					.children()
 					.bind({
 						'mouseover.ux.selectbox': function() {
-							self.menu.addClass('ui-state-hover');
+							self.menu.addClass('ui-state-focus');
 						},
 						'mouseout.ux.selectbox': function() {
-							self.menu.removeClass('ui-state-hover');
+							self.menu.removeClass('ui-state-focus');
 						},
 						'focusin.ux.selectbox': function() {
 							$(this).addClass('ui-state-focus');

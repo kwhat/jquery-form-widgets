@@ -8,14 +8,14 @@
 
 .ux-collapsible {
 	display: block;
+	overflow: hidden;
 }
 
 .ux-collapsible-icon {
-	display: block;
-	float: left;
-	width: 170px;
-	padding: 5px;
-	z-index: 1;
+	/* Nothing Yet */
+}
 
-	border-right-style: none;
+/* JQuery UI 1.9m6 Outline Fix */
+.ui-menu .ui-menu-item a {
+	outline: 0;
 }
