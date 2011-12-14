@@ -1,0 +1,43 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>JQuery UI Form</title>
+	
+	<link rel="stylesheet" type="text/css" href="../themes/base/jquery-ui-1.9m6.css" />
+	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.textbox.css" />
+	
+	<script type="text/javascript" src="../jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="../jquery-ui-1.9m6.min.js"></script>
+	<script type="text/javascript" src="../ux/jquery.ux.textbox.js"></script>
+	
+	<script type="text/JavaScript">
+		$(document).ready(function() {
+			$('#demo')
+				.find('input:text,input:password,textarea')
+				.textbox();
+		});
+	</script>
+</head>
+
+<body>
+	<div id="demo" style="width: 300px;">
+		<input type="text" name="text_box" id="text_box" maxlength="32" />
+		<p />
+		<input type="text" name="disabled_box" id="disabled_box" maxlength="32" disabled="disabled"/>
+		<p />
+		<input type="password" name="password_box" id="password_box" maxlength="16" />
+		<p />
+		<textarea name="text_area" id="text_area" rows="3" cols="20"></textarea>
+	</div><!-- End demo -->
+
+	<div class="demo-description">
+		<p>
+			Examples of the types of text input supported.
+		</p>
+	</div><!-- End demo-description -->
+</body>
+</html>

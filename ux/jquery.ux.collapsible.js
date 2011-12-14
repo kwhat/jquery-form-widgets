@@ -10,23 +10,54 @@
 (function( $, undefined ) {
 	$.widget('ux.collapsible', {
 		version: '@VERSION',
-		defaultElement: '<dl>',
+		defaultElement: '<ul>',
 		_create: function() {
-			var self = this,
-				children = this.element.children();
+			var self = this;
+
+			this.icon = $('<span/>')
+				.addClass('ui-icon ui-icon-triangle-1-s')
+				.bind({
+					'click.ux.collapsible': function() {
+						$(self).effect( selectedEffect, options, 500, callback );
+					}
+				});
 			
-			self.ux_element = $('<div/>')
-				.addClass('ui-widget ux-collapsible');
+
+			var items = this.element
+					.children('li:has(a)')
+					.addClass('ui-menu-item')
+					.children('a')
+					.addClass('ui-corner-all')
+					.bind({
+						'mouseover.ux.collapsible': function() {
+							$(this).addClass('ui-state-hover');
+						},
+						'mouseout.ux.collapsible': function() {
+							$(this).removeClass('ui-state-hover');
+						}
+					})
+					.first()
+					.prepend(icon);
 			
-			self.wrapper = $('<div/>');
-			
-			$.each(children, function(index, value) {
+			this.element
+				.addClass('ui-menu ui-menu-icons ui-widget ui-widget-content ui-corner-all ux-collapsible');
+				
+			/*
+			$.each(items, function() {
+				if ($(this).is(':first')) {
+					var icon = $('<span/>')
+						.addClass('ui-icon ui-icon-triangle-1-s');
+						//TODO .bind click events to roll up.
+					
+					$(this).prepend(icon);
+				}
+
 				var wrapper = $('<div/>')
 						.addClass('ui-corner-all')
 						.css('cursor', 'pointer')
 						.bind({
 							'click.ux.collapsible': function() {
-								$(value).trigger('click');
+								$(value).click();
 							},
 							'mouseover.ux.collapsible': function() {
 								$(this).addClass('ui-state-hover ux-border-fix');
@@ -55,15 +86,18 @@
 				}
 				
 				self.wrapper.append(wrapper);
+				
 			});
-			
+*/
+			/*
 			self.ux_element
 				.append(self.wrapper);
 			
 			self.element
 				.addClass('ui-helper-hidden')
 				.after(self.ux_element);
-			
+			*/
+		   
 			/* Implement later when we have more settings.
 			 * We need to check to see if we are already open to not collapse.
 			self.label

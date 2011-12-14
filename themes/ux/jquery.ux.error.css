@@ -9,14 +9,16 @@
 .ux-errortip {
 	padding: 5px;
 	opacity: 0.75;
+	-moz-opacity: 0.75;
+	-khtml-opacity: 0.75;
 	filter: alpha(opacity=75);
 	white-space: nowrap;
 }
 
 .ux-errortip-icon {
-
+	/* Nothing Yet */
 }
 
 .ux-errortip-label {
-
+	/* Nothing Yet */
 }

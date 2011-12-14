@@ -10,7 +10,7 @@
 	display: block;
 }
 
-.ux-collapsible-icon {
+.ux-collapsible-nav-group {
 	display: block;
 	float: left;
 	width: 170px;
@@ -18,4 +18,9 @@
 	z-index: 1;
 
 	border-right-style: none;
+}
+
+
+.ux-collapsible-content {
+	display: block;
 }

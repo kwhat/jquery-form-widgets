@@ -136,7 +136,26 @@
 				
 				//Make sure the menu is hidden by default.
 				this.menu
-					.menu()
+					.menu({
+						select: function(e, ui) {
+							/*
+							var item = self.element
+								.find('option[value="' + ui.item.find('a[rel]:last').attr('rel') + '"]');
+
+							item.attr('selected', !item.attr('selected'))
+								.change();
+							*/
+						   
+							//Hide the menu.
+							self._hideMenu();
+
+							//Set the hidden select boxes value.
+							self.element.val($(e.target).attr('rel'));
+
+							//Fire a change event to cause a refresh.
+							self.element.change();
+						}
+					})
 					.css({
 						'display': 'none',
 						'position': 'absolute',
@@ -168,6 +187,8 @@
 							self._handleKeyPress(event);
 						},
 						/* Other method of closing the menu on focus out.
+						 * This is more reliable binding to the docment
+						 * instead.   See below.
 						focusout: function(event) {
 							//Hide the menu if it is not getting the focus
 							if (! self.menu.data('mouseover')) {
@@ -178,10 +199,17 @@
 						'selectstart.ux.selectbox': function(e) {
 							//Prevent the hidden select box from showing
 							event.preventDefault();
+						},
+						'mouseover.ux.selectbox': function() {
+							self.ux_element.addClass('ui-state-hover');
+						},
+						'mouseout.ux.selectbox': function() {
+							self.ux_element.removeClass('ui-state-hover');
 						}
 					});
 
 				//Provide menu bindings.
+				/*
 				this.menu.children('li').bind({
 					'mousedown.ux.selectbox': function(e) {
 						//Prevent dropdown from being "dragged"
@@ -197,11 +225,12 @@
 							self.element.val($(e.target).attr('rel'));
 
 							//Fire a change event to cause a refresh.
-							self.element.trigger('change');
+							self.element.change();
 						}
 					}
 				});
-
+				*/
+			   
 				//Hide the menu if we click anywhere else
 				$(document).bind('mouseup.ux.selectbox', function(e) {
 					if (self.menu.is(':visible')) {
@@ -308,8 +337,6 @@
 			var widget = this.ux_element;
 			var menu = this.menu;
 			
-			var select = $(this.element);
-			
 			widget
 				.removeClass('ui-state-default ui-corner-all')
 				.addClass('ui-state-focus ui-corner-top');
@@ -332,7 +359,7 @@
 			menu.show(this.options.showAnim, this.options.showOptions, this.options.duration);
 			
 			// Center on selected option
-			var li = menu.find('.selectBox-selected:first');
+			var li = menu.find('.ui-state-highlight:first');
 			this._keepOptionInView(li, true);
 		},
 		_hideMenu: function() {
@@ -353,7 +380,8 @@
 			
 			var control = this.ux_element;
 			var menu = control.data('menu');
-			
+
+			//FIXME this is totally broken.
 			var scrollBox = control.hasClass('ux-selectbox') ? menu : menu.parent(),
 				top = parseInt(li.offset().top - scrollBox.position().top),
 				bottom = parseInt(top + li.outerHeight());
@@ -402,7 +430,7 @@
 							curr = menu.find('.ui-state-highlight').last();
 						}
 						
-						curr.trigger('mousedown');
+						curr.mousedown();
 					}
 					else {
 						this._showMenu();
@@ -420,7 +448,7 @@
 						}
 						
 						
-						prev.trigger('mouseover');
+						prev.mouseover();
 						//FIXME keepOptionInView(select, next);
 					}
 					else {
@@ -439,7 +467,7 @@
 						}
 						
 						
-						next.trigger('mouseover');
+						next.mouseover();
 						//FIXME keepOptionInView(select, next);
 					}
 					else {
@@ -483,7 +511,7 @@
 					
 					menu.find('li > a').each(function() {
 						if( $(this).text().substr(0, menu.data('search').length).toLowerCase() == menu.data('search').toLowerCase() ) {
-							$(this).parent().trigger('mouseover');
+							$(this).parent().mouseover();
 							//keepOptionInView(select, $(this).parent());
 							return false;
 						}

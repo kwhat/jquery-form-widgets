@@ -14,45 +14,40 @@
 		_create: function() {
 			var self = this;
 			
-			//Hide the checkbox.
-			this.element
-				.addClass('ui-helper-hidden');
-			
 			//Create the widget
 			this.ux_element = $('<a/>')
-				.css('display', 'inline-block')
-				.addClass('ui-state-default ui-corner-all ux-checkbox');
+				.addClass('ui-state-default ui-corner-all ux-checkbox')
+				//Add a click listener for the graphical checkbox.
+				.bind({
+					'mouseover.ux.checkbox': function() {
+						if (!self.element.is(':disabled')) {
+							self.ux_element.addClass('ui-state-hover');
+						}
+					},
+					'mouseout.ux.checkbox': function() {
+						if (!self.element.is(':disabled')) {
+							self.ux_element.removeClass('ui-state-hover');
+						}
+					},
+					'click.ux.checkbox': function() {
+						self.element.click();
+					}
+				});
 			
 			//Create the checkbox that will be placed in the widget
 			this.icon = $('<a/>')
 				.addClass('ui-icon ux-icon-empty')
 				.appendTo(this.ux_element);
-			
-			//Add the graphical checkbox directly after the hidden checkbox.
-			this.element.after(this.ux_element);
-			
-			
-			//Watch the actual DOM checkbox for changes.
-			this.element.bind('change.ux.checkbox', function() {
-				self.refresh();
-			});
-			
-			//Add a click listener for the graphical checkbox.
-			this.ux_element.bind({
-				'mouseover.ux.checkbox': function() {
-					if (!self.element.is(':disabled')) {
-						self.ux_element.addClass('ui-state-hover');
-					}
-				},
-				'mouseout.ux.checkbox': function() {
-					if (!self.element.is(':disabled')) {
-						self.ux_element.removeClass('ui-state-hover');
-					}
-				},
-				'click.ux.checkbox': function() {
-					self.element.click();
-				}
-			});
+
+			this.element
+				//Hide the checkbox.
+				.addClass('ui-helper-hidden')
+				//Watch the actual DOM checkbox for changes.
+				.bind('change.ux.checkbox', function() {
+					self.refresh();
+				})
+				//Add the graphical checkbox directly after the hidden checkbox.
+				.after(this.ux_element);
 		},
 		_init: function() {
 			this._setOption('default', this.element.is(':checked'));
@@ -103,7 +98,7 @@
 			}
 		},
 		reset: function() {
-			this.element.prop('checked', this.option('default')).trigger('change');
+			this.element.prop('checked', this.option('default')).change();
 		}
 	});
 })( jQuery );

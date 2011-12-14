@@ -1,0 +1,45 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>JQuery UX Form Checkbox</title>
+	
+	<link rel="stylesheet" type="text/css" href="../themes/base/jquery-ui-1.9m6.css" />
+	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.common.css" />
+	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.checkbox.css" />
+	
+	<script type="text/javascript" src="../jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="../jquery-ui-1.9m6.min.js"></script>
+	<script type="text/javascript" src="../ux/jquery.ux.checkbox.js"></script>
+	
+	<script type="text/JavaScript">
+		$(document).ready(function() {
+			$('#demo')
+				.find('input:checkbox')
+				.checkbox();
+		});
+	</script>
+</head>
+
+<body>
+	<div id="demo" style="width: 300px;">
+		<input type="checkbox" name="radio_options" id="option_1" value="option_1" checked="checked" />
+		<label for="option_1">Option 1</label>
+
+		<input type="checkbox" name="radio_options" id="option_2" value="option_2" />
+		<label for="option_2">Option 2</label>
+
+		<input type="checkbox" name="radio_options" id="option_3" value="option_3" disabled="disabled" />
+		<label for="option_3">Option 3</label>
+	</div><!-- End demo -->
+
+	<div class="demo-description">
+		<p>
+			Examples of the checkbox widget.
+		</p>
+	</div><!-- End demo-description -->
+</body>
+</html>

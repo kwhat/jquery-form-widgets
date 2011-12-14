@@ -39,7 +39,7 @@
 				.unbind('.ux.textbox');
 		},
 		reset: function() {
-			this.element.val(this.option('default')).trigger('change');
+			this.element.val(this.option('default')).change();
 		}
 	});
 })( jQuery );

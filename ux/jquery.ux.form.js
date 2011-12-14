@@ -240,9 +240,9 @@
 				}
 			});
 
-			//$(event.target).find(':checked, :radio').removeAttr('checked').trigger('change');
-			//$(event.target).find(':selected').removeAttr('selected').trigger('change');
-			//$(event.target).find('input[type="text"], input[type="file"], textarea').val('').trigger('change');
+			//$(event.target).find(':checked, :radio').removeAttr('checked').change();
+			//$(event.target).find(':selected').removeAttr('selected').change();
+			//$(event.target).find('input[type="text"], input[type="file"], textarea').val('').change();
 		}
 	});
 })( jQuery );

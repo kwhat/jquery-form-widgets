@@ -13,41 +13,36 @@
 		_create: function() {
 			var self = this;
 			
-			//Hide the radiobutton.
-			this.element
-				.addClass('ui-helper-hidden');
-			
 			//Create the widget
 			this.ux_element = $('<a/>')
-				.css('display', 'inline-block')
-				.addClass('ui-state-default ui-corner-all ux-radio');
+				.addClass('ui-state-default ui-corner-all ux-radio')
+				//Add a click listener for the graphical radio button.
+				.bind({
+					'mouseover.ux.radio': function() {
+						self.ux_element.addClass('ui-state-hover');
+					},
+					'mouseout.ux.radio': function() {
+						self.ux_element.removeClass('ui-state-hover');
+					},
+					'click.ux.radio': function() {
+						self.element.click();
+					}
+				});
 			
 			//Create the radio button that will be placed in the widget
 			this.icon = $('<a/>')
-				.addClass('ui-icon ui-icon-radio-off ux-radio')
+				.addClass('ui-icon ui-icon-radio-off')
 				.appendTo(this.ux_element);
-			
-			//Add the graphical radio button directly after the hidden radio button.
-			this.element.after(this.ux_element);
-			
-			
-			//Watch the actual DOM checkbox for changes.
-			this.element.bind('change.ux.radio', function() {
-				self.refresh();
-			});
-			
-			//Add a click listener for the graphical checkbox. 
-			this.ux_element.bind({
-				'mouseover.ux.radio': function() {
-					self.ux_element.addClass('ui-state-hover');
-				},
-				'mouseout.ux.radio': function() {
-					self.ux_element.removeClass('ui-state-hover');
-				},
-				'click.ux.radio': function() {
-					self.element.click();
-				}
-			});
+
+			this.element
+				//Hide the radiobutton.
+				.addClass('ui-helper-hidden')
+				//Watch the actual DOM checkbox for changes.
+				.bind('change.ux.radio', function() {
+					self.refresh();
+				})
+				//Add the graphical radio button directly after the hidden radio button.
+				.after(this.ux_element);
 		},
 		_init: function() {
 			this._setOption('default', this.element.is(':checked'));
@@ -89,11 +84,14 @@
 					.removeClass('ui-icon-radio-off')
 					.addClass('ui-icon-bullet');
 
-				this.element
-					.closest('form')
+				var parent_form = this.element.closest('form');
+				if (!parent_form.length) {
+					parent_form = $(document);
+				}
+				parent_form
 					.find(':radio[name="' + $(this.element).attr('name') + '"]')
 					.not(this.element)
-					.trigger('change');
+					.change();
 			}
 			else {
 				this.ux_element
@@ -105,7 +103,7 @@
 			}
 		},
 		reset: function() {
-			this.element.prop('checked', this.option('default')).trigger('change');
+			this.element.prop('checked', this.option('default')).change();
 		}
 	});
 })( jQuery );

@@ -14,10 +14,6 @@
 		_create: function() {
 			var self = this;
 			
-			//Apply some classes to the filebox to hide it.
-			this.element
-				.addClass('ux-filebox-input');
-			
 			//Create the filebox widget.
 			this.ux_element = $('<a/>')
 				.attr('style', this.element.attr('style') || '')
@@ -58,10 +54,14 @@
 				.append(this.label)
 				.append(this.iconWrapper);
 			
-			//Watch the actual DOM checkbox for changes.
-			this.element.bind('change.ux.filebox', function() {
-				self.refresh();
-			});
+			
+			this.element
+				//Apply some classes to the filebox to hide it.
+				.addClass('ux-filebox-input')
+				//Watch the actual DOM checkbox for changes.
+				.bind('change.ux.filebox', function() {
+					self.refresh();
+				});
 
 			this.ux_element.bind({
 				'mouseover.ux.filebox': function() {
@@ -120,7 +120,7 @@
 			this.label.text(text);
 		},
 		reset: function() {
-			this.element.val(this.option('default')).trigger('change');
+			this.element.val(this.option('default')).change();
 		}
 	});
 })( jQuery );

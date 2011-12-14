@@ -7,15 +7,17 @@
  */
  
 .ux-datebox {
+	display: inline-block;
+	width: 100%;
+
 	/* FIXME: Need to use something not quite white for the background */
 	background: #FFFFFF/*{bgColorDefault}*/ url(images/ui-bg_glass_65_ffffff_1x400.png)/*{bgImgUrlDefault}*/ 50%/*{bgDefaultXPos}*/ 50%/*{bgDefaultYPos}*/ repeat-x/*{bgDefaultRepeat}*/;
 	
-	min-width: 100px;
 	overflow: hidden;
 	position: relative;
 	display: inline-block;
 	vertical-align: top;
-	/* padding-right: 25px; Provides space for the icon */
+	
 	cursor: default;
 }
 
@@ -24,9 +26,9 @@
 	top:-9999px;
 	left:-9999px;
 	opacity: 0;
-	filter: alpha(opacity: 0);
 	-moz-opacity: 0;
 	-khtml-opacity: 0;
+	filter: alpha(opacity: 0);
 }
 
 .ux-datebox-label {
@@ -47,4 +49,8 @@
 }
 
 /* JQuery UI Datepicker z-index fix */
-.ui-datepicker { width: 17em; padding: .2em .2em 0; z-index: 9999 !important; }
+.ui-datepicker {
+	width: 17em;
+	padding: .2em .2em 0;
+	z-index: 9999 !important;
+}

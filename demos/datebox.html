@@ -1,0 +1,37 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>JQuery UX Form Datebox</title>
+	
+	<link rel="stylesheet" type="text/css" href="../themes/base/jquery-ui-1.9m6.css" />
+	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.datebox.css" />
+	
+	<script type="text/javascript" src="../jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="../jquery-ui-1.9m6.min.js"></script>
+	<script type="text/javascript" src="../ux/jquery.ux.datebox.js"></script>
+	
+	<script type="text/JavaScript">
+		$(document).ready(function() {
+			$('#demo')
+				.find('input.date')
+				.datebox();
+		});
+	</script>
+</head>
+
+<body>
+	<div id="demo" style="width: 300px;">
+		<input type="text" name="date_box" id="date_box" class="date" />
+	</div><!-- End demo -->
+
+	<div class="demo-description">
+		<p>
+			Examples of the datebox widget.
+		</p>
+	</div><!-- End demo-description -->
+</body>
+</html>
