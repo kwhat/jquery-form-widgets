@@ -45,6 +45,10 @@
 				.children('a')
 				.addClass('ui-corner-all')
 				.bind({
+					'click.ux.collapsible': function(e) {
+						//TODO We need to find a way to bind to this event externally though a callback or something...
+						//$(value).click(e);
+					},
 					'mouseover.ux.collapsible': function() {
 						$(this).addClass('ui-state-focus');
 					},
