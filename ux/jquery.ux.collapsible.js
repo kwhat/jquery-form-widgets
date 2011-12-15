@@ -22,7 +22,7 @@
 						var newheight = subitems.outerHeight() * subitems.length;
 
 						//If the elemtns hight minus the hight of an item is less than an items hight...
-						if (self.element.height() - newheight < 0) {
+						if (self.element.height() - newheight <= 0) {
 							newheight += self.element.height();
 						}
 						else {
@@ -30,7 +30,7 @@
 						}
 
 						//easeInOutExpo
-						self.element.animate({ height: newheight }, 'normal', 'linear', function() {
+						self.element.animate({height: newheight}, 'normal', 'linear', function() {
 							self.icon.toggleClass('ui-icon-triangle-1-s ui-icon-triangle-1-e');
 						});
 					}
@@ -46,8 +46,7 @@
 				.addClass('ui-corner-all')
 				.bind({
 					'click.ux.collapsible': function(e) {
-						//TODO We need to find a way to bind to this event externally though a callback or something...
-						//$(value).click(e);
+						$(self).click(e);
 					},
 					'mouseover.ux.collapsible': function() {
 						$(this).addClass('ui-state-focus');

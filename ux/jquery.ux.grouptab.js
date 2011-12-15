@@ -14,47 +14,64 @@
 		_create: function() {
 			var self = this;
 
-			this.wrapper = $('<div/>');
+			this.element
+				.addClass('ux-grouptab');
 
 			this.navigation = $('<div/>')
-				.css({
-					'float': 'left',
-					'width': '180px',
-					'padding': '5px',
-					'z-index': '1',
-					'border-right-style': 'none'
-				});
+				.addClass('ux-grouptab-navigation');
 
 			this.content = $('<div/>')
-				.css({
-					'margin-left': '190px',
-					'padding': '15px'
-				})
-				.addClass('ui-widget-content ui-corner-bottom ui-corner-tr');
+				.addClass('ui-widget-content ui-corner-bottom ui-corner-tr ux-grouptab-content');
+
 
 			this.groups = this.element
 				.children('div');
 
-			$.each(this.groups, function() {
-				var list = $('<ul/>');
+			$.each(this.groups, function(i) {
+				//Replace the group div with a list.
+				var new_group = $('<ul id="group-' + i + '">' + $(this).html() + '</ul>');
+				$(this).replaceWith(new_group);
 
-				$(this)
-					.children('h3')
-					.replaceWith(function() {
-						console.debug($(this).html());
-						return '<a>' + $(this).html() + '</a>';
-					})
-					.appendTo(list);
-				
+				new_group
+					.children(':even')
+					.each(function(j) {
+						//Replace the h3 tag with an anchor.
+						var new_item = $('<li><a id="group-tab-' + i +'-' + j +'">' + $(this).html() + '</a></li>');
+						$(this).replaceWith(new_item);
+
+						//Move the div to the content area.
+						new_item
+							.next('div')
+							.addClass('ui-helper-hidden')
+							.attr('id', 'tab-content-' + i +'-' + j)
+							.appendTo(self.content);
+					});
+
 				//TODO we need code to display the content in the content area.
-				list
-					.appendTo(this.navigation)
-					.collapsible();
-
-				var content = item.next('div');
-
-
+				new_group
+					.collapsible()
+					.bind({
+						'click.ux.grouptab': function(e) {
+							console.debug(e);
+						}
+					})
+					.appendTo(self.navigation);
 			});
+
+
+			this.navigation
+				.children('.ux-collapsible:first')
+				.addClass('ux-grouptab-active');
+console.debug(this.navigation.children('.ux-collapsible:last').attr('class'));
+
+
+			this.navigation.appendTo(this.element);
+
+			this.content.children('div:first').removeClass('ui-helper-hidden');
+
+			this.content
+				.css('min-height', this.navigation.outerHeight() + 'px')
+				.appendTo(this.element);
 		},
 		_init: function() {
 			this._setOption('disabled', this.options.disabled);
@@ -62,20 +79,7 @@
 			this.refresh();
 		},
 		_destroy: function() {
-			this.icon
-				.removeClass('ui-icon-triangle-1-s ui-icon-triangle-1-e')
-				.unbind('.ux.collapsible')
-				.remove();
-
-			this.element
-				.removeClass('ui-menu ui-menu-icons ui-widget ui-widget-content ui-corner-all ux-collapsible')
-				.children('li:has(a)')
-				.removeClass('ui-menu-item');
-
-			this.items
-				.children('a')
-				.removeClass('ui-corner-all')
-				.unbind('.ux.collapsible');
+			//TODO add code.
 		},
 		refresh: function() {
 			//Display the checkbox's disabled state

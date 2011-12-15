@@ -6,21 +6,38 @@
  *
  */
 
-.ux-collapsible {
-	display: block;
+ .ux-grouptab {
+	 /* Nothing Yet */
 }
 
-.ux-collapsible-nav-group {
-	display: block;
+.ux-grouptab-navigation {
 	float: left;
-	width: 170px;
-	padding: 5px;
-	z-index: 1;
+	width: 180px;
 
+	z-index: 0;
+}
+
+.ux-grouptab-content {
+	margin-left: 180px;
+	padding: 15px;
+}
+
+.ux-grouptab-active {
 	border-right-style: none;
 }
 
+ /* UX Collapsible Overrides */
+.ux-grouptab .ux-collapsible {
+	margin-bottom: 1.5em;
+	margin-right: -1px;
 
-.ux-collapsible-content {
-	display: block;
+	-moz-border-radius-topright: 0px;
+	-webkit-border-top-right-radius: 0px;
+	-khtml-border-top-right-radius: 0px;
+	border-top-right-radius: 0px;
+
+	 -moz-border-radius-bottomright: 0px;
+	 -webkit-border-bottom-right-radius: 0px;
+	 -khtml-border-bottom-right-radius: 0px;
+	 border-bottom-right-radius: 0px;
 }
