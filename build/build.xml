@@ -9,17 +9,15 @@
 	This build file was shamelessly stolen from jQuery UI.
 -->
 
-<project name="jquery-ux" default="deploy-release" basedir="..">
+<project name="jquery-ux-forms" default="deploy-release" basedir="..">
 	<property file="ant.properties" />
 
-	<loadfile failonerror="yes" srcFile="./version.txt" property="release.version">
+	<loadfile failonerror="yes" srcFile="./version.txt" property="ant.project.version">
 		<filterchain><striplinebreaks/></filterchain>
 	</loadfile>
 
-	<property name="release.filename" value="jquery-ux-${release.version}" />
-
 	<property name="build.dir" value="./build" />
-	<property name="dist.dir" value="./dist/${release.filename}" />
+	<property name="dist.dir" value="./dist/${ant.project.name}-${ant.project.version}" />
 	<property name="src.dir" value="./ux" />
 	<property name="theme.dir" value="./themes" />
 
@@ -68,7 +66,7 @@
 	</target>
 
 
-	<target name="concatenate">
+	<target name="concatenate" description="Merges all files into a single file">
 		<echo message="Building concatenated" />
 
 		<mkdir dir="${dist.dir}/ux" />
@@ -78,6 +76,8 @@
 		</concat>
 		<echo message="Concatenated built." />
 
+
+		<echo>${dist.dir}/themes/ux</echo>
 
 		<mkdir dir="${dist.dir}/themes/ux" />
 		<delete file="${dist.dir}/themes/ux/jquery-ux.css" />
@@ -135,16 +135,18 @@
 
 	
 	<target name="replace-version">
-		<replaceregexp match="@VERSION" replace="${release.version}" flags="g" byline="true">
-		    <fileset dir="${dist.dir}/ux/" includes="*.js"/>
-			<fileset dir="${dist.dir}/ux/minified/" includes="*.js"/>
-			<fileset dir="${dist.dir}/themes/" includes="*.css"/>
+		<replaceregexp match="@VERSION" replace="${ant.project.version}" flags="g" byline="true">
+		    <fileset dir="${dist.dir}/ux" includes="*.js"/>
+			<fileset dir="${dist.dir}/ux/minified" includes="*.js"/>
+			<fileset dir="${dist.dir}/themes/ux" includes="*.css"/>
+			<fileset dir="${dist.dir}/themes/ux/minified" includes="*.css"/>
 		</replaceregexp>
-		<echo message="Replaced all @VERSION to ${release.version}." />
+		<echo message="Replaced all @VERSION to ${ant.project.version}." />
 	</target>
 
 
 	<target name="prepend-header">
+		<!--
 		<copy todir="${dist.dir}/headers/">
 			<fileset dir="${dist.dir}/ux/" includes="*.js" />
 		</copy>
@@ -154,7 +156,7 @@
 		</replaceregexp>
 
 		<for param="file">
-			<path><fileset dir="${min.dir}/" includes="*.js" /></path>
+			<path><fileset dir="${dist.dir}/ux/minified" includes="*.js" /></path>
 			<sequential>
 				<propertyregex override="yes" property="target" input="@{file}" regexp=".*[\\/](.+)\.min\.js$" replace="\1"/>
 				<concat destfile="${dist.dir}/ux-headered/${target}.min.js">
@@ -164,20 +166,21 @@
 			</sequential>
 		</for>
 
-		<copy todir="${min.dir}" overwrite="true">
+		<copy todir="${dist.dir}/ux/minified" overwrite="true">
 			<fileset dir="${dist.dir}/ux-headered/" includes="*.js" />
 		</copy>
+		-->
 
-
-		<copy todir="${dist.dir}/headers/">
-			<fileset dir="${dist.dir}/themes" includes="*.css" />
+		<!--
+		<copy todir="${dist.dir}/headers">
+			<fileset dir="${dist.dir}/themes/ux" includes="*.css" />
 		</copy>
 		<replaceregexp match="^(\/\*.*?\*\/\s).+" replace="\1" flags="s">
 		    <fileset dir="${dist.dir}/headers/" includes="*.css"/>
 		</replaceregexp>
 
 		<for param="file">
-			<path><fileset dir="${dist.dir}/themes/minified" includes="*.css" /></path>
+			<path><fileset dir="${dist.dir}/themes/ux/minified" includes="*.css" /></path>
 			<sequential>
 				<propertyregex override="yes" property="target" input="@{file}" regexp=".*[\\/](.+)\.min\.css$" replace="\1"/>
 				<concat destfile="${dist.dir}/ux-headered/${target}.min.css">
@@ -187,7 +190,43 @@
 			</sequential>
 		</for>
 		
-		<copy todir="${dist.dir}/themes/minified" overwrite="true">
+		<copy todir="${dist.dir}/themes/ux/minified" overwrite="true">
+			<fileset dir="${dist.dir}/ux-headered/" includes="*.css" />
+		</copy>
+		-->
+		<mkdir dir="${dist.dir}/headers" />
+		
+		<copy todir="${dist.dir}/headers">
+			<fileset dir="${dist.dir}/ux" includes="*.js" />
+			<fileset dir="${dist.dir}/themes/ux" includes="*.css" />
+		</copy>
+		<replaceregexp match="^(\/\*.*?\*\/\s).+" replace="\1" flags="s">
+		    <fileset dir="${dist.dir}/headers">
+				<include name="*.js"/>
+				<include name="*.css"/>
+			</fileset>
+		</replaceregexp>
+
+		<for param="file">
+			<path>
+				<fileset dir="${dist.dir}/ux/minified" includes="*.js" />
+				<fileset dir="${dist.dir}/themes/ux/minified" includes="*.css" />
+			</path>
+			<sequential>
+				<propertyregex override="yes" property="ext" input="@{file}" regexp=".*[\\/].+\.min\.(.+)$" replace="\1"/>
+				<propertyregex override="yes" property="target" input="@{file}" regexp=".*[\\/](.+)\.min\.${ext}$" replace="\1"/>
+				<concat destfile="${dist.dir}/ux-headered/${target}.min.${ext}">
+					<header file="${dist.dir}/headers/${target}.${ext}" />
+					<fileset file="@{file}" />
+				</concat>
+			</sequential>
+		</for>
+		
+		<copy todir="${dist.dir}/ux/minified" overwrite="true">
+			<fileset dir="${dist.dir}/ux-headered/" includes="*.js" />
+		</copy>
+
+		<copy todir="${dist.dir}/themes/ux/minified" overwrite="true">
 			<fileset dir="${dist.dir}/ux-headered/" includes="*.css" />
 		</copy>
 
@@ -197,7 +236,7 @@
 
 
 	<target description="Zip the package" name="zip">
-		<zip destfile="${dist.dir}/../${release.filename}.zip">
+		<zip destfile="${dist.dir}/../${ant.project.name}-${ant.project.version}.zip">
 			<zipfileset dir="dist/" />
 		</zip>
 	</target>

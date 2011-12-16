@@ -7,7 +7,9 @@
  */
  
 .ux-textbox {
-	display: inline;
+	display: inline-block;
+	outline: 0;
+	
 	width: 100%;
 	padding: 0;
 	
