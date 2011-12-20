@@ -14,7 +14,7 @@
 			var self = this;
 			
 			//Create the widget
-			this.ux_element = $('<a/>')
+			this.ux_element = $('<div/>')
 				.addClass('ui-state-default ui-corner-all ux-radio')
 				//Add a click listener for the graphical radio button.
 				.bind({

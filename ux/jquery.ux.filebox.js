@@ -15,7 +15,7 @@
 			var self = this;
 			
 			//Create the filebox widget.
-			this.ux_element = $('<a/>')
+			this.ux_element = $('<div/>')
 				.attr('style', this.element.attr('style') || '')
 				.addClass('ui-state-default ui-widget ui-corner-all ux-filebox')
 				.insertAfter(this.element);

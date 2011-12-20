@@ -146,54 +146,6 @@
 
 
 	<target name="prepend-header">
-		<!--
-		<copy todir="${dist.dir}/headers/">
-			<fileset dir="${dist.dir}/ux/" includes="*.js" />
-		</copy>
-
-		<replaceregexp match="^(\/\*.*?\*\/\s).+" replace="\1" flags="s">
-		    <fileset dir="${dist.dir}/headers/" includes="*.js"/>
-		</replaceregexp>
-
-		<for param="file">
-			<path><fileset dir="${dist.dir}/ux/minified" includes="*.js" /></path>
-			<sequential>
-				<propertyregex override="yes" property="target" input="@{file}" regexp=".*[\\/](.+)\.min\.js$" replace="\1"/>
-				<concat destfile="${dist.dir}/ux-headered/${target}.min.js">
-					<header file="${dist.dir}/headers/${target}.js" />
-					<fileset file="@{file}" />
-				</concat>
-			</sequential>
-		</for>
-
-		<copy todir="${dist.dir}/ux/minified" overwrite="true">
-			<fileset dir="${dist.dir}/ux-headered/" includes="*.js" />
-		</copy>
-		-->
-
-		<!--
-		<copy todir="${dist.dir}/headers">
-			<fileset dir="${dist.dir}/themes/ux" includes="*.css" />
-		</copy>
-		<replaceregexp match="^(\/\*.*?\*\/\s).+" replace="\1" flags="s">
-		    <fileset dir="${dist.dir}/headers/" includes="*.css"/>
-		</replaceregexp>
-
-		<for param="file">
-			<path><fileset dir="${dist.dir}/themes/ux/minified" includes="*.css" /></path>
-			<sequential>
-				<propertyregex override="yes" property="target" input="@{file}" regexp=".*[\\/](.+)\.min\.css$" replace="\1"/>
-				<concat destfile="${dist.dir}/ux-headered/${target}.min.css">
-					<header file="${dist.dir}/headers/${target}.css" />
-					<fileset file="@{file}" />
-				</concat>
-			</sequential>
-		</for>
-		
-		<copy todir="${dist.dir}/themes/ux/minified" overwrite="true">
-			<fileset dir="${dist.dir}/ux-headered/" includes="*.css" />
-		</copy>
-		-->
 		<mkdir dir="${dist.dir}/headers" />
 		
 		<copy todir="${dist.dir}/headers">

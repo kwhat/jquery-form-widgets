@@ -99,7 +99,7 @@
 			}
 			else {
 				//Create the selectbox widget
-				this.ux_element = $('<a/>')
+				this.ux_element = $('<div/>')
 					.attr('title', this.element.attr('title') || '')
 					.attr('tabindex', this.element.attr('tabindex') || '')
 					.addClass('ui-state-default ui-widget ui-corner-all ux-selectbox');
@@ -382,6 +382,7 @@
 			var menu = control.data('menu');
 
 			//FIXME this is totally broken.
+			/*
 			var scrollBox = control.hasClass('ux-selectbox') ? menu : menu.parent(),
 				top = parseInt(li.offset().top - scrollBox.position().top),
 				bottom = parseInt(top + li.outerHeight());
@@ -397,7 +398,7 @@
 					scrollBox.scrollTop( (li.offset().top + li.outerHeight()) - scrollBox.offset().top + scrollBox.scrollTop() - scrollBox.height() );
 				}
 			}
-			
+			*/
 		},
 		_handleKeyDown: function(event) {
 			// Handles open/close and arrow key functionality

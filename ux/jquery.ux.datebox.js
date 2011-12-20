@@ -15,26 +15,11 @@
 			var self = this;
 			
 			//Apply some classes to the datebox to hide it.
-			
 			this.element
 				.addClass('ux-datebox-input');
-				/*
-				.datepicker({
-					yearRange: '-100:+0',
-					changeMonth: true,
-					changeYear: true,
-					beforeShow: function(input, inst) {
-						//var widget = $(inst).datepicker('widget');
-						//console.debug(widget.offset());
-						//console.debug(widget.position());
-
-						//widget.css('margin-left', self.ux_element.outerWidth() - widget.outerWidth());
-					}
-				});
-			*/
 		   
 			//Create the datebox widget.
-			this.ux_element = $('<a/>')
+			this.ux_element = $('<div/>')
 				.attr('style', this.element.attr('style') || '')
 				.addClass('ui-state-default ui-widget ui-corner-all ux-datebox')
 				.insertAfter(this.element);
@@ -74,41 +59,44 @@
 				.append(this.iconWrapper);
 			
 			//Watch the actual DOM checkbox for changes.
-			this.element.bind('change.ux.datebox', function() {
-				self.refresh();
-			});
+			this.element
+				//.data('ux_element', $(this.ux_element))
+				.bind('change.ux.datebox', function() {
+					self.refresh();
+				});
 
-			this.ux_element.bind({
-				'mouseover.ux.datebox': function() {
-					self.ux_element.addClass('ui-state-hover');
-				},
-				'mouseout.ux.datebox': function() {
-					self.ux_element.removeClass('ui-state-hover');
-				},
-				'mouseup.ux.datebox': function() {
-					self.element.click();
+			this.ux_element
+				.bind({
+					'mouseover.ux.datebox': function() {
+						self.ux_element.addClass('ui-state-hover');
+					},
+					'mouseout.ux.datebox': function() {
+						self.ux_element.removeClass('ui-state-hover');
+					},
+					'mouseup.ux.datebox': function() {
+						self.element.click();
 
-					var widget = self.element.datepicker("widget");
+						var widget = self.element.datepicker("widget");
 
-					self.element.datepicker('dialog', 
-						new Date(),
-						function(date, inst) {
-							self.element.val(date);
-							self.element.change();
-						},
-						{
-							maxDate: '+0m +0d +0y',
-							yearRange: '-100:+0',
-							changeMonth: true,
-							changeYear: true
-						},
-						[ /* FIXME the y value needs to be adjusted for if the box pops above */
-							self.ux_element.offset().left + self.ux_element.outerWidth() - widget.outerWidth(),
-							self.ux_element.offset().top + self.ux_element.outerHeight()
-						]
-					);
-				}
-			});
+						self.element.datepicker('dialog',
+							new Date(),
+							function(date, inst) {
+								self.element.val(date);
+								self.element.change();
+							},
+							{
+								maxDate: '+0m +0d +0y',
+								yearRange: '-100:+0',
+								changeMonth: true,
+								changeYear: true
+							},
+							[ /* FIXME the y value needs to be adjusted for if the box pops above */
+								self.ux_element.offset().left + self.ux_element.outerWidth() - widget.outerWidth(),
+								self.ux_element.offset().top + self.ux_element.outerHeight()
+							]
+						);
+					}
+				});
 
 
 		},

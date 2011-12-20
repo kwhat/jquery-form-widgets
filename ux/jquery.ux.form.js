@@ -97,7 +97,9 @@
 					$(options.validation).prop($(this).attr('name'), validationOptions);
 					
 					//Create an error widget for the form item.
-					$(this).error(validationOptions);
+					$(this)
+						//FIXME This needs apply to ux_elements not elements.
+						.error(validationOptions);
 					
 					//If we are doing live validation.
 					if (validationOptions.live == true) {
@@ -192,6 +194,8 @@
 			}
 		},
 		_submit: function(event) {
+			var self = this;
+
 			if (this.options.ajax) {
 				//We must prevent the default action the submit because we are doing it via ajax.
 				event.preventDefault();
@@ -199,11 +203,24 @@
 			
 			//Apply validation rules
 			$.each(this.options.validation, function(key, value) {
-				$(this.target).find(':[name="' + key + '"]');
-				
+				$.each($(event.target).find(':[name="' + key + '"]'), function(i, item) {
+					self._validate(item);
+
+					var validationOptions = $(self.options.validation).prop($(item).attr('name'));
+					console.debug(validationOptions.check());
+				});
+
+
+
+
+				//self._validate($(':[name="' + key + '"]'));
+				//console.debug(key);
+				//console.debug($(':[name="' + key + '"]'));
 			});
+
+			//console.debug( $(event.target).find(':[name="date_box"]').data('test').addClass('ui-state-error') );
 			
-			
+			/*
 			if ($.isFunction(this.options.success)) {
 				callbackFnk.call(this, data);
 			}
@@ -211,6 +228,7 @@
 			if ($.isFunction(this.options.failure)) {
 				callbackFnk.call(this, data);
 			}
+			*/
 		},
 		_reset: function(e) {
 			//We must prevent the default action for the form reset because resets DO NOT trigger chagne events on form elements.
