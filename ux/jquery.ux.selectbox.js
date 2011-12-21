@@ -333,7 +333,7 @@
 		reset: function() {
 			//TODO implement.
 		},
-		uxElement: function() {
+		widget: function() {
 			return this.ux_element;
 		},
 		_showMenu: function() {

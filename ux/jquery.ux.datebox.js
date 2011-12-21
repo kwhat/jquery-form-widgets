@@ -116,7 +116,6 @@
 			return text;
 		},
 		val: function() {
-			console.debug('test');
 			return this.element.val().replace('\u00A0', '');
 		},
 		_destroy: function() {
@@ -146,7 +145,7 @@
 		reset: function() {
 			this.element.val(this.option('default')).trigger('change');
 		},
-		uxElement: function() {
+		widget: function() {
 			return this.ux_element;
 		}
 	});

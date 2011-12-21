@@ -192,45 +192,63 @@
 			else {
 				validationOptions.failure(element);
 			}
+
+			return status;
 		},
 		_submit: function(event) {
-			var self = this;
-
+			var self = this,
+				status = true;
+			
 			//Apply validation rules
 			$.each(this.options.validation, function(key, value) {
 				$.each($(event.target).find(':[name="' + key + '"]'), function(i, item) {
-					self._validate(item);
+					var widget = undefined;
 
-					var validationOptions = $(self.options.validation).prop($(item).attr('name'));
-					console.debug(validationOptions.check());
+					if ($(this).is(':checkbox')) {
+						widget = $(this).checkbox('widget');
+					}
+					else if ($(this).is(':radio')) {
+						widget = $(this).radio('widget');
+					}
+					else if ($(this).is(':file')) {
+						widget = $(this).filebox('widget');
+					}
+					else if ($(this).is(':text') && $(this).hasClass('date')) {
+						widget = $(this).datebox('widget');
+					}
+					else if ($(this).is(':text') || $(this).is('textarea') || $(this).is(':password')) {
+						widget = $(this).textbox('widget');
+					}
+					else if ($(this).is('select')) {
+						widget = $(this).selectbox('widget');
+					}
+
+					if (widget != undefined) {
+						status = status && self._validate(widget);
+					}
 				});
-
-
-
-
-				//self._validate($(':[name="' + key + '"]'));
-				//console.debug(key);
-				//console.debug($(':[name="' + key + '"]'));
 			});
 
-			if (this.options.ajax) {
+			if (!status || this.options.ajax) {
 				//We must prevent the default action the submit because we are doing it via ajax.
 				event.preventDefault();
 			}
-			
-			
 
-			//console.debug( $(event.target).find(':[name="date_box"]').data('test').addClass('ui-state-error') );
-			
-			/*
-			if ($.isFunction(this.options.success)) {
-				callbackFnk.call(this, data);
+			if (this.options.ajax) {
+				console.debug('ajax ' + this.element.serialize());
+				//Do AJAX Post
+				$.ajax({
+					type: this.element.attr('method'),
+					url: this.element.attr('action'),
+					data: this.element.serialize(),
+					success: function(data, textStatus, jqXHR) {
+						self._trigger('success', data, textStatus, jqXHR);
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+						self._trigger('error', jqXHR, textStatus, errorThrown);
+					}
+				});
 			}
-			
-			if ($.isFunction(this.options.failure)) {
-				callbackFnk.call(this, data);
-			}
-			*/
 		},
 		_reset: function(e) {
 			//We must prevent the default action for the form reset because resets DO NOT trigger chagne events on form elements.
@@ -259,10 +277,6 @@
 					$(this).selectbox('reset');
 				}
 			});
-
-			//$(event.target).find(':checked, :radio').removeAttr('checked').change();
-			//$(event.target).find(':selected').removeAttr('selected').change();
-			//$(event.target).find('input[type="text"], input[type="file"], textarea').val('').change();
 		}
 	});
 })( jQuery );
