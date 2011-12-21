@@ -8,6 +8,7 @@
  *		
  */
 (function( $, undefined ) {
+	//$.widget ('ux.radio', $.ux.checkbox, {
 	$.widget ('ux.radio', {
 		version: '@VERSION',
 		_create: function() {

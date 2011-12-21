@@ -5,7 +5,7 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * Depends:
- *
+ *		jquery.ux.element
  */
 (function( $, undefined ) {
 	$.widget('ux.textbox', {
@@ -29,20 +29,17 @@
 					}
 				});
 		},
-		_init: function() {
-			this._setOption('default', this.element.val());
-			this._setOption('disabled', this.element.is(':disabled'));
-		},
 		_destroy: function() {
 			this.element
 				.removeClass('ui-widget ui-state-default ui-corner-all ui-state-disabled ui-state-hover ui-state-focus ux-textbox')
 				.unbind('.ux.textbox');
 		},
+		_init: function() {
+			this._setOption('default', this.element.val());
+			this._setOption('disabled', this.element.is(':disabled'));
+		},
 		reset: function() {
 			this.element.val(this.option('default')).change();
-		},
-		uxElement: function() {
-			return this.element;
 		}
 	});
 })( jQuery );
