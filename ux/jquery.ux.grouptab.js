@@ -40,34 +40,59 @@
 						$(this).replaceWith(new_item);
 
 						//Move the div to the content area.
-						new_item
-							.next('div')
-							.addClass('ui-helper-hidden')
+						var item_content = new_item.next('div');
+
+						item_content
 							.attr('id', 'tab-content-' + i +'-' + j)
 							.appendTo(self.content);
+
+						if (i > 0 || j > 0) {
+							item_content
+								.hide()
+						}
 					});
 
-				//TODO we need code to display the content in the content area.
+				//Display the content in the content area.
 				new_group
-					.collapsible()
-					.bind({
-						'click.ux.grouptab': function(e) {
-							console.debug(e);
+					.collapsible({
+						'click': function(e) {
+							if (! self.content.data('locked')) {
+								self.content.data('locked', true);
+
+								var target = $(e.target);
+
+								self.content
+									.children('div:visible')
+									.fadeOut('normal')
+									.promise()
+									.done(function() {
+										//Turn off all active tab groups
+										self.navigation
+											.children('.ux-collapsible')
+											.removeClass('ux-grouptab-active');
+
+										//Activate the current tab group
+										target
+											.closest('.ux-collapsible')
+											.addClass('ux-grouptab-active');
+
+										//Show the current tab groups content.
+										self.content
+											.find('#' + target.attr('id').replace('group-tab-', 'tab-content-'))
+											.fadeIn('normal', function() {
+												self.content.data('locked', false);
+											});
+									});
+							}
 						}
 					})
 					.appendTo(self.navigation);
 			});
 
-
 			this.navigation
+				.appendTo(this.element)
 				.children('.ux-collapsible:first')
 				.addClass('ux-grouptab-active');
-console.debug(this.navigation.children('.ux-collapsible:last').attr('class'));
-
-
-			this.navigation.appendTo(this.element);
-
-			this.content.children('div:first').removeClass('ui-helper-hidden');
 
 			this.content
 				.css('min-height', this.navigation.outerHeight() + 'px')

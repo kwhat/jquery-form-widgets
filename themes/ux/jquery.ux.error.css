@@ -22,3 +22,15 @@
 .ux-errortip-label {
 	/* Nothing Yet */
 }
+
+/* JQuery UI 1.9m6 Hover State Fix*/
+/*
+.ui-state-error {
+}
+
+.ui-state-error a {
+}
+*/
+.ui-state-error.ui-state-hover a:hover {
+	color: #cd0a0a/*{fcError}*/;
+}

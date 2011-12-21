@@ -289,9 +289,6 @@
 				.removeClass('ui-helper-hidden')
 				.unbind('.ux.selectbox');
 		},
-		reset: function() {
-			//TODO implement.
-		},
 		refresh: function() {
 			var self = this;
 			
@@ -332,6 +329,12 @@
 						.text($(this).text() || '\u00A0');
 				}
 			});
+		},
+		reset: function() {
+			//TODO implement.
+		},
+		uxElement: function() {
+			return this.ux_element;
 		},
 		_showMenu: function() {
 			var widget = this.ux_element;

@@ -17,7 +17,7 @@
 			this.icon = $('<span/>')
 				.addClass('ui-icon ui-icon-triangle-1-s')
 				.bind({
-					'click.ux.collapsible': function() {
+					'click.ux.collapsible': function(e) {
 						var subitems = self.items.not(':first');
 						var newheight = subitems.outerHeight() * subitems.length;
 
@@ -46,7 +46,9 @@
 				.addClass('ui-corner-all')
 				.bind({
 					'click.ux.collapsible': function(e) {
-						$(self).click(e);
+						if ($(e.target).is('a')) {
+							self._trigger('click', e);
+						}
 					},
 					'mouseover.ux.collapsible': function() {
 						$(this).addClass('ui-state-focus');

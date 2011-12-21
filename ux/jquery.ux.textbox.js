@@ -40,6 +40,9 @@
 		},
 		reset: function() {
 			this.element.val(this.option('default')).change();
+		},
+		uxElement: function() {
+			return this.element;
 		}
 	});
 })( jQuery );

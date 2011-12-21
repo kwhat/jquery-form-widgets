@@ -196,11 +196,6 @@
 		_submit: function(event) {
 			var self = this;
 
-			if (this.options.ajax) {
-				//We must prevent the default action the submit because we are doing it via ajax.
-				event.preventDefault();
-			}
-			
 			//Apply validation rules
 			$.each(this.options.validation, function(key, value) {
 				$.each($(event.target).find(':[name="' + key + '"]'), function(i, item) {
@@ -217,6 +212,13 @@
 				//console.debug(key);
 				//console.debug($(':[name="' + key + '"]'));
 			});
+
+			if (this.options.ajax) {
+				//We must prevent the default action the submit because we are doing it via ajax.
+				event.preventDefault();
+			}
+			
+			
 
 			//console.debug( $(event.target).find(':[name="date_box"]').data('test').addClass('ui-state-error') );
 			

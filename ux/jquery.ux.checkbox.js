@@ -99,6 +99,9 @@
 		},
 		reset: function() {
 			this.element.prop('checked', this.option('default')).change();
+		},
+		uxElement: function() {
+			return this.ux_element;
 		}
 	});
 })( jQuery );

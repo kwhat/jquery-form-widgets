@@ -18,7 +18,12 @@
 	
 	<script type="text/JavaScript">
 		$(document).ready(function() {
-			$('#collapsible').collapsible();
+			$('#collapsible')
+				.collapsible({
+					'click': function(event) {
+						console.debug(event.target);
+					}
+				});
 		});
 	</script>
 </head>
