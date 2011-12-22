@@ -93,7 +93,8 @@
 			return text;
 		},
 		val: function() {
-			return this.element.val().replace('\u00A0', '');
+			//Return just the file name if a path exists.
+			return this.element.val().replace('\u00A0', '').match('[^\\\\/]*$')[0];
 		},
 		_destroy: function() {
 			this.ux_element.unbind('.ux.filebox');
