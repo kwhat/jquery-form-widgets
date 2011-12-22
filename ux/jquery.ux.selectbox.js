@@ -180,11 +180,11 @@
 								self._hideMenu();
 							}
 						},
-						'keydown.ux.selectbox': function(event) {
-							self._handleKeyDown(event);
+						'keydown.ux.selectbox': function(e) {
+							self._handleKeyDown(e);
 						},
-						'keypress.ux.selectbox': function(event) {
-							self._handleKeyPress(event);
+						'keypress.ux.selectbox': function(e) {
+							self._handleKeyPress(e);
 						},
 						/* Other method of closing the menu on focus out.
 						 * This is more reliable binding to the docment
@@ -198,7 +198,7 @@
 						*/
 						'selectstart.ux.selectbox': function(e) {
 							//Prevent the hidden select box from showing
-							event.preventDefault();
+							e.preventDefault();
 						},
 						'mouseover.ux.selectbox': function() {
 							self.ux_element.addClass('ui-state-hover');
@@ -268,7 +268,7 @@
 			//Monitor the hidden selectbox for changes
 			this.element
 				.addClass('ui-helper-hidden')
-				.bind('change.ux.selectbox', function(e) {
+				.bind('change.ux.selectbox', function() {
 					//Tell the gui box to update its self.
 					self.refresh();
 				});
