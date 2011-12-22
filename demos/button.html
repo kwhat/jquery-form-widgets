@@ -8,6 +8,7 @@
 	<title>JQuery UX Form Button</title>
 	
 	<link rel="stylesheet" type="text/css" href="../themes/base/jquery-ui-1.9m6.css" />
+	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.button.css" />
 	
 	<script type="text/javascript" src="../jquery-1.7.1.min.js"></script>
 	<script type="text/javascript" src="../jquery-ui-1.9m6.min.js"></script>
@@ -17,6 +18,9 @@
 			$('#demo')
 				.find('input:button,input:reset,input:submit,button,a')
 				.button();
+
+			console.debug($('#demo > button')[0].style);
+			console.debug($('#demo > input')[0].style);
 		});
 	</script>
 </head>
@@ -25,7 +29,7 @@
 	<div id="demo" style="width: 600px;">
 		<button>A button element</button>
 
-		<input id="submit" type="submit" />
+		<input id="submit" type="submit"/>
 
 		<input id="reset" type="reset" />
 

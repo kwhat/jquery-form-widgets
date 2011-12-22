@@ -1,0 +1,24 @@
+/*
+ * jQuery UX CSS Framework @VERSION
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ *
+ */
+
+/* JQuery UI Button Fix for non input buttons */
+
+input.ui-button {
+	padding: 0 .4em;
+	font-family: Verdana,Arial,sans-serif/*{ffDefault}*/; font-size: 1.0em/*{fsDefault}*/;
+}
+
+/* TODO fix problems with hight 
+input.ui-button {
+	height: 24px;
+}
+*/
+/* workarounds */
+.ui-button .ui-button-text {
+	line-height: normal !important;
+}
