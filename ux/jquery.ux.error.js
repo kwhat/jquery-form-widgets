@@ -57,8 +57,8 @@
 				.addClass('ux-errortip-label')
 				.appendTo(this.ux_element);
 
-			//Add the graphical checkbox directly after the hidden checkbox.
-			this.element.after(this.ux_element);
+			//Add the error tip directly after the document.body
+			$('body').prepend(this.ux_element);
 
 
 			this.element.bind({

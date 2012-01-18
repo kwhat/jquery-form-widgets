@@ -70,8 +70,8 @@
 		<echo message="Building concatenated" />
 
 		<mkdir dir="${dist.dir}/ux" />
-		<delete file="${dist.dir}/ux/jquery-ux.js" />
-		<concat destfile="${dist.dir}/ux/jquery-ux.js">
+		<delete file="${dist.dir}/ux/${ant.project.name}.js" />
+		<concat destfile="${dist.dir}/ux/${ant.project.name}.js">
 			<fileset dir="${src.dir}" includes="jquery.ux.*.js" />
 		</concat>
 		<echo message="Concatenated built." />
@@ -80,8 +80,8 @@
 		<echo>${dist.dir}/themes/ux</echo>
 
 		<mkdir dir="${dist.dir}/themes/ux" />
-		<delete file="${dist.dir}/themes/ux/jquery-ux.css" />
-		<concat destfile="${dist.dir}/themes/ux/jquery-ux.css">
+		<delete file="${dist.dir}/themes/ux/${ant.project.name}.css" />
+		<concat destfile="${dist.dir}/themes/ux/${ant.project.name}.css">
 			<fileset dir="${theme.dir}/ux" includes="jquery.ux.*.css" excludes="jquery.ux.all.css" />
 		</concat>
 		<echo message="Concatenated theme." />
