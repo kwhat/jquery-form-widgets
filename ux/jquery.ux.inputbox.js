@@ -1,5 +1,5 @@
 /*
- * jQuery UX Filebox @VERSION
+ * jQuery UX Inputbox @VERSION
  *
  * Copyright 2011, AUTHORS.txt
  * Dual licensed under the MIT or GPL Version 2 licenses.
