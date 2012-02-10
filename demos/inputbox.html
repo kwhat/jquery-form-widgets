@@ -5,40 +5,37 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>JQuery UX Form Button</title>
+	<title>JQuery UX Form Filebox</title>
 	
 	<link rel="stylesheet" type="text/css" href="../themes/base/jquery-ui-1.9m6.css" />
-	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.button.css" />
+	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.inputbox.css" />
 	
 	<script type="text/javascript" src="../jquery-1.7.1.min.js"></script>
 	<script type="text/javascript" src="../jquery-ui-1.9m6.min.js"></script>
+	<script type="text/javascript" src="../ux/jquery.ux.inputbox.js"></script>
 	
 	<script type="text/JavaScript">
 		$(document).ready(function() {
 			$('#demo')
-				.find('input:button,input:reset,input:submit,button,a')
-				.button();
+				.find('input:text')
+				.inputbox({
+					icons: {
+						primary: 'ui-icon-search',
+						secondary: 'ui-icon-search'
+					}
+				});
 		});
 	</script>
 </head>
 
 <body>
-	<div id="demo" style="width: 600px; border: 1px solid #0F0;">
-		<button>A button element</button>
-
-		<input id="submit" type="submit"/>
-
-		<input id="reset" type="reset" />
-
-		<input id="button" type="button" value="Disabled" disabled="disabled"/>
-
-		<a href="#">An anchor</a>
-
+	<div id="demo" style="width: 300px;">
+		<input type="text" name="text_box" id="text_box" />
 	</div><!-- End demo -->
 
 	<div class="demo-description">
 		<p>
-			Examples of the markup that can be used for buttons: A button element, an input of type submit, reset or button and an anchor tag.
+			Examples of the filebox widget.
 		</p>
 	</div><!-- End demo-description -->
 </body>

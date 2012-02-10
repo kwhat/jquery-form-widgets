@@ -1,0 +1,69 @@
+/*
+ * jQuery UX Error @VERSION
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ *
+ */
+ 
+.ux-inputbox {
+	/* FIXME: Need to use something not quite white for the background */
+	background: #FFFFFF url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
+
+	position: relative;
+	padding: 0;
+
+	text-align: left;
+	overflow: hidden;
+	cursor: default;
+
+	padding-right: 10px;
+}
+
+.ux-inputbox-text {
+	margin: 0 .1em;
+	white-space: nowrap;
+}
+
+.ux-inputbox-icon-primary {
+	display: inline;
+	position: absolute;
+	
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 22px;
+
+	/* Remove the border on the ui-active */
+	border-style: none;
+	border-left-style: solid;
+}
+
+
+.ux-inputbox-icon-secondary {
+	display: inline;
+	position: absolute;
+
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 22px;
+}
+
+.ux-inputbox-text-icon-primary {
+	padding-right: 22px;
+}
+
+.ux-inputbox-text-icon-secondary {
+	padding-left: 20px;
+}
+
+.ux-inputbox-icon-primary .ui-icon, .ux-inputbox-icon-secondary .ui-icon {
+	position: absolute;
+
+	top: 50%;
+	margin-top: -8px;
+
+	left: 50%;
+	margin-left: -8px;
+}
