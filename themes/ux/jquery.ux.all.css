@@ -6,10 +6,11 @@
  *
  */
 
-@import "jquery.ux.common.css";
 @import "jquery.ux.collapsible.css";
 @import "jquery.ux.grouptab.css";
 @import "jquery.ux.error.css";
+
+@import "jquery.ux.inputbox.css";
 
 @import "jquery.ux.button.css";
 @import "jquery.ux.checkbox.css";

@@ -36,7 +36,8 @@
 
 			if (icons.primary != null) {
 				//Create padding on the left of the icon.
-				this.label.addClass('ux-inputbox-text-icon-primary');
+				this.ux_element
+					.addClass('ux-inputbox-text-icon-primary');
 				
 				//Create the icon.
 				this.iconPrimary = $('<span/>')
@@ -53,7 +54,8 @@
 
 			if (icons.secondary != null) {
 				//Create padding on the left of the icon.
-				this.label.addClass('ux-inputbox-text-icon-secondary');
+				this.ux_element
+					.addClass('ux-inputbox-text-icon-secondary');
 
 				//Create the icon.
 				this.iconSecondary = $('<span/>')

@@ -12,15 +12,8 @@
 	
 	width: 100%;
 	padding: 0;
-
-	background: #FFFFFF url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
-	/*
+	
 	border-style: none;
-	*/
-	border: 1px solid #F00;
-
-	margin-right: 40px;
-	width: 98%;
 }
 
 textarea {
