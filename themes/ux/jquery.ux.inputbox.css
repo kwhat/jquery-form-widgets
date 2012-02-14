@@ -7,6 +7,9 @@
  */
  
 .ux-inputbox {
+	display: block;
+	width: auto;
+
 	/* FIXME: Need to use something not quite white for the background */
 	background: #FFFFFF url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
 

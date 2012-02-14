@@ -51,10 +51,10 @@
 						}
 					},
 					'mouseover.ux.collapsible': function() {
-						$(this).addClass('ui-state-focus');
+						$(this).addClass('ui-state-hover');
 					},
 					'mouseout.ux.collapsible': function() {
-						$(this).removeClass('ui-state-focus');
+						$(this).removeClass('ui-state-hover');
 					}
 				})
 				//Put the icon infront of the first element.

@@ -5,39 +5,13 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  */
- 
-.ux-selectbox {
-	display: block;
-	width: 100%;
-	outline: 0;
-	
-	/* FIXME: Need to use something not quite white for the background */
-	background: #FFFFFF/*{bgColorDefault}*/ url(images/ui-bg_glass_65_ffffff_1x400.png)/*{bgImgUrlDefault}*/ 50%/*{bgDefaultXPos}*/ 50%/*{bgDefaultYPos}*/ repeat-x/*{bgDefaultRepeat}*/;
-	
-	overflow: hidden;
-	position: relative;
-	vertical-align: top;
-	
-	cursor: default;
-}
-
-.ux-selectbox-label {
-	display: inline;
-	white-space: nowrap;
-}
-
-.ux-selectbox-icon {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 23px;
-	height: 100%;
-	
-	border-left: solid 1px #d3d3d3/*{borderColorDefault}*/;
-	background: #e6e6e6/*{bgColorDefault}*/ url(images/ui-bg_glass_75_e6e6e6_1x400.png)/*{bgImgUrlDefault}*/ 50%/*{bgDefaultXPos}*/ 50%/*{bgDefaultYPos}*/ repeat-x/*{bgDefaultRepeat}*/;
-}
 
 .ux-selectbox-menu {
+	display: block;
+	width: auto;
+	
+	outline: 0;
+
 	/* FIXME: Need to use something not quite white for the background */
 	background: #FFFFFF/*{bgColorDefault}*/ url(images/ui-bg_glass_65_ffffff_1x400.png)/*{bgImgUrlDefault}*/ 50%/*{bgDefaultXPos}*/ 50%/*{bgDefaultYPos}*/ repeat-x/*{bgDefaultRepeat}*/;
 	
@@ -53,16 +27,19 @@
 	/* Nothing Yet */
 }
 
-
-/* JQuery UI 1.9m6 Width Fix */
-.ui-menu {
-	margin-right: -2px;
+.ui-menu .ui-menu-item span {
+	text-decoration:none;
+	display:block;
+	padding:.1em .1em;
+	line-height:1.5;
+	zoom:1;
 }
 
-/* JQuery UI 1.9m6 Highlight Fix */
+
+/* JQuery UI Highlight Fix */
 .ui-menu .ui-menu-item {
 	border: 1px solid transparent;
-	margin: -1px;
+	margin-left: -1px;
 }
 
 .ui-menu .ui-menu-item a.ui-state-highlight {

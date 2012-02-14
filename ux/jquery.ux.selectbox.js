@@ -5,21 +5,20 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * Depends:
- *
+ *		jquery.ux.inputbox.js
  */
 
 (function( $, undefined ) {
-	$.widget('ux.selectbox', {
-		version: '@VERSION',
+	$.widget('ux.selectbox', $.ux.inputbox, {
 		defaultElement: '<select>',
 		options: {
-			duration: 'normal',
-			showAnim: 'blind',
-			showOptions: {}
+			icons: {
+				primary: 'ui-icon-triangle-1-s'
+			}
 		},
 		_create: function() {
 			var self = this;
-			
+
 			//Create the dropdown menu widget.
 			this.menu = $('<ul/>')
 				.addClass('ux-selectbox-menu')
@@ -35,24 +34,21 @@
 			else {
 				//Loop over the options and create the list.
 				$.each(options, function() {
+					var li = $('<li/>').appendTo(self.menu);
+					
 					if ($(this).is('optgroup')) {
-						$('<li/>')
-							/*.addClass($(this).attr('class') || '')*/
-							.addClass('ux-selectbox-optgroup')
+						li.addClass('ui-menu-item');
+
+						$('<span/>')
+							.attr('rel', $(this).val())
 							.text($(this).attr('label'))
-							.appendTo(self.menu);
+							.appendTo(li);
 					}
 					else {
-						var li = $('<li/>')
-							/*.addClass($(this).attr('class') || '')*/
-							.addClass('ux-selectbox-option');
-						
 						$('<a/>')
 							.attr('rel', $(this).val())
 							.text($(this).text())
 							.appendTo(li);
-						
-						self.menu.append(li);
 					}
 				});
 			}
@@ -60,13 +56,8 @@
 			
 			// Generate control
 			if (this.element.attr('multiple')) {
-				//Set the select box widget directly to the menu
-				/*
-					.attr('class', this.element.attr('class') || '')
-					.attr('style', this.element.attr('style') || '')
-					.attr('title', this.element.attr('title') || '')
-					.attr('tabindex', this.element.attr('tabindex'))
-				*/
+				this._hideElement();
+				
 				this.ux_element = this.menu
 					.insertAfter(this.element)
 					.menu({
@@ -78,62 +69,14 @@
 								.change();
 						}
 					})
+					.addClass('ui-state-default')
 					.attr('title', this.element.attr('title') || '')
-					.attr('tabindex', this.element.attr('tabindex') || '')
-					.addClass('ui-widget ui-state-default ui-corner-all ux-selectbox-menu')
-					.children()
-					.bind({
-						'mouseover.ux.selectbox': function() {
-							self.menu.addClass('ui-state-focus');
-						},
-						'mouseout.ux.selectbox': function() {
-							self.menu.removeClass('ui-state-focus');
-						},
-						'focusin.ux.selectbox': function() {
-							$(this).addClass('ui-state-focus');
-						},
-						'focusout.ux.selectbox': function() {
-							$(this).removeClass('ui-state-focus');
-						}
-					});
+					.attr('tabindex', this.element.attr('tabindex') || '');
 			}
 			else {
-				//Create the selectbox widget
-				this.ux_element = $('<div/>')
-					.attr('title', this.element.attr('title') || '')
-					.attr('tabindex', this.element.attr('tabindex') || '')
-					.addClass('ui-state-default ui-widget ui-corner-all ux-selectbox');
+				//Call super._create()
+				$.ux.inputbox.prototype._create.call(this);
 
-				//Create the label
-				this.label = $('<a/>')
-					.addClass('ux-selectbox-label');
-				
-				//Create the icon.
-				this.icon = $('<a/>')
-					.css({
-						'position': 'absolute', 
-						'top': '50%',
-						'width': '100%', 
-						'height': '1px',
-						'overflow': 'visible'
-					})
-					.append(
-						$('<a/>')
-							.css({
-								'position': 'absolute',
-								'top': '-8px',
-								'left': '50%',
-								'margin-left': '-8px'
-							})
-							.addClass('ui-icon ui-icon-triangle-1-s')
-					);
-				
-				//Create a wrapper around the icon so it can be centered.
-				this.iconWrapper = $('<a/>')
-					.addClass('ux-selectbox-icon ui-corner-tr ui-corner-br')
-					.append(this.icon);
-				
-				
 				//Make sure the menu is hidden by default.
 				this.menu
 					.menu({
@@ -162,13 +105,8 @@
 						'z-index': '99999'
 					})
 					.appendTo(document.body);
+
 				
-				this.ux_element
-					.append(this.label)
-					.append(this.iconWrapper)
-					.insertAfter(this.element);
-
-
 				//Bind the widget to show and hide menu
 				this.ux_element
 					.bind({
@@ -262,12 +200,34 @@
 					*/
 				});
 			}
-			
+
+			//Setup the class hovers and selections for the menus children
+			this.menu
+				.children()
+				.bind({
+					'mouseover.ux.selectbox': function(e) {
+						self.menu.addClass('ui-state-hover');
+
+						$(e.target).removeClass('ui-state-highlight');
+					},
+					'mouseout.ux.selectbox': function(e) {
+						self.menu.removeClass('ui-state-hover');
+
+						if (self.element.has('option[value="' + $(e.target).attr('rel') + '"]:selected').length != 0) {
+							$(e.target).addClass('ui-state-highlight');
+						}
+					},
+					'focusin.ux.selectbox': function() {
+						$(this).addClass('ui-state-focus');
+					},
+					'focusout.ux.selectbox': function() {
+						$(this).removeClass('ui-state-focus');
+					}
+				});
 			
 			//Hide the element and
 			//Monitor the hidden selectbox for changes
 			this.element
-				.addClass('ui-helper-hidden')
 				.bind('change.ux.selectbox', function() {
 					//Tell the gui box to update its self.
 					self.refresh();
@@ -359,11 +319,11 @@
 				.removeClass('ui-corner-all')
 				.addClass('ui-corner-bottom');
 
-			menu.show(this.options.showAnim, this.options.showOptions, this.options.duration);
+			menu.show();
 			
 			// Center on selected option
-			var li = menu.find('.ui-state-highlight:first');
-			this._keepOptionInView(li, true);
+			//var li = menu.find('.ui-state-highlight:first');
+			//this._keepOptionInView(li, true);
 		},
 		_hideMenu: function() {
 			var menu = this.menu;
@@ -375,8 +335,9 @@
 				.removeClass('ui-state-focus  ui-corner-top')
 				.addClass('ui-state-default ui-corner-all');
 
-			menu.hide(this.options.showAnim, this.options.showOptions, this.options.duration);
-		},
+			menu.hide();
+		}
+		/*,
 		_keepOptionInView: function(li, center) {
 			
 			if( !li || li.length === 0 ) return;
@@ -385,7 +346,7 @@
 			var menu = control.data('menu');
 
 			//FIXME this is totally broken.
-			/*
+			//
 			var scrollBox = control.hasClass('ux-selectbox') ? menu : menu.parent(),
 				top = parseInt(li.offset().top - scrollBox.position().top),
 				bottom = parseInt(top + li.outerHeight());
@@ -401,7 +362,7 @@
 					scrollBox.scrollTop( (li.offset().top + li.outerHeight()) - scrollBox.offset().top + scrollBox.scrollTop() - scrollBox.height() );
 				}
 			}
-			*/
+			//
 		},
 		_handleKeyDown: function(event) {
 			// Handles open/close and arrow key functionality
@@ -530,5 +491,6 @@
 			}
 			
 		}
+		*/
 	});
 })(jQuery);
