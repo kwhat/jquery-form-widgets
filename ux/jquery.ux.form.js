@@ -5,16 +5,17 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * Depends:
- *		jquery.ux.checkbox.js
- *		jquery.ux.error.js
- *		jquery.ux.filebox.js
- *		jquery.ux.radio.js
- *		jquery.ux.selectbox.js
- *		jquery.ux.textbox.js
- *		jquery.ui.button.js
- *		jquery.ui.datepicker.js
- *		jquery.ui.core.js
- *		jquery.ui.widget.js
+ *	jquery.ux.inputbox.js
+ *	jquery.ux.checkbox.js
+ *	jquery.ux.error.js
+ *	jquery.ux.filebox.js
+ *	jquery.ux.radio.js
+ *	jquery.ux.selectbox.js
+ *	jquery.ux.textbox.js
+ *	jquery.ui.button.js
+ *	jquery.ui.datepicker.js
+ *	jquery.ui.core.js
+ *	jquery.ui.widget.js
  */
 (function( $, undefined ) {
 	var validationDefaultOptions = {

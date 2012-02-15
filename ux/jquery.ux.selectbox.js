@@ -5,7 +5,8 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * Depends:
- *		jquery.ux.inputbox.js
+ *	jquery.ui.menu.js
+ *	jquery.ux.inputbox.js
  */
 
 (function( $, undefined ) {
@@ -40,7 +41,6 @@
 						li.addClass('ui-menu-item');
 
 						$('<span/>')
-							.attr('rel', $(this).val())
 							.text($(this).attr('label'))
 							.appendTo(li);
 					}
@@ -59,19 +59,22 @@
 				this._hideElement();
 				
 				this.ux_element = this.menu
+					.menu()
+					.addClass('ui-state-default')
+					.attr('title', this.element.attr('title') || '')
+					.attr('tabindex', this.element.attr('tabindex') || '')
 					.insertAfter(this.element)
-					.menu({
-						select: function(e, ui) {
+					.children(':[role="menuitem"]')
+					.bind({
+						'mouseup.ux.selectbox': function(e) {
 							var item = self.element
-								.find('option[value="' + ui.item.find('a[rel]:last').attr('rel') + '"]');
+								.find('option[value="' + $(e.target).attr('rel') + '"]');
 
 							item.attr('selected', !item.attr('selected'))
 								.change();
 						}
-					})
-					.addClass('ui-state-default')
-					.attr('title', this.element.attr('title') || '')
-					.attr('tabindex', this.element.attr('tabindex') || '');
+					});
+					
 			}
 			else {
 				//Call super._create()
@@ -79,16 +82,16 @@
 
 				//Make sure the menu is hidden by default.
 				this.menu
-					.menu({
-						select: function(e, ui) {
-							/*
-							var item = self.element
-								.find('option[value="' + ui.item.find('a[rel]:last').attr('rel') + '"]');
-
-							item.attr('selected', !item.attr('selected'))
-								.change();
-							*/
-						   
+					.menu()
+					.css({
+						'display': 'none',
+						'position': 'absolute',
+						'z-index': '99999'
+					})
+					.appendTo(document.body)
+					.children(':[role="menuitem"]')
+					.bind({
+						'mouseup.ux.selectbox': function(e) {
 							//Hide the menu.
 							self._hideMenu();
 
@@ -98,19 +101,14 @@
 							//Fire a change event to cause a refresh.
 							self.element.change();
 						}
-					})
-					.css({
-						'display': 'none',
-						'position': 'absolute',
-						'z-index': '99999'
-					})
-					.appendTo(document.body);
+					});
 
 				
 				//Bind the widget to show and hide menu
 				this.ux_element
 					.bind({
 						'mouseup.ux.selectbox': function(e) {
+							//Display or Hide the menu when the box is clicked.
 							if (! self.menu.is(':visible')) {
 								self._showMenu();
 							}
@@ -137,67 +135,18 @@
 						'selectstart.ux.selectbox': function(e) {
 							//Prevent the hidden select box from showing
 							e.preventDefault();
-						},
-						'mouseover.ux.selectbox': function() {
-							self.ux_element.addClass('ui-state-hover');
-						},
-						'mouseout.ux.selectbox': function() {
-							self.ux_element.removeClass('ui-state-hover');
 						}
 					});
 
-				//Provide menu bindings.
-				/*
-				this.menu.children('li').bind({
-					'mousedown.ux.selectbox': function(e) {
-						//Prevent dropdown from being "dragged"
-						e.preventDefault();
-					},
-					'mouseup.ux.selectbox': function(e) {
-						//Prevent optgroup's from being selected
-						if ($(e.target).is('a')) {
-							//Hide the menu.
-							self._hideMenu();
-
-							//Set the hidden select boxes value.
-							self.element.val($(e.target).attr('rel'));
-
-							//Fire a change event to cause a refresh.
-							self.element.change();
-						}
-					}
-				});
-				*/
-			   
 				//Hide the menu if we click anywhere else
 				$(document).bind('mouseup.ux.selectbox', function(e) {
 					if (self.menu.is(':visible')) {
 						//We need to make sure that we are not a child of the widget either.
-						if (self.ux_element.find($(e.target)).length == 0 && !self.ux_element.is($(e.target))) {
+						if (self.ux_element.find($(e.target)).length == 0 && self.menu.find($(e.target)).length == 0 && !self.ux_element.is($(e.target))) {
+							console.debug($(e.target));
 							self._hideMenu();
 						}
 					}
-				});
-				
-				//Handle close events for focus loss.
-				this.menu.bind({
-					'mousedown.ux.selectbox': function(e) {
-						if ($(this).is(self.menu)) {
-							e.stopPropagation();
-						}
-					}
-					/* Other method of closing the menu on focus out.
-					focusin: function(event) {
-						//Send the focus back to the widget.
-						self.ux_element.focus();
-					},
-					mouseover: function(event) {
-						$(event.target).data('mouseover', true);
-					},
-					mouseout: function(event) {
-						$(event.target).data('mouseover', false);
-					}
-					*/
 				});
 			}
 
@@ -216,12 +165,6 @@
 						if (self.element.has('option[value="' + $(e.target).attr('rel') + '"]:selected').length != 0) {
 							$(e.target).addClass('ui-state-highlight');
 						}
-					},
-					'focusin.ux.selectbox': function() {
-						$(this).addClass('ui-state-focus');
-					},
-					'focusout.ux.selectbox': function() {
-						$(this).removeClass('ui-state-focus');
 					}
 				});
 			

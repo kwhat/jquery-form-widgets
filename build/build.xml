@@ -1,159 +1,161 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <!--
-	jQuery UX Release!
+	jQuery UX Forms
 
 	Call task called 'deploy-release' to build a full release.
 	The release built will be stored on 'dist' dir.
 
-	This build file was shamelessly stolen from jQuery UI.
+	This build file was adapted from jQuery UI.
 -->
 
 <project name="jquery-ux-forms" default="deploy-release" basedir="..">
+	<!-- Project Settings -->
 	<property file="ant.properties" />
-
 	<loadfile failonerror="yes" srcFile="./version.txt" property="ant.project.version">
 		<filterchain><striplinebreaks/></filterchain>
 	</loadfile>
 
-	<property name="build.dir" value="./build" />
-	<property name="dist.dir" value="./dist/${ant.project.name}-${ant.project.version}" />
-	<property name="src.dir" value="./ux" />
-	<property name="theme.dir" value="./themes" />
+	<!-- Path Settings -->
+	<property name="dir.build"	value="${basedir}/build" />
+	<property name="dir.dist"	value="${basedir}/dist/${ant.project.name}-${ant.project.version}" />
+	<property name="dir.src"	value="${basedir}/ux" />
 
+
+	<!-- Load Ant-Contrib Extention -->
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
-			<pathelement location="${build.dir}/lib/ant-contrib-1.0_b3.jar" />
+			<pathelement location="${dir.build}/lib/ant-contrib-1.0_b3.jar" />
 		</classpath>
 	</taskdef>
-	<property description="Google Closure" name="closure-jar" value="${build.dir}/lib/closure-compiler-20111114.jar" />
-	<property description="YUI Compressor" name="yuicompressor-jar" value="${build.dir}/lib/yuicompressor-2.4.7.jar" />
+
+	<!-- External Jars -->
+	<property description="Google Closure" name="jar.closure" value="${dir.build}/lib/closure-compiler-20111114.jar" />
+	<property description="YUI Compressor" name="jar.yuicompressor" value="${dir.build}/lib/yuicompressor-2.4.7.jar" />
 
 
-	<target name="deploy-release" depends="clean, copy, minify, replace-version, prepend-header, zip" description="Release builder">
-	</target>
-
-
-	<target name="clean">
-		<delete dir="dist" />
+	<target name="clean" description="Remove generated files">
+		<delete dir="${dir.dist}" />
     </target>
 
-
+	
 	<target name="copy" description="Copy needed folders">
-		<echo message="Copying files" />
-		<mkdir dir="${dist.dir}" />
-
-		<copy overwrite="true" todir="${dist.dir}">
-			<fileset dir="." includes="jquery-*.js" />
+		<echo message="Copying files..." />
+		<mkdir dir="${dir.dist}" />
+		
+		<!-- Copy over existing external dependencies -->
+		<copy overwrite="true" todir="${dir.dist}">
+			<fileset dir="${basedir}">
+				<include name="*.txt" />
+				<include name="jquery-*.js" />
+				<include name="**/jquery.*.js" />
+				<include name="demos/**/*" />
+				<include name="themes/**/*" />
+			</fileset>
 		</copy>
-
-		<copy overwrite="true" todir="${dist.dir}/ux">
-			<fileset dir="${src.dir}" includes="jquery.ux.*.js" />
-		</copy>
-
-		<copy overwrite="true" todir="${dist.dir}">
-			<fileset dir="." includes="*.txt" />
-		</copy>
-
-		<copy overwrite="true" todir="${dist.dir}/demos" >
-			<fileset dir="./demos" />
-		</copy>
-
-		<copy overwrite="true" todir="${dist.dir}/themes" >
-			<fileset dir="./themes" />
-		</copy>
+		
 		<echo message="Files copied." />
 	</target>
 
-
+	
 	<target name="concatenate" description="Merges all files into a single file">
-		<echo message="Building concatenated" />
+		<echo message="Concatenating files..." />
+		
+		<!-- Create a folder and remove the old file -->
+		<mkdir dir="${dir.dist}/ux" />
+		<mkdir dir="${dir.dist}/themes/ux" />
+		<delete file="${dir.dist}/ux/${ant.project.name}-${ant.project.version}.js" />
+		<delete file="${dir.dist}/themes/ux/${ant.project.name}-${ant.project.version}.css" />
 
-		<mkdir dir="${dist.dir}/ux" />
-		<delete file="${dist.dir}/ux/${ant.project.name}.js" />
-		<concat destfile="${dist.dir}/ux/${ant.project.name}.js">
-			<fileset dir="${src.dir}" includes="jquery.ux.*.js" />
+		<!-- Create 1 file from all js files in src dir -->
+		<concat destfile="${dir.dist}/ux/${ant.project.name}-${ant.project.version}.js">
+			<!-- Because order matters, inputbox must come before the reset of the ux items -->
+			<fileset dir="${dir.src}">
+				<include name="jquery.ui.*.js" />
+				<include name="jquery.ux.inputbox.js" />
+			</fileset>
+
+			<fileset dir="${dir.src}">
+				<include name="jquery.ux.*.js" />
+				<exclude name="jquery.ux.inputbox.js" />
+			</fileset>
 		</concat>
-		<echo message="Concatenated built." />
-
-
-		<echo>${dist.dir}/themes/ux</echo>
-
-		<mkdir dir="${dist.dir}/themes/ux" />
-		<delete file="${dist.dir}/themes/ux/${ant.project.name}.css" />
-		<concat destfile="${dist.dir}/themes/ux/${ant.project.name}.css">
-			<fileset dir="${theme.dir}/ux" includes="jquery.ux.*.css" excludes="jquery.ux.all.css" />
+		
+		<!-- Create 1 file from all css files in themes/ux dir -->
+		<concat destfile="${dir.dist}/themes/ux/${ant.project.name}-${ant.project.version}.css">
+			<fileset dir="themes/ux" includes="jquery.*.css" excludes="jquery.ux.all.css" />
 		</concat>
-		<echo message="Concatenated theme." />
+		
+		<echo message="Concatenation complete." />
 	</target>
-
-
+	
+	
 	<target name="minify" depends="concatenate" description="Remove all comments and whitespace, no compression, great in combination with GZip">
-		<echo message="Building minified" />
-		<mkdir dir="${dist.dir}/ux/minified" />
-		<mkdir dir="${dist.dir}/themes/ux/minified" />
+		<echo message="Minifing files.." />
+		<mkdir dir="${dir.dist}/ux/minified" />
+		<mkdir dir="${dir.dist}/themes/ux/minified" />
+		
+		<parallel threadsperprocessor="1">
+			<apply executable="java" parallel="false">
+				<fileset dir="${dir.dist}/ux" includes="*.js" />
+				<arg line="-jar" />
+				<arg path="${jar.closure}" />
+				<arg value="--warning_level" />
+				<arg value="QUIET" />
+				<arg value="--js_output_file" />
+				<targetfile />
+				<arg value="--js" />
+				<mapper type="glob" from="*.js" to="${dir.dist}/ux/minified/*.min.js" />
+			</apply>
 
-        <parallel threadsperprocessor="1">
-            <apply executable="java" parallel="false" dest="${basedir}">
-                <fileset dir="${dist.dir}/ux" includes="*.js" />
-                <arg line="-jar" />
-                <arg path="${closure-jar}" />
-                <arg value="--warning_level" />
-                <arg value="QUIET" />
-                <arg value="--js_output_file" />
-                <targetfile />
-                <arg value="--js" />
-                <mapper type="glob" from="*.js" to="${dist.dir}/ux/minified/*.min.js" />
-            </apply>
-
-            <apply executable="java" parallel="false" dest="${basedir}">
-                <fileset dir="${dist.dir}/themes/ux" includes="*.css" />
-                <arg line="-jar" />
-                <arg path="${yuicompressor-jar}" />
-                <arg line="--charset utf-8" />
-                <arg line="-v" />
-                <srcfile />
-                <arg line="-o" />
-                <mapper type="glob" from="*.css" to="${dist.dir}/themes/ux/minified/*.min.css" />
-                <targetfile/>
-            </apply>
-        </parallel>
+			<apply executable="java" parallel="false">
+				<fileset dir="${dir.dist}/themes/ux" includes="*.css" />
+				<arg line="-jar" />
+				<arg path="${jar.yuicompressor}" />
+				<arg line="--charset utf-8" />
+				<arg line="-v" />
+				<srcfile />
+				<arg line="-o" />
+				<mapper type="glob" from="*.css" to="${dir.dist}/themes/ux/minified/*.min.css" />
+				<targetfile/>
+			</apply>
+		</parallel>
 
 		<replaceregexp match=".css" replace=".min.css" flags="g">
-			<fileset dir="${dist.dir}/themes/ux/minified">
+			<fileset dir="${dir.dist}/themes/ux/minified">
 				<include name="*.all.min.css"/>
 			</fileset>
 		</replaceregexp>
 
 		<!-- make a copy of all theme images to ensure that relative paths in minified css files work -->
-		<copy todir="${dist.dir}/themes/ux/minified/images" >
+		<copy todir="${dir.dist}/themes/ux/minified/images" >
 			<fileset dir="themes/ux/images" />
 		</copy>
 
-		<echo message="Minified ux built." />
+		<echo message="Minification complete." />
 	</target>
 
 	
 	<target name="replace-version">
 		<replaceregexp match="@VERSION" replace="${ant.project.version}" flags="g" byline="true">
-		    <fileset dir="${dist.dir}/ux" includes="*.js"/>
-			<fileset dir="${dist.dir}/ux/minified" includes="*.js"/>
-			<fileset dir="${dist.dir}/themes/ux" includes="*.css"/>
-			<fileset dir="${dist.dir}/themes/ux/minified" includes="*.css"/>
+		    <fileset dir="${dir.dist}/ux" includes="*.js"/>
+			<fileset dir="${dir.dist}/ux/minified" includes="*.js"/>
+			<fileset dir="${dir.dist}/themes/ux" includes="*.css"/>
+			<fileset dir="${dir.dist}/themes/ux/minified" includes="*.css"/>
 		</replaceregexp>
 		<echo message="Replaced all @VERSION to ${ant.project.version}." />
 	</target>
 
 
 	<target name="prepend-header">
-		<mkdir dir="${dist.dir}/headers" />
+		<mkdir dir="${dir.dist}/headers" />
 		
-		<copy todir="${dist.dir}/headers">
-			<fileset dir="${dist.dir}/ux" includes="*.js" />
-			<fileset dir="${dist.dir}/themes/ux" includes="*.css" />
+		<copy todir="${dir.dist}/headers">
+			<fileset dir="${dir.dist}/ux" includes="*.js" />
+			<fileset dir="${dir.dist}/themes/ux" includes="*.css" />
 		</copy>
 		<replaceregexp match="^(\/\*.*?\*\/\s).+" replace="\1" flags="s">
-		    <fileset dir="${dist.dir}/headers">
+		    <fileset dir="${dir.dist}/headers">
 				<include name="*.js"/>
 				<include name="*.css"/>
 			</fileset>
@@ -161,35 +163,39 @@
 
 		<for param="file">
 			<path>
-				<fileset dir="${dist.dir}/ux/minified" includes="*.js" />
-				<fileset dir="${dist.dir}/themes/ux/minified" includes="*.css" />
+				<fileset dir="${dir.dist}/ux/minified" includes="*.js" />
+				<fileset dir="${dir.dist}/themes/ux/minified" includes="*.css" />
 			</path>
 			<sequential>
 				<propertyregex override="yes" property="ext" input="@{file}" regexp=".*[\\/].+\.min\.(.+)$" replace="\1"/>
 				<propertyregex override="yes" property="target" input="@{file}" regexp=".*[\\/](.+)\.min\.${ext}$" replace="\1"/>
-				<concat destfile="${dist.dir}/ux-headered/${target}.min.${ext}">
-					<header file="${dist.dir}/headers/${target}.${ext}" />
+				<concat destfile="${dir.dist}/ux-headered/${target}.min.${ext}">
+					<header file="${dir.dist}/headers/${target}.${ext}" />
 					<fileset file="@{file}" />
 				</concat>
 			</sequential>
 		</for>
 		
-		<copy todir="${dist.dir}/ux/minified" overwrite="true">
-			<fileset dir="${dist.dir}/ux-headered/" includes="*.js" />
+		<copy todir="${dir.dist}/ux/minified" overwrite="true">
+			<fileset dir="${dir.dist}/ux-headered/" includes="*.js" />
 		</copy>
 
-		<copy todir="${dist.dir}/themes/ux/minified" overwrite="true">
-			<fileset dir="${dist.dir}/ux-headered/" includes="*.css" />
+		<copy todir="${dir.dist}/themes/ux/minified" overwrite="true">
+			<fileset dir="${dir.dist}/ux-headered/" includes="*.css" />
 		</copy>
 
-		<delete dir="${dist.dir}/headers/" />
-		<delete dir="${dist.dir}/ux-headered/" />
+		<delete dir="${dir.dist}/headers/" />
+		<delete dir="${dir.dist}/ux-headered/" />
 	</target>
 
 
 	<target description="Zip the package" name="zip">
-		<zip destfile="${dist.dir}/../${ant.project.name}-${ant.project.version}.zip">
+		<zip destfile="${dir.dist}/../${ant.project.name}-${ant.project.version}.zip">
 			<zipfileset dir="dist/" />
 		</zip>
+	</target>
+
+	
+	<target name="deploy-release" depends="clean, copy, minify, replace-version, prepend-header, zip" description="Release builder">
 	</target>
 </project>

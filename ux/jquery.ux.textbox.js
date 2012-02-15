@@ -5,7 +5,7 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * Depends:
- *		jquery.ux.element
+ *	jquery.ux.inputbox.js
  */
 (function( $, undefined ) {
 	$.widget('ux.textbox', $.ux.inputbox, {

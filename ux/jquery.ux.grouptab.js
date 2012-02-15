@@ -5,7 +5,7 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * Depends:
- *
+ *	jquery.ux.collapsible.js
  */
 (function( $, undefined ) {
 	$.widget('ux.grouptab', {
