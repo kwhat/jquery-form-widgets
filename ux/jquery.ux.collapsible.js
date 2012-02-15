@@ -1,7 +1,7 @@
 /*
  * jQuery UX Collapsible @VERSION
  *
- * Copyright 2011, AUTHORS.txt
+ * Copyright 2012, AUTHORS.txt (http://code.google.com/p/jquery-ux-forms/)
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * Depends:

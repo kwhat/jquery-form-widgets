@@ -1,7 +1,7 @@
 /*
  * jQuery UX Selectbox @VERSION
  *
- * Copyright 2011, AUTHORS.txt
+ * Copyright 2012, AUTHORS.txt (http://code.google.com/p/jquery-ux-forms/)
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * Depends:
@@ -122,16 +122,6 @@
 						'keypress.ux.selectbox': function(e) {
 							self._handleKeyPress(e);
 						},
-						/* Other method of closing the menu on focus out.
-						 * This is more reliable binding to the docment
-						 * instead.   See below.
-						focusout: function(event) {
-							//Hide the menu if it is not getting the focus
-							if (! self.menu.data('mouseover')) {
-								self._hideMenu();
-							}
-						},
-						*/
 						'selectstart.ux.selectbox': function(e) {
 							//Prevent the hidden select box from showing
 							e.preventDefault();
@@ -143,7 +133,6 @@
 					if (self.menu.is(':visible')) {
 						//We need to make sure that we are not a child of the widget either.
 						if (self.ux_element.find($(e.target)).length == 0 && self.menu.find($(e.target)).length == 0 && !self.ux_element.is($(e.target))) {
-							console.debug($(e.target));
 							self._hideMenu();
 						}
 					}

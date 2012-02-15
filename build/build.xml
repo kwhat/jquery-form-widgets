@@ -25,7 +25,7 @@
 	<!-- Load Ant-Contrib Extention -->
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
-			<pathelement location="${dir.build}/lib/ant-contrib-1.0_b3.jar" />
+			<pathelement location="${dir.build}/lib/ant-contrib-1.0b3.jar" />
 		</classpath>
 	</taskdef>
 
@@ -91,7 +91,7 @@
 	
 	
 	<target name="minify" depends="concatenate" description="Remove all comments and whitespace, no compression, great in combination with GZip">
-		<echo message="Minifing files.." />
+		<echo message="Minifing files..." />
 		<mkdir dir="${dir.dist}/ux/minified" />
 		<mkdir dir="${dir.dist}/themes/ux/minified" />
 		
@@ -121,6 +121,7 @@
 			</apply>
 		</parallel>
 
+		<!-- Update minified css includes -->
 		<replaceregexp match=".css" replace=".min.css" flags="g">
 			<fileset dir="${dir.dist}/themes/ux/minified">
 				<include name="*.all.min.css"/>
@@ -131,10 +132,10 @@
 		<copy todir="${dir.dist}/themes/ux/minified/images" >
 			<fileset dir="themes/ux/images" />
 		</copy>
-
+		
 		<echo message="Minification complete." />
 	</target>
-
+	
 	
 	<target name="replace-version">
 		<replaceregexp match="@VERSION" replace="${ant.project.version}" flags="g" byline="true">
@@ -146,14 +147,24 @@
 		<echo message="Replaced all @VERSION to ${ant.project.version}." />
 	</target>
 
-
+	
 	<target name="prepend-header">
 		<mkdir dir="${dir.dist}/headers" />
-		
-		<copy todir="${dir.dist}/headers">
-			<fileset dir="${dir.dist}/ux" includes="*.js" />
-			<fileset dir="${dir.dist}/themes/ux" includes="*.css" />
+
+		<!-- Copy all files to the headers folder -->
+		<copy todir="${dir.dist}/headers" overwrite="true">
+			<fileset
+				dir="${dir.dist}/ux"
+				includes="*.js"
+				excludes="${ant.project.name}-${ant.project.version}*.js"
+			/>
+			<fileset
+				dir="${dir.dist}/themes/ux"
+				includes="*.css"
+			/>
 		</copy>
+
+		<!-- Strip everything but the headers from each file -->
 		<replaceregexp match="^(\/\*.*?\*\/\s).+" replace="\1" flags="s">
 		    <fileset dir="${dir.dist}/headers">
 				<include name="*.js"/>
@@ -161,36 +172,48 @@
 			</fileset>
 		</replaceregexp>
 
+		<!-- loop over each minified file and append the appropriate header -->
 		<for param="file">
 			<path>
-				<fileset dir="${dir.dist}/ux/minified" includes="*.js" />
-				<fileset dir="${dir.dist}/themes/ux/minified" includes="*.css" />
+				<fileset dir="${dir.dist}">
+					<include name="ux/minified/*.js" />
+					<include name="themes/ux/minified/*.css" />
+					<exclude name="ux/minified/${ant.project.name}-${ant.project.version}*.js" />
+				</fileset>
 			</path>
+			
 			<sequential>
 				<propertyregex override="yes" property="ext" input="@{file}" regexp=".*[\\/].+\.min\.(.+)$" replace="\1"/>
 				<propertyregex override="yes" property="target" input="@{file}" regexp=".*[\\/](.+)\.min\.${ext}$" replace="\1"/>
-				<concat destfile="${dir.dist}/ux-headered/${target}.min.${ext}">
+				
+				<concat destfile="${dir.dist}/headered/${target}.min.${ext}">
 					<header file="${dir.dist}/headers/${target}.${ext}" />
 					<fileset file="@{file}" />
 				</concat>
 			</sequential>
 		</for>
-		
+
+		<!-- Create a header for the complete minified js file -->
+		<concat destfile="${dir.dist}/headered/${ant.project.name}-${ant.project.version}.min.js">
+			<header file="${dir.dist}/headers/jquery.ux.all.css" />
+			<fileset file="${dir.dist}/ux/minified/${ant.project.name}-${ant.project.version}.min.js" />
+		</concat>
+
 		<copy todir="${dir.dist}/ux/minified" overwrite="true">
-			<fileset dir="${dir.dist}/ux-headered/" includes="*.js" />
+			<fileset dir="${dir.dist}/headered/" includes="*.js" />
 		</copy>
 
 		<copy todir="${dir.dist}/themes/ux/minified" overwrite="true">
-			<fileset dir="${dir.dist}/ux-headered/" includes="*.css" />
+			<fileset dir="${dir.dist}/headered/" includes="*.css" />
 		</copy>
 
 		<delete dir="${dir.dist}/headers/" />
 		<delete dir="${dir.dist}/ux-headered/" />
-	</target>
+ 	</target>
 
 
 	<target description="Zip the package" name="zip">
-		<zip destfile="${dir.dist}/../${ant.project.name}-${ant.project.version}.zip">
+		<zip destfile="${basedir}/${ant.project.name}-${ant.project.version}.zip">
 			<zipfileset dir="dist/" />
 		</zip>
 	</target>
