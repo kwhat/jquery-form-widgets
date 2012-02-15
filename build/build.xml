@@ -208,7 +208,7 @@
 		</copy>
 
 		<delete dir="${dir.dist}/headers/" />
-		<delete dir="${dir.dist}/ux-headered/" />
+		<delete dir="${dir.dist}/headered/" />
  	</target>
 
 
