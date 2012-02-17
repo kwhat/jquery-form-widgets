@@ -96,8 +96,9 @@
 				.removeClass('ui-state-error');
 		},
 		_setOption: function(key, value) {
-			this._super("_setOption", key, value);
-			
+			//this._super("_setOption", key, value);
+			$.Widget.prototype._setOption.apply(this, new Array(key, value));
+
 			switch (key) {
 				case 'error':
 					if (value) {
