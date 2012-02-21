@@ -13,6 +13,7 @@
 		options: {
 			error: false,
 			delay: 200,
+			icon: 'ui-icon ui-icon-alert',
 			duration: 'normal',
 			showAnim: null,
 			showOptions: {},
@@ -29,37 +30,31 @@
 					'position': 'absolute',
 					'z-index': '9999'
 				})
-				.addClass('ui-helper-hidden ux-errortip ui-widget ui-state-error ui-corner-all');
+				.addClass('ui-helper-hidden ui-widget ui-state-error ui-corner-all ux-error ux-inputbox-text-icon-secondary');
 
 		   	//Create the icon.
-			this.icon = $('<a/>')
-				.css({
-					'position': 'absolute',
-					'top': '50%',
-					'width': '18px',
-					'height': '1px',
-					'overflow': 'visible'
-				})
-				.append(
-					$('<a/>')
-						.css({
-							'position': 'absolute',
-							'top': '-8px',
-							'left': '50%',
-							'margin-left': '-8px'
-						})
-						.addClass('ux-errortip-icon ui-icon ui-icon-alert')
-				)
+			this.icon = $('<span/>')
+				.addClass('ui-icon ' + this.options.icon);
+
+			//Create a wrapper around the icon so it can be centered.
+			this.iconWrapper = $('<span/>')
+				.addClass('ux-inputbox-icon-secondary')
+				.append(this.icon)
 				.appendTo(this.ux_element);
 
-			this.label = $('<a/>')
+			this.ux_element
+				.addClass('');
+
+			this.label = $('<span/>')
 				.css('margin-left', '18px')
-				.addClass('ux-errortip-label')
+				.addClass('ux-error-label')
 				.appendTo(this.ux_element);
 
 			//Add the error tip directly after the document.body
 			$('body').prepend(this.ux_element);
 
+			//Call options
+			this.option(this.options);
 
 			this.element.bind({
 				'mouseover.ux.error': function(e) {

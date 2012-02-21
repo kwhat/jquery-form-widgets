@@ -46,10 +46,8 @@
 				//Create a wrapper around the icon so it can be centered.
 				this.iconPrimaryWrapper = $('<span/>')
 					.addClass('ui-state-default ux-inputbox-icon-primary')
-					.append(this.iconPrimary);
-
-				this.ux_element
-					.append(this.iconPrimaryWrapper);
+					.append(this.iconPrimary)
+					.appendTo(this.ux_element);
 			}
 
 			if (icons.secondary != null) {
@@ -64,10 +62,8 @@
 				//Create a wrapper around the icon so it can be centered.
 				this.iconSecondaryWrapper = $('<span/>')
 					.addClass('ux-inputbox-icon-secondary')
-					.append(this.iconSecondary);
-
-				this.ux_element
-					.append(this.iconSecondaryWrapper);
+					.append(this.iconSecondary)
+					.appendTo(this.ux_element);
 			}
 
 			//Watch the actual DOM checkbox for changes.

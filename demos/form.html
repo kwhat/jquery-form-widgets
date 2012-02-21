@@ -36,10 +36,8 @@
 	<script type="text/JavaScript">
 		$(document).ready(
 			function() {
-				//*
-				$("#my_form").form({
+				$('form').form({
 					ajax: true,
-					create: function(event, ui) {  },
 					validation: {
 						'text_box': {
 							live: true,
@@ -53,7 +51,7 @@
 						}
 					}
 				});
-				//*/
+				
 				$('#loading').hide('fade', {}, 500);
 				$('#form').show('fade', {}, 500 );
 			}

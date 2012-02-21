@@ -19,6 +19,7 @@
  */
 (function( $, undefined ) {
 	var validationDefaultOptions = {
+		element: null,
 		live: false,
 		required: false,
 		email: false,
@@ -29,15 +30,15 @@
 		tooltip: {
 			message: 'There is a problem with this field.'
 		},
-		check: function(element) {
+		check: function() {
 			return true;
 		},
-		success: function(element) {
-			$(element).error('option', 'error', false);
+		success: function() {
+			$(this.element).error('option', 'error', false);
 		},
-		failure: function(element) {
+		failure: function() {
 			this.tooltip.error = true;
-			$(element).error('option', this.tooltip);
+			$(this.element).error('option', this.tooltip);
 		}
 	};
 	
@@ -66,6 +67,7 @@
 			this.element.find('fieldset').addClass('ui-widget');
 			this.element.find('legend').addClass('ui-widget-header ui-corner-all');
 
+			//Loop over and apply widgets for form items.
 			var inputs = $(this.element).find('button,input,select,textarea')
 			$.each(inputs, function() {
 				if($(this).is(':button, :reset, :submit')) {
@@ -89,19 +91,20 @@
 				else if($(this).is('select')) {
 					$(this).selectbox();
 				}
-				
+
 				//Check to see if validation should be applied.
 				var validationOptions = $(options.validation).prop($(this).attr('name'));
 				if (validationOptions != undefined) {
+					//Add the current element to the options.
+					validationOptions.element = $(this);
+
 					//Extend the items defiend options with the default option set.
 					validationOptions = $.extend(true, {}, validationDefaultOptions, validationOptions);
 					$(options.validation).prop($(this).attr('name'), validationOptions);
-					
+
 					//Create an error widget for the form item.
-					$(this)
-						//FIXME This needs apply to ux_elements not elements.
-						.error(validationOptions);
-					
+					$(this).error(validationOptions);
+
 					//If we are doing live validation.
 					if (validationOptions.live == true) {
 						$(this).bind({
@@ -123,7 +126,7 @@
 			var siblings = this.element.find(element.nodeName + ':[name="' + $(element).attr('name') + '"]');
 			$.each(siblings, function() {
 				var isValid = true;
-				
+
 				//Do automated check for empty
 				if (isValid && validationOptions.required == true) {
 					if ($(element).val().length == 0) {
@@ -202,31 +205,8 @@
 			
 			//Apply validation rules
 			$.each(this.options.validation, function(key, value) {
-				$.each($(event.target).find(':[name="' + key + '"]'), function(i, item) {
-					var widget = undefined;
-
-					if ($(this).is(':checkbox')) {
-						widget = $(this).checkbox('widget');
-					}
-					else if ($(this).is(':radio')) {
-						widget = $(this).radio('widget');
-					}
-					else if ($(this).is(':file')) {
-						widget = $(this).filebox('widget');
-					}
-					else if ($(this).is(':text') && $(this).hasClass('date')) {
-						widget = $(this).datebox('widget');
-					}
-					else if ($(this).is(':text') || $(this).is('textarea') || $(this).is(':password')) {
-						widget = $(this).textbox('widget');
-					}
-					else if ($(this).is('select')) {
-						widget = $(this).selectbox('widget');
-					}
-
-					if (widget != undefined) {
-						status = status && self._validate(widget);
-					}
+				$.each($(event.target).find(':[name="' + key + '"]'), function() {
+					status = status && self._validate(this);
 				});
 			});
 
@@ -235,15 +215,29 @@
 				event.preventDefault();
 			}
 
-			if (this.options.ajax) {
-				console.debug('ajax ' + this.element.serialize());
+			if (status && this.options.ajax) {
 				//Do AJAX Post
 				$.ajax({
 					type: this.element.attr('method'),
 					url: this.element.attr('action'),
 					data: this.element.serialize(),
-					success: function(data, textStatus, jqXHR) {
-						self._trigger('success', data, textStatus, jqXHR);
+					success: function(data) {
+						var obj = $.parseJSON(data);
+
+						if (obj.success == true) {
+							self._trigger('success', null, obj.data);
+						}
+						else {
+							$.each(obj.data, function(key, value) {
+								self.element.find(':[name="' + key + '"]')
+									.error('option', {
+										error: true,
+										message: value
+									});
+							});
+							
+							self._trigger('failure', null, obj.data);
+						}
 					},
 					error: function(jqXHR, textStatus, errorThrown) {
 						self._trigger('error', jqXHR, textStatus, errorThrown);
@@ -256,7 +250,6 @@
 			e.preventDefault();
 			
 			//Default form reset callback.  Just blanks out the form.
-			
 			var inputs = $(this.element).find('input,select,textarea');
 			$.each(inputs, function() {
 				if ($(this).is(':checkbox')) {
