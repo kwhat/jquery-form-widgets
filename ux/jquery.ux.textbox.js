@@ -17,7 +17,7 @@
 
 			//Create the label and add it to the widget.
 			this.label = this.element
-				.addClass('ux-textbox')
+				.addClass('ux-inputbox-text ux-textbox')
 				.appendTo(this.ux_element);
 		},
 		_hideElement: function() {
