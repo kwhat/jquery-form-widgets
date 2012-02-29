@@ -7,21 +7,32 @@
  */
 
 /* JQuery UI Button Fix for non input buttons */
+/*
 .ui-button .ui-button-text, input.ui-button {
 	line-height: 1.3em !important;
 }
+*/
 
 /* JQuery UI Button Fix for non input icon buttons */
+/*
 .ui-button-text-icon-primary .ui-button-text, .ui-button-text-icons .ui-button-text {
 	padding: 0 .4em 0 1.4em;
 }
+*/
 
 /* JQuery UI Button Fix for non input icon buttons */
+/*
 .ui-button-text-icon-primary .ui-button-icon-primary, .ui-button-text-icons .ui-button-icon-primary, .ui-button-icons-only .ui-button-icon-primary { left: .2em; }
 .ui-button-text-icon-secondary .ui-button-icon-secondary, .ui-button-text-icons .ui-button-icon-secondary, .ui-button-icons-only .ui-button-icon-secondary { right: .2em; }
+*/
 
+/* to make room for the icon, a width needs to be set here */
+/*
+.ui-button-icon-only { width: 1.5em; }
+*/
 
-.ui-button-icon-only { width: 1.5em; } /* to make room for the icon, a width needs to be set here */
-button.ui-button-icon-only { width: 1.5em; } /* button elements seem to need a little more width */
-
+/* button elements seem to need a little more width */
+/*
+button.ui-button-icon-only { width: 1.5em; }
 .ui-button-icon-only .ui-button-text, .ui-button-icons-only .ui-button-text {padding: 0 .4em; text-indent: -9999999px; }
+*/
