@@ -16,7 +16,7 @@
 		}
 	</style>
 
-	<link rel="stylesheet" type="text/css" href="../themes/base/jquery-ui-1.8.18.css" />
+	<link rel="stylesheet" type="text/css" href="../themes/base/jquery-ui-1.8.20.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ui.menu.css" />
 
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.inputbox.css" />
@@ -27,10 +27,10 @@
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.selectbox.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.checkbox.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.radio.css" />
-	
-	
-	<script type="text/javascript" src="../jquery-1.7.1.min.js"></script>
-	<script type="text/javascript" src="../jquery-ui-1.8.18.min.js"></script>
+
+
+	<script type="text/javascript" src="../jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="../jquery-ui-1.8.20.min.js"></script>
 
 	<script type="text/javascript" src="../ux/jquery.ux.inputbox.js"></script>
 	<script type="text/javascript" src="../ux/jquery.ux.form.js"></script>
@@ -41,8 +41,8 @@
 	<script type="text/javascript" src="../ux/jquery.ux.selectbox.js"></script>
 	<script type="text/javascript" src="../ux/jquery.ux.checkbox.js"></script>
 	<script type="text/javascript" src="../ux/jquery.ux.radio.js"></script>
-	
-	
+
+
 	<script type="text/JavaScript">
 		$(document).ready(
 			function() {
@@ -61,7 +61,7 @@
 						}
 					}
 				});
-				
+
 				$('#loading').hide('fade', {}, 500);
 				$('#form').show('fade', {}, 500 );
 			}
@@ -70,17 +70,17 @@
 </head>
 
 <body>
-	
+
 	<div id="wrapper" style="width: 600px;">
 		<div id="loading">
 			<img src="images/loading.gif" alt="loading..." style="position: absolute; top: 50%; left: 50%;" />
 		</div>
-		
+
 		<div id="form" style="display: none;">
 			<form action="#noaction" method="post" id="my_form">
 				<fieldset style="padding: 10px;"">
 					<legend>jQuery UX Form</legend>
-					
+
 					<table style="width: 100%;">
 						<tr>
 							<td>
@@ -167,8 +167,8 @@
 							<td>
 								<input type="file" name="file_box" id="file_box" style="width: 100%;" />
 							</td>
-						</tr> 
-						
+						</tr>
+
 						<tr>
 							<td>
 								<label for="date_box">Date Box</label>
@@ -177,8 +177,8 @@
 								<input type="text" name="date_box" id="date_box" class="date" style="width: 100%;" />
 							</td>
 						</tr>
-						 
-						 						 
+
+
 						<tr>
 							<td>
 								Radio
@@ -198,8 +198,8 @@
 								</table>
 							</td>
 						</tr>
-						
-						
+
+
 						<tr>
 							<td>
 								Items <span class="red">*</span>
@@ -233,7 +233,7 @@
 								</table>
 							</td>
 						</tr>
-		 				
+
 						<tr>
 							<td>
 								<label for="text_area">Text Area <span class="red">*</span></label>
@@ -241,9 +241,9 @@
 							<td>
 								<textarea name="text_area" id="text_area" rows="3" cols="20" style="width: 100%;">test</textarea>
 							</td>
-						</tr> 
+						</tr>
 
-		 				
+
 						<tr>
 							<td></td>
 							<td>
@@ -251,7 +251,7 @@
 								<input id="reset" type="reset" />
 								<input id="button" type="button" value="Disabled" disabled="disabled"/>
 							</td>
-						</tr> 
+						</tr>
 					</table>
 
 				</fieldset>
