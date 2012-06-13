@@ -5,33 +5,41 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  */
- 
+
+
 .ux-inputbox {
 	display: block;
+	position: relative;
 	width: auto;
 
 	/* FIXME: Need to use something not quite white for the background */
 	background: #FFFFFF url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
 
-	position: relative;
-	padding: 0;
-	margin-right: 0.1em;
-	padding: 0.4em 0.1em;
-
 	text-align: left;
 	overflow: hidden;
-	cursor: default;
+	cursor: text; /* default */
+}
+
+/* Fix for ui-state-error background override due to css ordering misshap.
+ * Cannot override the background of ux-inputbox because it appers after the
+ * jquery ui css file.
+ */
+.ux-inputbox.ui-state-error {
+	background: inherit;
 }
 
 .ux-inputbox-text {
-	margin: 0 .1em;
+	cursor: inherit;
+	color: inherit;
+	background: transparent none;
+	padding: .4em .1em;
 	white-space: nowrap;
 }
 
 .ux-inputbox-icon-primary {
 	display: inline;
 	position: absolute;
-	
+
 	top: 0;
 	right: 0;
 	height: 100%;

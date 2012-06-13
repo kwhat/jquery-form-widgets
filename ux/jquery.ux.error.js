@@ -11,7 +11,7 @@
 	$.widget('ux.error', {
 		version: '@VERSION',
 		options: {
-			error: false,
+			disabled: true,
 			delay: 200,
 			icon: 'ui-icon ui-icon-alert',
 			duration: 'normal',
@@ -42,9 +42,6 @@
 				.append(this.icon)
 				.appendTo(this.ux_element);
 
-			this.ux_element
-				.addClass('');
-
 			this.label = $('<span/>')
 				.css('margin-left', '18px')
 				.addClass('ux-error-label')
@@ -58,18 +55,22 @@
 
 			this.element.bind({
 				'mouseover.ux.error': function(e) {
-					if (self.options.error) {
+					if (!self.options.disabled) {
 						//Start showing the tooltip
-						self.ux_element.delay(self.options.delay).show(self.options.showAnim, self.options.showOptions, self.options.duration);
+						self.ux_element
+							.delay(self.options.delay)
+							.show(self.options.showAnim, self.options.showOptions, self.options.duration);
 					}
 				},
 				'mouseout.ux.error': function() {
 					//Stop showing the tooltip
-					self.ux_element.delay(self.options.delay).hide(self.options.showAnim, self.options.showOptions, self.options.duration);
+					self.ux_element
+						.delay(self.options.delay)
+						.hide(self.options.showAnim, self.options.showOptions, self.options.duration);
 				},
 				'mousemove.ux.error': function(e) {
 					//Track the tooltip
-					if (self.options.error) {
+					if (!self.options.disabled) {
 						self.ux_element.css({
 							'top': e.pageY + self.options.top,
 							'left': e.pageX + self.options.left
@@ -83,30 +84,36 @@
 			this.label.remove();
 
 			this.ux_element
-				.unbind('.ux.error')
 				.remove();
 
 			this.element
 				.unbind('.ux.error')
+				.addClass('ui-state-default')
 				.removeClass('ui-state-error');
 		},
 		_setOption: function(key, value) {
-			//this._super("_setOption", key, value);
-			$.Widget.prototype._setOption.apply(this, new Array(key, value));
-
 			switch (key) {
-				case 'error':
+				case 'disabled':
 					if (value) {
-						this.element.addClass('ui-state-error');
+						this.element
+							.addClass('ui-state-default')
+							.removeClass('ui-state-error');
 					}
 					else {
-						this.element.removeClass('ui-state-error');
+						this.element
+							.addClass('ui-state-error')
+							.removeClass('ui-state-default');
 					}
-				break;
-				
+
+					this.options.disabled = value;
+					break;
+
 				case 'message':
-					this.label.text(this.options.message);
-				break;
+					this.label.text(value);
+
+				default:
+					//$.Widget.prototype._setOption.apply(this, new Array(key, value));
+					$.Widget.prototype._setOption.call(this, key, value);
 			}
 		}
 	});

@@ -32,6 +32,9 @@
 
 			this.label = null;
 
+			this.ux_element
+				.unbind('.ux.textbox');
+
 			//Call super._destroy()
 			$.ux.inputbox.prototype._destroy.call();
 		}

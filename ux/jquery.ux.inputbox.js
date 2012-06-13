@@ -30,7 +30,7 @@
 				.insertAfter(this.element);
 
 			//Create the label and add it to the widget.
-			this.label = $('<span/>')
+			this.label = $('<div/>')
 				.addClass('ux-inputbox-text')
 				.appendTo(this.ux_element);
 
@@ -38,7 +38,7 @@
 				//Create padding on the left of the icon.
 				this.ux_element
 					.addClass('ux-inputbox-text-icon-primary');
-				
+
 				//Create the icon.
 				this.iconPrimary = $('<span/>')
 					.addClass('ui-icon ' + icons.primary);
@@ -67,14 +67,15 @@
 			}
 
 			//Watch the actual DOM checkbox for changes.
-			this.element
-				.bind('change.ux.inputbox', function() {
+			this.element.bind(
+				'change.ux.inputbox', function() {
 					self.refresh();
-				});
+				}
+			);
 
-			//Add mouse over listeners to apply hover classes.
 			this.ux_element.bind({
 				'mouseover.ux.inputbox': function() {
+					//if (this.options.validation)
 					self.ux_element.addClass('ui-state-hover');
 
 					if (icons.primary != null) {
@@ -89,11 +90,13 @@
 					}
 				}
 			});
+
+			//this.option(this.options);
 		},
 		_init: function() {
 			this._setOption('default', this.element.val());
 			this._setOption('disabled', this.element.is(':disabled'));
-			
+
 			this.refresh();
 		},
 		_hideElement: function() {
@@ -104,11 +107,11 @@
 		},
 		_getText: function() {
 			var text = this.val().replace(/^.*(\\|\/|\:)/, '');
-			
+
 			if (text == null) {
 				text = '';
 			}
-			
+
 			return text;
 		},
 		val: function() {
@@ -116,7 +119,7 @@
 		},
 		_destroy: function() {
 			this.ux_element.unbind('.ux.inputbox');
-			
+
 			this.label.remove();
 			this.iconPrimary.remove();
 			this.iconPrimaryWrapper.remove();
@@ -124,18 +127,23 @@
 			this.iconSecondaryWrapper.remove();
 			this.element.removeClass('ux-filebox-input').unwrap(this.ux_element);
 			this.ux_element.remove();
-			
+
 			$.Widget.prototype.destroy.call(this);
 		},
 		refresh: function() {
 			var text = this.val();
-			
+
 			if (text == '') {
 				text = this.option('defaultText');
 				if (text == '' || text == null) {
 					//Place a non-breaking space in the select box so it renders with a height.
 					text = '\u00A0';
 				}
+			}
+
+			//Add mouse over listeners to apply hover classes.
+			if (this.option('disabled')) {
+				this.ux_element.unbind('.ux.inputbox');
 			}
 
 			this.label.text(text);

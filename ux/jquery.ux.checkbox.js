@@ -13,7 +13,7 @@
 		defaultElement: '<input>',
 		_create: function() {
 			var self = this;
-			
+
 			//Create the widget
 			this.ux_element = $('<div/>')
 				.addClass('ui-state-default ui-corner-all ux-checkbox')
@@ -33,7 +33,7 @@
 						self.element.click();
 					}
 				});
-			
+
 			//Create the checkbox that will be placed in the widget
 			this.icon = $('<a/>')
 				.addClass('ui-icon ux-icon-empty')
@@ -53,16 +53,16 @@
 			this._setOption('default', this.element.is(':checked'));
 			this._setOption('checked', this.option('default'));
 			this._setOption('disabled', this.element.is(':disabled'));
-			
+
 			this.refresh();
 		},
 		_destroy: function() {
 			this.icon.remove();
-			
+
 			this.ux_element
 				.unbind('.ux.checkbox')
 				.remove();
-			
+
 			this.element
 				.unbind('.ux.checkbox')
 				.removeClass('ui-helper-hidden');
@@ -78,12 +78,12 @@
 				this.ux_element
 					.removeClass('ui-state-disabled');
 			}
-			
+
 			//Display the checkbox's checked state
 			if (this.element.is(':checked')) {
 				this.ux_element
 					.addClass('ui-state-active');
-				
+
 				this.icon
 					.addClass('ui-icon-check')
 					.removeClass('ux-icon-empty');
@@ -91,7 +91,7 @@
 			else {
 				this.ux_element
 					.removeClass('ui-state-active');
-				
+
 				this.icon
 					.addClass('ux-icon-empty')
 					.removeClass('ui-icon-check');

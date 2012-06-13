@@ -62,7 +62,7 @@
 		},
 		_init: function() {
 			this._setOption('disabled', this.options.disabled);
-			
+
 			this.refresh();
 		},
 		_destroy: function() {

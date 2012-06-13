@@ -19,6 +19,7 @@
  */
 (function( $, undefined ) {
 	var validationDefaultOptions = {
+		disabled: true,
 		element: null,
 		live: false,
 		required: false,
@@ -34,35 +35,36 @@
 			return true;
 		},
 		success: function() {
-			$(this.element).error('option', 'error', false);
+			this.element
+				.error('option', 'disabled', true);
 		},
 		failure: function() {
-			this.tooltip.error = true;
-			$(this.element).error('option', this.tooltip);
+			this.element
+				.error('option', 'disabled', false);
 		}
 	};
-	
+
 	$.widget('ux.form', {
 		version: '@VERSION',
 		options: {
 			ajax: false,
-			
+
 			validation: { }
 		},
 		_create: function() {
 			var self = this, options = self.options;
-			
+
 			//Bind submit and reset events for this form.
 			$(this.element).bind('submit', function(event) {
 				//Set the from element to the form that produced the event.
 				self._submit(event);
 			});
-			
+
 			$(this.element).bind('reset', function(event) {
 				//Set the from element to the form that produced the event.
 				self._reset(event);
 			});
-			
+
 			//Apply form styling.
 			this.element.find('fieldset').addClass('ui-widget');
 			this.element.find('legend').addClass('ui-widget-header ui-corner-all');
@@ -70,48 +72,59 @@
 			//Loop over and apply widgets for form items.
 			var inputs = $(this.element).find('button,input,select,textarea')
 			$.each(inputs, function() {
+				var widget = undefined;
+
 				if($(this).is(':button, :reset, :submit')) {
 					$(this).button();
 				}
 				else if($(this).is(':checkbox')) {
-					$(this).checkbox();
+					widget = $(this).checkbox().checkbox('widget');
 				}
 				else if($(this).is(':radio')) {
-					$(this).radio();
+					widget = $(this).radio().radio('widget');
 				}
 				else if($(this).is(':file')) {
-					$(this).filebox();
+					widget = $(this).filebox().filebox('widget');
 				}
 				else if($(this).is(':text') && $(this).hasClass('date')) {
-					$(this).datebox();
+					widget = $(this).datebox().datebox('widget');
 				}
 				else if($(this).is(':text') || $(this).is('textarea') || $(this).is(':password')) {
-					$(this).textbox();
+					widget = $(this).textbox().textbox('widget');
 				}
 				else if($(this).is('select')) {
-					$(this).selectbox();
+					widget = $(this).selectbox().selectbox('widget');
 				}
 
 				//Check to see if validation should be applied.
-				var validationOptions = $(options.validation).prop($(this).attr('name'));
-				if (validationOptions != undefined) {
-					//Add the current element to the options.
-					validationOptions.element = $(this);
+				if (widget != undefined && $(this).attr('name') != undefined) {
+					var validationOptions = $(options.validation).prop($(this).attr('name'));
+					if (validationOptions != undefined) {
+						//Add the current element to the options.
+						validationOptions.element = widget;
 
-					//Extend the items defiend options with the default option set.
-					validationOptions = $.extend(true, {}, validationDefaultOptions, validationOptions);
-					$(options.validation).prop($(this).attr('name'), validationOptions);
+						//Extend the items defiend options with the default option set.
+						validationOptions = $.extend(true, {}, validationDefaultOptions, validationOptions);
 
-					//Create an error widget for the form item.
-					$(this).error(validationOptions);
+						//Set the .ux.form validation item based on input:name
+						$(options.validation).prop($(this).attr('name'), validationOptions);
 
-					//If we are doing live validation.
-					if (validationOptions.live == true) {
-						$(this).bind({
-							'blur.ux.form': function(event) {
-								self._validate(event.target);
-							}
-						});
+						//Create an error widget for the form item.
+						widget.error(validationOptions);
+
+						//If we are doing live validation.
+						if (validationOptions.live == true) {
+							$(this).bind({
+								'blur.ux.form': function(event) {
+									self._validate(event.target);
+								}
+							});
+
+							//FIXME Cause validation on load if the current val is not the default.
+							//console.log($(this.element).val());
+							//console.log(widget.option('default'));
+							//$(this).trigger('blur.ux.form');
+						}
 					}
 				}
 			});
@@ -122,7 +135,7 @@
 		_validate: function(element) {
 			var validationOptions = $(this.options.validation).prop($(element).attr('name'));
 			var status = true;
-			
+
 			var siblings = this.element.find(element.nodeName + ':[name="' + $(element).attr('name') + '"]');
 			$.each(siblings, function() {
 				var isValid = true;
@@ -134,7 +147,7 @@
 						validationOptions.tooltip.message = 'This field is required.';
 					}
 				}
-				
+
 				//Do automated check for numeric
 				if (isValid && validationOptions.numeric == true) {
 					if (! $(element).val().match('^[0-9\.\-]*$')) {
@@ -142,7 +155,7 @@
 						validationOptions.tooltip.message = 'This field should be a numeric value.';
 					}
 				}
-				
+
 				//Do automated check for valid email
 				if (isValid && validationOptions.email == true) {
 					if (! $(element).val().match('^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$')) {
@@ -150,22 +163,22 @@
 						validationOptions.tooltip.message = 'This field should be a valid email address.';
 					}
 				}
-				
+
 				//Do automated check for valid date
 				if (isValid && validationOptions.date == true) {
 					var date, day, month, year;
 					day = $.datepicker.parseDate('dd', $(element).datepicker('getDate'));
 					month = $.datepicker.parseDate('mm', $(element).datepicker('getDate'));
 					year = $.datepicker.parseDate('yy', $(element).datepicker('getDate'));
-					
+
 					date = new Date(year, month, day);
-					
+
 					if (date.getFullYear() != year || date.getMonth() != month || date.getDate() != day) {
 						isValid = false;
 						validationOptions.tooltip.message = 'This field should be a valid date.';
 					}
 				}
-				
+
 				//Do automated check for minimum length
 				if (isValid && validationOptions.minLength != undefined) {
 					if ($(element).val().length < validationOptions.minLength) {
@@ -173,7 +186,7 @@
 						validationOptions.tooltip.message = 'The minimum length of this field is ' + validationOptions.minLength + ' characters.';
 					}
 				}
-				
+
 				//Do automated check for maximum length
 				if (isValid && validationOptions.maxLength != undefined) {
 					if ($(element).val().length > validationOptions.maxLength) {
@@ -181,15 +194,15 @@
 						validationOptions.tooltip.message = 'The maximum length of this field is ' + validationOptions.maxLength + ' characters.';
 					}
 				}
-				
+
 				//Run the check function for custom validation.
 				isValid = isValid && validationOptions.check(element);
-				
+
 				if (!isValid) {
 					status = false;
 				}
 			});
-			
+
 			if (status == true) {
 				validationOptions.success(element);
 			}
@@ -202,7 +215,7 @@
 		_submit: function(event) {
 			var self = this,
 				status = true;
-			
+
 			//Apply validation rules
 			$.each(this.options.validation, function(key, value) {
 				$.each($(event.target).find(':[name="' + key + '"]'), function() {
@@ -235,7 +248,7 @@
 										message: value
 									});
 							});
-							
+
 							self._trigger('failure', null, obj.data);
 						}
 					},
@@ -248,7 +261,7 @@
 		_reset: function(e) {
 			//We must prevent the default action for the form reset because resets DO NOT trigger chagne events on form elements.
 			e.preventDefault();
-			
+
 			//Default form reset callback.  Just blanks out the form.
 			var inputs = $(this.element).find('input,select,textarea');
 			$.each(inputs, function() {

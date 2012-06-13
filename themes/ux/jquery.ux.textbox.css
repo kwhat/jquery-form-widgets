@@ -5,15 +5,25 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  */
- 
+
 .ux-textbox {
-	display: inline-block;
-	outline: 0;
-	
+	display: inline;
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 	width: 100%;
-	padding: 0;
-	
+
+	outline: 0;
 	border-style: none;
+
+	/*
+	inline-block
+	background-color: #F00;
+	*/
+	margin: 0;
+
+
 }
 
 textarea {

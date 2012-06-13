@@ -6,9 +6,6 @@
  *
  */
 
-
-
-
 .ux-error {
 	padding: 5px;
 	opacity: 0.75;
@@ -22,14 +19,9 @@
 	/* Nothing Yet */
 }
 
-/* JQuery UI 1.9m6 Hover State Fix*/
-/*
-.ui-state-error {
-}
-
-.ui-state-error a {
-}
-*/
+/* JQuery UI 1.9m6 Hover State Fix
 .ui-state-error.ui-state-hover a:hover {
-	color: #cd0a0a/*{fcError}*/;
+	color: #cd0a0a *{fcError}*;
 }
+figure out how to override background
+*/
