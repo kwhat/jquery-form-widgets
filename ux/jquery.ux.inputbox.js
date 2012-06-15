@@ -5,7 +5,7 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * Depends:
- *
+ * 
  */
 (function( $, undefined ) {
 	$.widget('ux.inputbox', {
@@ -105,15 +105,6 @@
 		_showElement: function() {
 			this.element.show();
 		},
-		_getText: function() {
-			var text = this.val().replace(/^.*(\\|\/|\:)/, '');
-
-			if (text == null) {
-				text = '';
-			}
-
-			return text;
-		},
 		val: function() {
 			return this.element.val();
 		},
@@ -125,7 +116,7 @@
 			this.iconPrimaryWrapper.remove();
 			this.iconSecondary.remove();
 			this.iconSecondaryWrapper.remove();
-			this.element.removeClass('ux-filebox-input').unwrap(this.ux_element);
+			this.element.unwrap(this.ux_element);
 			this.ux_element.remove();
 
 			$.Widget.prototype.destroy.call(this);

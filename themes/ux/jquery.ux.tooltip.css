@@ -6,22 +6,17 @@
  *
  */
 
-.ux-error {
+.ux-tooltip {
+	position: absolute;
+	z-index: 9999;
+
 	padding: 5px;
 	opacity: 0.75;
 	-moz-opacity: 0.75;
 	-khtml-opacity: 0.75;
 	filter: alpha(opacity=75);
+}
+
+.ux-tooltip-label {
 	white-space: nowrap;
 }
-
-.ux-error-label {
-	/* Nothing Yet */
-}
-
-/* JQuery UI 1.9m6 Hover State Fix
-.ui-state-error.ui-state-hover a:hover {
-	color: #cd0a0a *{fcError}*;
-}
-figure out how to override background
-*/

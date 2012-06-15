@@ -7,7 +7,7 @@
  * Depends:
  *	jquery.ux.inputbox.js
  *	jquery.ux.checkbox.js
- *	jquery.ux.error.js
+ *	jquery.ux.tooltip.js
  *	jquery.ux.filebox.js
  *	jquery.ux.radio.js
  *	jquery.ux.selectbox.js
@@ -36,11 +36,13 @@
 		},
 		success: function() {
 			this.element
-				.error('option', 'disabled', true);
+				.removeClass('ui-state-error')
+				.tooltip('option', 'disabled', true);
 		},
 		failure: function() {
 			this.element
-				.error('option', 'disabled', false);
+				.addClass('ui-state-error')
+				.tooltip('option', 'disabled', false);
 		}
 	};
 
@@ -78,23 +80,31 @@
 					$(this).button();
 				}
 				else if($(this).is(':checkbox')) {
-					widget = $(this).checkbox().checkbox('widget');
+					$(this).checkbox();
 				}
 				else if($(this).is(':radio')) {
-					widget = $(this).radio().radio('widget');
+					$(this).radio();
 				}
 				else if($(this).is(':file')) {
-					widget = $(this).filebox().filebox('widget');
+					$(this).filebox();
 				}
 				else if($(this).is(':text') && $(this).hasClass('date')) {
-					widget = $(this).datebox().datebox('widget');
+					$(this).datebox();
+					$(this).datebox('widget')
+					.addClass('ui-state-error');
 				}
 				else if($(this).is(':text') || $(this).is('textarea') || $(this).is(':password')) {
-					widget = $(this).textbox().textbox('widget');
+					$(this).textbox();
+					$(this)
+						.textbox('widget')
+
 				}
 				else if($(this).is('select')) {
-					widget = $(this).selectbox().selectbox('widget');
+					$(this).selectbox();
 				}
+
+				//console.debug(this.prototype.name);
+
 
 				//Check to see if validation should be applied.
 				if (widget != undefined && $(this).attr('name') != undefined) {
@@ -110,7 +120,7 @@
 						$(options.validation).prop($(this).attr('name'), validationOptions);
 
 						//Create an error widget for the form item.
-						widget.error(validationOptions);
+						widget.tooltip(validationOptions);
 
 						//If we are doing live validation.
 						if (validationOptions.live == true) {
@@ -121,6 +131,10 @@
 							});
 
 							//FIXME Cause validation on load if the current val is not the default.
+							//if ($(this).element('val')) {
+
+							//}
+							//
 							//console.log($(this.element).val());
 							//console.log(widget.option('default'));
 							//$(this).trigger('blur.ux.form');

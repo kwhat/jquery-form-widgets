@@ -8,8 +8,6 @@
  *	jquery.ux.inputbox.js
  */
 
-
-
 (function( $, undefined ) {
 	$.widget('ux.datebox', $.ux.inputbox, {
 		options: {
@@ -41,9 +39,14 @@
 							changeMonth: true,
 							changeYear: true
 						},
-						[ // FIXME the y value needs to be adjusted for if the box pops above
+						[
 							self.ux_element.offset().left + self.ux_element.outerWidth() - widget.outerWidth(),
 							self.ux_element.offset().top + self.ux_element.outerHeight()
+							/*
+							(self.ux_element.position().top - widget.position().top < widget.height())
+								? self.ux_element.offset().top + self.ux_element.outerHeight()
+								: self.ux_element.offset().top + self.ux_element.outerHeight() - (self.ux_element.innerHeight() - self.element.innerHeight())
+							*/
 						]
 					);
 				}

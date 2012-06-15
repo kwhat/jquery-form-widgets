@@ -12,27 +12,32 @@
 	position: relative;
 	width: auto;
 
-	/* FIXME: Need to use something not quite white for the background */
-	background: #FFFFFF url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
-
 	text-align: left;
 	overflow: hidden;
 	cursor: text; /* default */
+}
+
+/* Fix for input type=text and textarea where the left margins are not quite
+ * right.
+ */
+.ux-inputbox input[type=text], .ux-inputbox textarea {
+	margin-left: -.1em;
 }
 
 /* Fix for ui-state-error background override due to css ordering misshap.
  * Cannot override the background of ux-inputbox because it appers after the
  * jquery ui css file.
  */
-.ux-inputbox.ui-state-error {
-	background: inherit;
+.ux-inputbox:not(.ui-state-error) {
+	background: #FFFFFF url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
 }
+
 
 .ux-inputbox-text {
 	cursor: inherit;
 	color: inherit;
 	background: transparent none;
-	padding: .4em .1em;
+	padding: .4em .2em;
 	white-space: nowrap;
 }
 
@@ -48,6 +53,8 @@
 	/* Remove the border on the ui-active */
 	border-style: none;
 	border-left-style: solid;
+
+	cursor: pointer;
 }
 
 
@@ -77,4 +84,9 @@
 
 	left: 50%;
 	margin-left: -8px;
+}
+
+/* Fix the primary icon turning read. */
+.ui-state-error .ux-inputbox-icon-primary .ui-icon {
+	background-image: url("images/ui-icons_888888_256x240.png");
 }
