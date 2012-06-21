@@ -19,6 +19,13 @@
 			this.label = this.element
 				.addClass('ux-inputbox-text ux-textbox')
 				.appendTo(this.ux_element);
+
+			//Prevent event bubbling for textboxes.
+			this.element.bind(
+				'change.ux.inputbox', function(e) {
+					e.stopPropagation();
+				}
+			);
 		},
 		_hideElement: function() {
 			//Do Nothing

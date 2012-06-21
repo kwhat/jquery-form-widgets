@@ -93,12 +93,18 @@
 				.unbind('.ux.tooltip');
 		},
 		_setOption: function(key, value) {
-			//$.Widget.prototype._setOption.apply(this, new Array(key, value));
-			$.Widget.prototype._setOption.call(this, key, value);
-
 			switch (key) {
+				case 'disabled':
+					console.log(this.options.disabled);
+					break;
+
 				case 'message':
 					this.label.text(value);
+					break;
+
+				default:
+					//$.Widget.prototype._setOption.apply(this, new Array(key, value));
+					$.Widget.prototype._setOption.call(this, key, value);
 			}
 		}
 	});

@@ -5,7 +5,7 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * Depends:
- * 
+ *
  */
 (function( $, undefined ) {
 	$.widget('ux.inputbox', {
@@ -68,8 +68,9 @@
 
 			//Watch the actual DOM checkbox for changes.
 			this.element.bind(
-				'change.ux.inputbox', function() {
+				'change.ux.inputbox', function(e) {
 					self.refresh();
+					self.ux_element.change();
 				}
 			);
 

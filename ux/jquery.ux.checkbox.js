@@ -45,6 +45,7 @@
 				//Watch the actual DOM checkbox for changes.
 				.bind('change.ux.checkbox', function() {
 					self.refresh();
+					self.ux_element.change();
 				})
 				//Add the graphical checkbox directly after the hidden checkbox.
 				.after(this.ux_element);

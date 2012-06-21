@@ -5,7 +5,7 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * Depends:
- *		
+ *
  */
 (function( $, undefined ) {
 	//$.widget ('ux.radio', $.ux.checkbox, {
@@ -13,7 +13,7 @@
 		version: '@VERSION',
 		_create: function() {
 			var self = this;
-			
+
 			//Create the widget
 			this.ux_element = $('<div/>')
 				.addClass('ui-state-default ui-corner-all ux-radio')
@@ -29,7 +29,7 @@
 						self.element.click();
 					}
 				});
-			
+
 			//Create the radio button that will be placed in the widget
 			this.icon = $('<a/>')
 				.addClass('ui-icon ui-icon-radio-off')
@@ -41,6 +41,7 @@
 				//Watch the actual DOM checkbox for changes.
 				.bind('change.ux.radio', function() {
 					self.refresh();
+					self.ux_element.change();
 				})
 				//Add the graphical radio button directly after the hidden radio button.
 				.after(this.ux_element);
@@ -49,16 +50,16 @@
 			this._setOption('default', this.element.is(':checked'));
 			this._setOption('checked', this.option('default'));
 			this._setOption('disabled', this.element.is(':disabled'));
-			
+
 			this.refresh();
 		},
 		_destroy: function() {
 			this.icon.remove();
-			
+
 			this.ux_element
 				.unbind('.ux.radio')
 				.remove();
-			
+
 			this.element
 				.unbind('.ux.radio')
 				.removeClass('ui-helper-hidden');
@@ -75,12 +76,12 @@
 					.removeClass('ui-state-disabled')
 					.addClass('ui-state-default');
 			}
-			
+
 			//Display the radio button's checked state
 			if (this.element.is(':checked')) {
 				this.ux_element
 					.addClass('ui-state-active');
-				
+
 				this.icon
 					.removeClass('ui-icon-radio-off')
 					.addClass('ui-icon-bullet');
@@ -97,7 +98,7 @@
 			else {
 				this.ux_element
 					.removeClass('ui-state-active');
-				
+
 				this.icon
 					.addClass('ui-icon-radio-off')
 					.removeClass('ui-icon-bullet');
