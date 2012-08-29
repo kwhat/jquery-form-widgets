@@ -13,7 +13,7 @@
 		options: {
 			delay: 200,
 			icon: 'ui-icon ui-icon-alert',
-			class: 'ui-state-error ux-tooltip',
+			style: 'ui-state-error ux-tooltip',
 			duration: 'normal',
 			showAnim: null,
 			showOptions: {},
@@ -26,7 +26,7 @@
 
 			//Create the widget, make sure its hidden.
 			this.ux_element = $('<div/>')
-				.addClass('ui-helper-hidden ui-widget ui-corner-all ux-tooltip ' + this.options.class);
+				.addClass('ui-helper-hidden ui-widget ui-corner-all ux-tooltip ' + this.options.style);
 
 			//Create the label for the options.message
 			this.label = $('<span/>')

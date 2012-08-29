@@ -8,6 +8,7 @@
 	<title>JQuery UX Form Datebox</title>
 
 	<style type="text/css">
+		/* Fix the make themes look like they do on jqueryui.com */
 		body {
 			margin: 0;
 			padding: 0 0 20px;
@@ -17,12 +18,12 @@
 		}
 	</style>
 
-	<link rel="stylesheet" type="text/css" href="../themes/base/jquery-ui-1.8.21.css" />
+	<link rel="stylesheet" type="text/css" href="../themes/base/jquery-ui-1.8.23.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.inputbox.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.datebox.css" />
 
-	<script type="text/javascript" src="../jquery-1.7.2.min.js"></script>
-	<script type="text/javascript" src="../jquery-ui-1.8.21.min.js"></script>
+	<script type="text/javascript" src="../jquery-1.8.0.min.js"></script>
+	<script type="text/javascript" src="../jquery-ui-1.8.23.min.js"></script>
 	<script type="text/javascript" src="../ux/jquery.ux.inputbox.js"></script>
 	<script type="text/javascript" src="../ux/jquery.ux.datebox.js"></script>
 
@@ -36,11 +37,13 @@
 </head>
 
 <body>
-	<div id="demo" style="width: 300px;">
-		<input type="text" name="date_box" id="date_box" class="date" />
+	<div id="demo">
+		<div id="wrapper" style="width: 300px;">
+			<input type="text" name="date_box" id="date_box" class="date" />
+		</div>
 	</div><!-- End demo -->
 
-	<div class="demo-description">
+	<div>
 		<p>
 			Examples of the datebox widget.
 		</p>

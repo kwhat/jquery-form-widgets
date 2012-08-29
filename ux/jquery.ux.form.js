@@ -27,7 +27,8 @@
 		minLength: undefined,
 		maxLength: undefined,
 		tooltip: {
-			disabled: true
+			disabled: true,
+			message: undefined
 		},
 		check: function(element) {
 			return true;
@@ -41,9 +42,8 @@
 		},
 		failure: function(element) {
 			element
-				.closest('form, body')
-				.find(element.prop('nodeName') + ':[name="' + $(element).attr('name') + '"]')
 				.addClass('ui-state-error')
+				.tooltip('option', 'message', this.tooltip.message)
 				.tooltip('option', 'disabled', false);
 		}
 	};
@@ -124,7 +124,8 @@
 						if (validationOptions.live == true) {
 							widget.bind({
 								'change.ux.form': function() {
-									self._validate(element);
+									console.log('test');
+									self._validate(element, widget);
 								}
 							});
 						}
@@ -135,87 +136,91 @@
 		_destroy: function() {
 			//TODO implement
 		},
-		_validate: function(element) {
-			console.log(widget.option('name'));
-
+		_validate: function(element, widget) {
 			var validationOptions = $(this.options.validation).prop($(element).attr('name'));
-			var status = true;
+			if (validationOptions != undefined) {
+				//If there are validation rules continue
+				var siblings = this.element.find(element.prop('nodeName') + ':[name="' + $(element).attr('name') + '"]');
+				if (siblings.is(':checkbox, :radio')) {
+					siblings = siblings.filter(':checked');
+				}
 
-			var siblings = this.element.find(element.prop('nodeName') + ':[name="' + $(element).attr('name') + '"]');
-			$.each(siblings, function() {
-				var valid = true;
+				console.log('test');
 
-				//Do automated check for empty
-				if (valid && validationOptions.required == true) {
-					if ($(element).val().length == 0) {
-						valid = false;
-						validationOptions.tooltip.message = 'This field is required.';
+				var valid = true
+					msg = null;
+				$.each(siblings, function() {
+					//Do automated check for empty
+					if (valid && validationOptions.required == true) {
+						if ($(element).val().length == 0) {
+							valid = false;
+							msg = 'This field is required.';
+						}
 					}
-				}
 
-				//Do automated check for numeric
-				if (valid && validationOptions.numeric == true) {
-					if (! $(element).val().match('^[0-9\.\-]*$')) {
-						valid = false;
-						validationOptions.tooltip.message = 'This field should be a numeric value.';
+					//Do automated check for numeric
+					if (valid && validationOptions.numeric == true) {
+						if (! $(element).val().match('^[0-9\.\-]*$')) {
+							valid = false;
+							msg = 'This field must be a numeric value.';
+						}
 					}
-				}
 
-				//Do automated check for valid email
-				if (valid && validationOptions.email == true) {
-					if (! $(element).val().match('^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$')) {
-						valid = false;
-						validationOptions.tooltip.message = 'This field should be a valid email address.';
+					//Do automated check for valid email
+					if (valid && validationOptions.email == true) {
+						if (! $(element).val().match('^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$')) {
+							valid = false;
+							msg = 'This field must be a valid email address.';
+						}
 					}
-				}
 
-				//Do automated check for valid date
-				if (valid && validationOptions.date == true) {
-					var date, day, month, year;
-					day = $.datepicker.parseDate('dd', $(element).datepicker('getDate'));
-					month = $.datepicker.parseDate('mm', $(element).datepicker('getDate'));
-					year = $.datepicker.parseDate('yy', $(element).datepicker('getDate'));
+					//Do automated check for valid date
+					if (valid && validationOptions.date == true) {
+						var date, day, month, year;
+						day = $.datepicker.parseDate('dd', $(element).datepicker('getDate'));
+						month = $.datepicker.parseDate('mm', $(element).datepicker('getDate'));
+						year = $.datepicker.parseDate('yy', $(element).datepicker('getDate'));
 
-					date = new Date(year, month, day);
+						date = new Date(year, month, day);
 
-					if (date.getFullYear() != year || date.getMonth() != month || date.getDate() != day) {
-						valid = false;
-						validationOptions.tooltip.message = 'This field should be a valid date.';
+						if (date.getFullYear() != year || date.getMonth() != month || date.getDate() != day) {
+							valid = false;
+							msg = 'This field must be a valid date.';
+						}
 					}
-				}
 
-				//Do automated check for minimum length
-				if (valid && validationOptions.minLength != undefined) {
-					if ($(element).val().length < validationOptions.minLength) {
-						valid = false;
-						validationOptions.tooltip.message = 'The minimum length of this field is ' + validationOptions.minLength + ' characters.';
+					//Do automated check for minimum length
+					if (valid && validationOptions.minLength != undefined) {
+						if ($(element).val().length < validationOptions.minLength) {
+							valid = false;
+							msg = 'The minimum length of this field is ' + validationOptions.minLength + ' characters.';
+						}
 					}
-				}
 
-				//Do automated check for maximum length
-				if (valid && validationOptions.maxLength != undefined) {
-					if ($(element).val().length > validationOptions.maxLength) {
-						valid = false;
-						validationOptions.tooltip.message = 'The maximum length of this field is ' + validationOptions.maxLength + ' characters.';
+					//Do automated check for maximum length
+					if (valid && validationOptions.maxLength != undefined) {
+						if ($(element).val().length > validationOptions.maxLength) {
+							valid = false;
+							msg = 'The maximum length of this field is ' + validationOptions.maxLength + ' characters.';
+						}
 					}
-				}
 
-				//Run the check function for custom validation.
-				valid = valid && validationOptions.check(element);
+					//Run the check function for custom validation.
+					valid = valid && validationOptions.check(element);
+					if (msg != null) {
+						validationOptions.tooltip.message = msg;
+					}
+				});
+			}
 
-				if (!valid) {
-					status = false;
-				}
-			});
-
-			if (status == true) {
+			if (valid) {
 				validationOptions.success(element);
 			}
 			else {
 				validationOptions.failure(element);
 			}
 
-			return status;
+			return valid;
 		},
 		_submit: function(event) {
 			var self = this,

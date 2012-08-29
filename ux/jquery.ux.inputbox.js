@@ -125,10 +125,10 @@
 		refresh: function() {
 			var text = this.val();
 
-			if (text == '') {
+			if (text == '' && !this.element.is(this.label)) {
 				text = this.option('defaultText');
 				if (text == '' || text == null) {
-					//Place a non-breaking space in the select box so it renders with a height.
+					//Place a non-breaking space in the inputbox so it renders with a height.
 					text = '\u00A0';
 				}
 			}

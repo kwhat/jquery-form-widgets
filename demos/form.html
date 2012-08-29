@@ -64,6 +64,10 @@
 
 				$('#loading').hide('fade', {}, 500);
 				$('#form').show('fade', {}, 500 );
+
+				//var test = $('#form').find('input:[name="gender"]').filter(':checked');
+				var test = $('#form').find('input:[name="gender"]').radio('widget');
+				console.log(test);
 			}
 		);
 	</script>
@@ -187,11 +191,11 @@
 								<table style="width: 100%">
 									<tr>
 										<td>
-											<input type="radio" name="gender" id="male" value="male" checked="checked" />
+											<input type="radio" name="gender" id="male" value="male" />
 											<label for="male">Male</label>
 										</td>
 										<td>
-											<input type="radio" name="gender" id="female" value="female" />
+											<input type="radio" name="gender" id="female" value="female" checked="checked" />
 											<label for="female">Female</label>
 										</td>
 									</tr>
