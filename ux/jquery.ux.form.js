@@ -36,13 +36,15 @@
 		success: function(widget) {
 			$(widget)
 				.removeClass('ui-state-error')
-				.tooltip('option', 'disabled', true);
+				.tooltip({'disabled': true});
 		},
 		failure: function(widget) {
 			$(widget)
 				.addClass('ui-state-error')
-				.tooltip('option', 'message', this.tooltip.message)
-				.tooltip('option', 'disabled', false);
+				.tooltip({
+					'message': this.tooltip.message,
+					'disabled': false
+				});
 		}
 	};
 
@@ -79,6 +81,7 @@
 					widget = undefined;
 
 				self._callWidget($(this));
+				//FIXME There is no reason to get the widget at this point.
 				widget = self._callWidget($(this), 'widget');
 
 				//console.debug(widget);
@@ -190,7 +193,6 @@
 				});
 			}
 
-console.log("Is Valid: " + valid)
 			if (valid) {
 				validationOptions.success(widget);
 			}

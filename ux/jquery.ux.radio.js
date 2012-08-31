@@ -93,7 +93,7 @@
 				parent_form
 					.find(':radio[name="' + $(this.element).attr('name') + '"]')
 					.not(this.element)
-					.change();
+					.radio('refresh');
 			}
 			else {
 				this.ux_element
@@ -105,7 +105,8 @@
 			}
 		},
 		reset: function() {
-			this.element.prop('checked', this.option('default')).change();
+			this.element.prop('checked', this.option('default'));
+			this.refresh();
 		},
 		widget: function() {
 			return this.ux_element;

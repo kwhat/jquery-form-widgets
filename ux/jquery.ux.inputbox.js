@@ -141,7 +141,8 @@
 			this.label.text(text);
 		},
 		reset: function() {
-			this.element.val(this.option('default')).change();
+			this.element.val(this.option('default'));
+			this.refresh();
 		},
 		widget: function() {
 			return this.ux_element;

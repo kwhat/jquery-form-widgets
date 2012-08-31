@@ -62,6 +62,17 @@
 						'select_inline': {
 							live: true,
 							required: true
+						},
+						'select_dropdown': {
+							live: true,
+							required: true
+						},
+						'gender': {
+							live: true,
+							required: true,
+							check: function() {
+								return false;
+							}
 						}
 					}
 				});

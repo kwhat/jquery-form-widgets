@@ -120,9 +120,6 @@
 				//Bind the widget to show and hide menu
 				this.ux_element
 					.bind({
-						'change.ux.selectbox': function(e) {
-							console.debug("Ex Change");
-						},
 						'mouseup.ux.selectbox': function(e) {
 							//Display or Hide the menu when the box is clicked.
 							if (! self.menu.is(':visible')) {
@@ -232,6 +229,7 @@
 		},
 		reset: function() {
 			//TODO implement.
+			this.refresh();
 		},
 		widget: function() {
 			return this.ux_element;

@@ -99,7 +99,8 @@
 			}
 		},
 		reset: function() {
-			this.element.prop('checked', this.option('default')).change();
+			this.element.prop('checked', this.option('default'));
+			this.refresh();
 		},
 		widget: function() {
 			return this.ux_element;
