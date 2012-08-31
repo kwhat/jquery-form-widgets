@@ -30,18 +30,16 @@
 			disabled: true,
 			message: undefined
 		},
-		check: function(element) {
+		check: function(widget) {
 			return true;
 		},
-		success: function(element) {
-			element
-				.closest('form, body')
-				.find(element.prop('nodeName') + ':[name="' + $(element).attr('name') + '"]')
+		success: function(widget) {
+			$(widget)
 				.removeClass('ui-state-error')
 				.tooltip('option', 'disabled', true);
 		},
-		failure: function(element) {
-			element
+		failure: function(widget) {
+			$(widget)
 				.addClass('ui-state-error')
 				.tooltip('option', 'message', this.tooltip.message)
 				.tooltip('option', 'disabled', false);
@@ -80,28 +78,10 @@
 				var element = $(this),
 					widget = undefined;
 
-				if($(this).is(':button, :reset, :submit')) {
-					$(this).button();
-				}
-				else if($(this).is(':checkbox')) {
-					widget = $(this).checkbox().checkbox('widget');
-				}
-				else if($(this).is(':radio')) {
-					widget = $(this).radio().radio('widget');
-				}
-				else if($(this).is(':file')) {
-					widget = $(this).filebox().filebox('widget');
-				}
-				else if($(this).is(':text') && $(this).hasClass('date')) {
-					widget = $(this).datebox().datebox('widget');
-				}
-				else if($(this).is(':text') || $(this).is('textarea') || $(this).is(':password')) {
-					widget = $(this).textbox().textbox('widget');
-				}
-				else if($(this).is('select')) {
-					widget = $(this).selectbox().selectbox('widget');
-				}
+				self._callWidget($(this));
+				widget = self._callWidget($(this), 'widget');
 
+				//console.debug(widget);
 
 				//Check to see if validation should be applied.
 				if (widget != undefined && $(this).attr('name') != undefined) {
@@ -124,7 +104,6 @@
 						if (validationOptions.live == true) {
 							widget.bind({
 								'change.ux.form': function() {
-									console.log('test');
 									self._validate(element, widget);
 								}
 							});
@@ -140,19 +119,17 @@
 			var validationOptions = $(this.options.validation).prop($(element).attr('name'));
 			if (validationOptions != undefined) {
 				//If there are validation rules continue
-				var siblings = this.element.find(element.prop('nodeName') + ':[name="' + $(element).attr('name') + '"]');
+				var siblings = this.element.find($(element).prop('nodeName') + '[name="' + $(element).attr('name') + '"]');
 				if (siblings.is(':checkbox, :radio')) {
 					siblings = siblings.filter(':checked');
 				}
-
-				console.log('test');
 
 				var valid = true
 					msg = null;
 				$.each(siblings, function() {
 					//Do automated check for empty
 					if (valid && validationOptions.required == true) {
-						if ($(element).val().length == 0) {
+						if ($(element).val() == null || $(element).val().length == 0) {
 							valid = false;
 							msg = 'This field is required.';
 						}
@@ -213,11 +190,12 @@
 				});
 			}
 
+console.log("Is Valid: " + valid)
 			if (valid) {
-				validationOptions.success(element);
+				validationOptions.success(widget);
 			}
 			else {
-				validationOptions.failure(element);
+				validationOptions.failure(widget);
 			}
 
 			return valid;
@@ -228,13 +206,14 @@
 
 			//Apply validation rules
 			$.each(this.options.validation, function(key, value) {
-				$.each($(event.target).find(':[name="' + key + '"]'), function() {
+				$.each($(event.target).find('[name="' + key + '"]'), function() {
 					status = status && self._validate(this);
 				});
 			});
 
+			//We must prevent the form submit because there is an error or it
+			//will be sent via ajax.
 			if (!status || this.options.ajax) {
-				//We must prevent the default action the submit because we are doing it via ajax.
 				event.preventDefault();
 			}
 
@@ -252,7 +231,7 @@
 						}
 						else {
 							$.each(obj.data, function(key, value) {
-								self.element.find(':[name="' + key + '"]')
+								self.element.find('[name="' + key + '"]')
 									.error('option', {
 										error: true,
 										message: value
@@ -268,32 +247,44 @@
 				});
 			}
 		},
-		_reset: function(e) {
+		_reset: function(event) {
+			var self = this;
+
 			//We must prevent the default action for the form reset because resets DO NOT trigger chagne events on form elements.
-			e.preventDefault();
+			event.preventDefault();
 
 			//Default form reset callback.  Just blanks out the form.
 			var inputs = $(this.element).find('input,select,textarea');
 			$.each(inputs, function() {
-				if ($(this).is(':checkbox')) {
-					$(this).checkbox('reset');
-				}
-				else if ($(this).is(':radio')) {
-					$(this).radio('reset');
-				}
-				else if ($(this).is(':file')) {
-					$(this).filebox('reset');
-				}
-				else if ($(this).is(':text') && $(this).hasClass('date')) {
-					$(this).datebox('reset');
-				}
-				else if ($(this).is(':text') || $(this).is('textarea') || $(this).is(':password')) {
-					$(this).textbox('reset');
-				}
-				else if ($(this).is('select')) {
-					$(this).selectbox('reset');
-				}
+				self._callWidget($(this), 'reset');
 			});
+		},
+		_callWidget: function(element, method) {
+			var val = undefined;
+
+			if(element.is(':button, :reset, :submit')) {
+				val = element.button(method);
+			}
+			else if (element.is(':checkbox')) {
+				val = element.checkbox(method);
+			}
+			else if (element.is(':radio')) {
+				val = element.radio(method);
+			}
+			else if (element.is(':file')) {
+				val = element.filebox(method);
+			}
+			else if (element.is(':text') && element.hasClass('date')) {
+				val = element.datebox(method);
+			}
+			else if (element.is(':text') || element.is('textarea') || element.is(':password')) {
+				val = element.textbox(method);
+			}
+			else if (element.is('select')) {
+				val = element.selectbox(method);
+			}
+
+			return val;
 		}
 	});
 })( jQuery );

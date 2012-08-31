@@ -7,6 +7,7 @@
 	<title>JQuery UX Form</title>
 
 	<style type="text/css">
+		/* Fix the make themes look like they do on jqueryui.com */
 		body {
 			margin: 0;
 			padding: 0 0 20px;
@@ -16,7 +17,7 @@
 		}
 	</style>
 
-	<link rel="stylesheet" type="text/css" href="../themes/base/jquery-ui-1.8.21.css" />
+	<link rel="stylesheet" type="text/css" href="../themes/base/jquery-ui-1.8.23.css" />
 
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.inputbox.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.tooltip.css" />
@@ -28,8 +29,8 @@
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.radio.css" />
 
 
-	<script type="text/javascript" src="../jquery-1.7.2.min.js"></script>
-	<script type="text/javascript" src="../jquery-ui-1.8.21.min.js"></script>
+	<script type="text/javascript" src="../jquery-1.8.0.min.js"></script>
+	<script type="text/javascript" src="../jquery-ui-1.8.23.min.js"></script>
 
 	<script type="text/javascript" src="../ux/jquery.ux.inputbox.js"></script>
 	<script type="text/javascript" src="../ux/jquery.ux.form.js"></script>
@@ -57,6 +58,10 @@
 						'password_box': {
 							live: false,
 							required: true
+						},
+						'select_inline': {
+							live: true,
+							required: true
 						}
 					}
 				});
@@ -66,8 +71,8 @@
 				$('#form').show('fade', {}, 500 );
 
 				//var test = $('#form').find('input:[name="gender"]').filter(':checked');
-				var test = $('#form').find('input:[name="gender"]').radio('widget');
-				console.log(test);
+				//var test = $('#form').find('input:[name="gender"]').radio('widget');
+				//console.log(test);
 			}
 		);
 	</script>
@@ -81,8 +86,8 @@
 		</div>
 
 		<div id="form" style="display: none;">
-			<form action="#noaction" method="post" id="my_form">
-				<fieldset style="padding: 10px;"">
+			<form action="#noaction" method="post" id="demo_form">
+				<fieldset style="padding: 10px;">
 					<legend>jQuery UX Form</legend>
 
 					<table style="width: 100%;">
@@ -206,7 +211,7 @@
 
 						<tr>
 							<td>
-								Items <span class="red">*</span>
+								Items
 							</td>
 							<td>
 								<table style="width: 100%">
@@ -230,7 +235,7 @@
 									</tr>
 									<tr>
 										<td>
-											<input type="checkbox" name="items" id="item3" value="item3"  checked="checked" disabled="disabled" />
+											<input type="checkbox" name="items" id="item4" value="item3"  checked="checked" disabled="disabled" />
 											<label for="item3">Item 4 Disabled</label>
 										</td>
 									</tr>
@@ -240,7 +245,7 @@
 
 						<tr>
 							<td>
-								<label for="text_area">Text Area <span class="red">*</span></label>
+								<label for="text_area">Text Area</label>
 							</td>
 							<td>
 								<textarea name="text_area" id="text_area" rows="3" cols="20" style="width: 100%;">test</textarea>

@@ -63,18 +63,31 @@
 					.addClass('ui-state-default')
 					.attr('title', this.element.attr('title') || '')
 					.attr('tabindex', this.element.attr('tabindex') || '')
-					.insertAfter(this.element)
-					/* .children(':[role="menuitem"]') */
+					.insertAfter(this.element);
+
+				//Add mouse up listener for child items.
+				this.menu
+					.children('[role="menuitem"]')
 					.bind({
 						'mouseup.ux.selectbox': function(e) {
 							var item = self.element
 								.find('option[value="' + $(e.target).attr('rel') + '"]');
 
-							item.attr('selected', !item.attr('selected'))
-								.change();
+							item.attr('selected', !item.attr('selected'));
+
+							self.element.change();
 						}
 					});
 
+				//Because the super elements _create method is never called, a
+				//simple bind needes to be add for the change listener.
+				//This event is unbound by the super element on _destroy.
+				this.element.bind(
+					'change.ux.inputbox', function(e) {
+						self.refresh();
+						self.ux_element.change();
+					}
+				);
 			}
 			else {
 				//Call super._create()
@@ -89,7 +102,7 @@
 						'z-index': '99999'
 					})
 					.appendTo(document.body)
-					/* .children(':[role="menuitem"]') */
+					.children('[role="menuitem"]')
 					.bind({
 						'mouseup.ux.selectbox': function(e) {
 							//Hide the menu.
@@ -107,6 +120,9 @@
 				//Bind the widget to show and hide menu
 				this.ux_element
 					.bind({
+						'change.ux.selectbox': function(e) {
+							console.debug("Ex Change");
+						},
 						'mouseup.ux.selectbox': function(e) {
 							//Display or Hide the menu when the box is clicked.
 							if (! self.menu.is(':visible')) {
@@ -155,14 +171,6 @@
 							$(e.target).addClass('ui-state-highlight');
 						}
 					}
-				});
-
-			//Hide the element and
-			//Monitor the hidden selectbox for changes
-			this.element
-				.bind('change.ux.selectbox', function() {
-					//Tell the gui box to update its self.
-					self.refresh();
 				});
 		},
 		_init: function() {

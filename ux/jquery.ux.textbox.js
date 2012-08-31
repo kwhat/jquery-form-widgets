@@ -20,7 +20,9 @@
 				.addClass('ux-inputbox-text ux-textbox')
 				.appendTo(this.ux_element);
 
-			//Prevent event bubbling for textboxes.
+			//Because the super class inputbox is already listening for element
+			//changes and the DOM element is part of this widget, change events
+			//need to be stopped to prevent event bubbling.
 			this.element.bind(
 				'change.ux.inputbox', function(e) {
 					e.stopPropagation();
@@ -38,8 +40,8 @@
 				.insertBefore(this.ux_element);
 
 			this.label = null;
-
-			this.ux_element
+			
+			this.element
 				.unbind('.ux.textbox');
 
 			//Call super._destroy()

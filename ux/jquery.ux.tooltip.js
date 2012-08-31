@@ -95,7 +95,7 @@
 		_setOption: function(key, value) {
 			switch (key) {
 				case 'disabled':
-					console.log(this.options.disabled);
+					this.options.disabled = value;
 					break;
 
 				case 'message':

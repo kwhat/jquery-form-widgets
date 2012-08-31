@@ -38,6 +38,9 @@
 
 .ui-menu .ui-menu-item a {
 	cursor: pointer;
+
+	/* JQuery UI Outline Fix */
+	outline: 0;
 }
 
 /* JQuery UI Highlight Fix */
