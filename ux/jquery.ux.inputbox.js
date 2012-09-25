@@ -122,6 +122,19 @@
 
 			$.Widget.prototype.destroy.call(this);
 		},
+		_setOption: function(key, value) {
+			if (key === 'disabled') {
+				if (value) {
+					this.element.attr('disabled', 'disabled');
+				}
+				else {
+					this.element.removeAttr('disabled');
+				}
+			}
+
+			// in 1.9 would use _super
+			$.Widget.prototype._setOption.call(this, key, value);
+		},
 		refresh: function() {
 			var text = this.val();
 

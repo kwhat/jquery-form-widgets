@@ -29,7 +29,7 @@
 	<link rel="stylesheet" type="text/css" href="../themes/ux/jquery.ux.radio.css" />
 
 
-	<script type="text/javascript" src="../jquery-1.8.0.min.js"></script>
+	<script type="text/javascript" src="../jquery-1.8.2.min.js"></script>
 	<script type="text/javascript" src="../jquery-ui-1.8.23.min.js"></script>
 
 	<script type="text/javascript" src="../ux/jquery.ux.inputbox.js"></script>
@@ -269,7 +269,7 @@
 							<td>
 								<input id="submit" type="submit" />
 								<input id="reset" type="reset" />
-								<input id="button" type="button" value="Disabled" disabled="disabled"/>
+								<input id="button" type="button" value="Disabled" onclick="$('#text_box').textbox('option', {disabled: true});"/>
 							</td>
 						</tr>
 					</table>

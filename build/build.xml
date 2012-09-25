@@ -30,7 +30,7 @@
 	</taskdef>
 
 	<!-- External Jars -->
-	<property description="Google Closure" name="jar.closure" value="${dir.build}/lib/closure-compiler-20111114.jar" />
+	<property description="Google Closure" name="jar.closure" value="${dir.build}/lib/closure-compiler-20120710.jar" />
 	<property description="YUI Compressor" name="jar.yuicompressor" value="${dir.build}/lib/yuicompressor-2.4.7.jar" />
 
 
@@ -38,11 +38,11 @@
 		<delete dir="${dir.dist}" />
     </target>
 
-	
+
 	<target name="copy" description="Copy needed folders">
 		<echo message="Copying files..." />
 		<mkdir dir="${dir.dist}" />
-		
+
 		<!-- Copy over existing external dependencies -->
 		<copy overwrite="true" todir="${dir.dist}">
 			<fileset dir="${basedir}">
@@ -53,14 +53,14 @@
 				<include name="themes/**/*" />
 			</fileset>
 		</copy>
-		
+
 		<echo message="Files copied." />
 	</target>
 
-	
+
 	<target name="concatenate" description="Merges all files into a single file">
 		<echo message="Concatenating files..." />
-		
+
 		<!-- Create a folder and remove the old file -->
 		<mkdir dir="${dir.dist}/ux" />
 		<mkdir dir="${dir.dist}/themes/ux" />
@@ -80,21 +80,21 @@
 				<exclude name="jquery.ux.inputbox.js" />
 			</fileset>
 		</concat>
-		
+
 		<!-- Create 1 file from all css files in themes/ux dir -->
 		<concat destfile="${dir.dist}/themes/ux/${ant.project.name}-${ant.project.version}.css">
 			<fileset dir="themes/ux" includes="jquery.*.css" excludes="jquery.ux.all.css" />
 		</concat>
-		
+
 		<echo message="Concatenation complete." />
 	</target>
-	
-	
+
+
 	<target name="minify" depends="concatenate" description="Remove all comments and whitespace, no compression, great in combination with GZip">
 		<echo message="Minifing files..." />
 		<mkdir dir="${dir.dist}/ux/minified" />
 		<mkdir dir="${dir.dist}/themes/ux/minified" />
-		
+
 		<parallel threadsperprocessor="1">
 			<apply executable="java" parallel="false">
 				<fileset dir="${dir.dist}/ux" includes="*.js" />
@@ -132,11 +132,11 @@
 		<copy todir="${dir.dist}/themes/ux/minified/images" >
 			<fileset dir="themes/ux/images" />
 		</copy>
-		
+
 		<echo message="Minification complete." />
 	</target>
-	
-	
+
+
 	<target name="replace-version">
 		<replaceregexp match="@VERSION" replace="${ant.project.version}" flags="g" byline="true">
 		    <fileset dir="${dir.dist}/ux" includes="*.js"/>
@@ -147,7 +147,7 @@
 		<echo message="Replaced all @VERSION to ${ant.project.version}." />
 	</target>
 
-	
+
 	<target name="prepend-header">
 		<mkdir dir="${dir.dist}/headers" />
 
@@ -181,11 +181,11 @@
 					<exclude name="ux/minified/${ant.project.name}-${ant.project.version}*.js" />
 				</fileset>
 			</path>
-			
+
 			<sequential>
 				<propertyregex override="yes" property="ext" input="@{file}" regexp=".*[\\/].+\.min\.(.+)$" replace="\1"/>
 				<propertyregex override="yes" property="target" input="@{file}" regexp=".*[\\/](.+)\.min\.${ext}$" replace="\1"/>
-				
+
 				<concat destfile="${dir.dist}/headered/${target}.min.${ext}">
 					<header file="${dir.dist}/headers/${target}.${ext}" />
 					<fileset file="@{file}" />
@@ -218,7 +218,7 @@
 		</zip>
 	</target>
 
-	
+
 	<target name="deploy-release" depends="clean, copy, minify, replace-version, prepend-header, zip" description="Release builder">
 	</target>
 </project>
