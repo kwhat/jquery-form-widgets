@@ -1,5 +1,5 @@
 /*
- * jQuery UX Tooltip @VERSION
+ * jQuery Form Tooltip @VERSION
  *
  * Copyright 2012, AUTHORS.txt (http://code.google.com/p/jquery-ux-forms/)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -8,7 +8,7 @@
  *
  */
 (function( $, undefined ) {
-	$.widget('ux.tooltip', {
+	$.widget('form.tooltip', {
 		version: '@VERSION',
 		options: {
 			delay: 200,
@@ -58,7 +58,7 @@
 			this.option(this.options);
 
 			this.element.bind({
-				'mouseover.ux.tooltip': function(e) {
+				'mouseover.form.tooltip': function(e) {
 					if (!self.options.disabled) {
 						//Start showing the tooltip
 						self.ux_element
@@ -66,13 +66,13 @@
 							.show(self.options.showAnim, self.options.showOptions, self.options.duration);
 					}
 				},
-				'mouseout.ux.tooltip': function() {
+				'mouseout.form.tooltip': function() {
 					//Stop showing the tooltip
 					self.ux_element
 						.delay(self.options.delay)
 						.hide(self.options.showAnim, self.options.showOptions, self.options.duration);
 				},
-				'mousemove.ux.tooltip': function(e) {
+				'mousemove.form.tooltip': function(e) {
 					//Track the tooltip
 					if (!self.options.disabled) {
 						self.ux_element.css({
@@ -90,7 +90,7 @@
 			this.ux_element.remove();
 
 			this.element
-				.unbind('.ux.tooltip');
+				.unbind('.form.tooltip');
 		},
 		_setOption: function(key, value) {
 			switch (key) {

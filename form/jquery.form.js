@@ -1,22 +1,23 @@
 /*
- * jQuery UX Form @VERSION
+ * jQuery Form @VERSION
  *
- * Copyright 2012, AUTHORS.txt (http://code.google.com/p/jquery-ux-forms/)
- * Dual licensed under the MIT or GPL Version 2 licenses.
+ * Copyright 2012, AUTHORS.txt
+ * Released under the MIT license.
+ *
+ * http://code.google.com/p/jquery-form-widgets/
  *
  * Depends:
- *	jquery.ux.inputbox.js
- *	jquery.ux.checkbox.js
- *	jquery.ux.tooltip.js
- *	jquery.ux.filebox.js
- *	jquery.ux.radio.js
- *	jquery.ux.selectbox.js
- *	jquery.ux.textbox.js
- *	jquery.ui.button.js
+ *	jquery.form.inputbox.js
+ *	jquery.form.checkbox.js
+ *	jquery.form.tooltip.js
+ *	jquery.form.filebox.js
+ *	jquery.form.radio.js
+ *	jquery.form.selectbox.js
+ *	jquery.form.textbox.js
+ *	jquery.form.button.js
  *	jquery.ui.datepicker.js
- *	jquery.ui.core.js
- *	jquery.ui.widget.js
  */
+
 (function( $, undefined ) {
 	var validationDefaultOptions = {
 		live: false,

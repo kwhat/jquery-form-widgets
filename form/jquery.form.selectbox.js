@@ -5,12 +5,12 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * Depends:
+ *	jquery.form.inputbox.js
  *	jquery.ui.menu.js
- *	jquery.ux.inputbox.js
  */
 
 (function( $, undefined ) {
-	$.widget('ux.selectbox', $.ux.inputbox, {
+	$.widget('form.selectbox', $.form.inputbox, {
 		defaultElement: '<select>',
 		options: {
 			icons: {
@@ -67,9 +67,9 @@
 
 				//Add mouse up listener for child items.
 				this.menu
-					.children('[role="menuitem"]')
+					.children('[role="presentation"]')
 					.bind({
-						'mouseup.ux.selectbox': function(e) {
+						'mouseup.form.selectbox': function(e) {
 							var item = self.element
 								.find('option[value="' + $(e.target).attr('rel') + '"]');
 
@@ -83,7 +83,7 @@
 				//simple bind needes to be add for the change listener.
 				//This event is unbound by the super element on _destroy.
 				this.element.bind(
-					'change.ux.inputbox', function(e) {
+					'change.form.inputbox', function(e) {
 						self.refresh();
 						self.ux_element.change();
 					}
@@ -91,7 +91,7 @@
 			}
 			else {
 				//Call super._create()
-				$.ux.inputbox.prototype._create.call(this);
+				this._super();
 
 				//Make sure the menu is hidden by default.
 				this.menu
@@ -102,9 +102,9 @@
 						'z-index': '99999'
 					})
 					.appendTo(document.body)
-					.children('[role="menuitem"]')
+					.children('[role="presentation"]')
 					.bind({
-						'mouseup.ux.selectbox': function(e) {
+						'mouseup.form.selectbox': function(e) {
 							//Hide the menu.
 							self._hideMenu();
 
@@ -120,7 +120,7 @@
 				//Bind the widget to show and hide menu
 				this.ux_element
 					.bind({
-						'mouseup.ux.selectbox': function(e) {
+						'mouseup.form.selectbox': function(e) {
 							//Display or Hide the menu when the box is clicked.
 							if (! self.menu.is(':visible')) {
 								self._showMenu();
@@ -129,20 +129,20 @@
 								self._hideMenu();
 							}
 						},
-						'keydown.ux.selectbox': function(e) {
+						'keydown.form.selectbox': function(e) {
 							self._handleKeyDown(e);
 						},
-						'keypress.ux.selectbox': function(e) {
+						'keypress.form.selectbox': function(e) {
 							self._handleKeyPress(e);
 						},
-						'selectstart.ux.selectbox': function(e) {
+						'selectstart.form.selectbox': function(e) {
 							//Prevent the hidden select box from showing
 							e.preventDefault();
 						}
 					});
 
 				//Hide the menu if we click anywhere else
-				$(document).bind('mouseup.ux.selectbox', function(e) {
+				$(document).bind('mouseup.form.selectbox', function(e) {
 					if (self.menu.is(':visible')) {
 						//We need to make sure that we are not a child of the widget either.
 						if (self.ux_element.find($(e.target)).length == 0 && self.menu.find($(e.target)).length == 0 && !self.ux_element.is($(e.target))) {
@@ -156,12 +156,12 @@
 			this.menu
 				.children()
 				.bind({
-					'mouseover.ux.selectbox': function(e) {
+					'mouseover.form.selectbox': function(e) {
 						self.menu.addClass('ui-state-hover');
 
 						$(e.target).removeClass('ui-state-highlight');
 					},
-					'mouseout.ux.selectbox': function(e) {
+					'mouseout.form.selectbox': function(e) {
 						self.menu.removeClass('ui-state-hover');
 
 						if (self.element.has('option[value="' + $(e.target).attr('rel') + '"]:selected').length != 0) {
@@ -184,7 +184,7 @@
 			this.ux_element.remove();
 			this.element
 				.removeClass('ui-helper-hidden')
-				.unbind('.ux.selectbox');
+				.unbind('.form.selectbox');
 		},
 		refresh: function() {
 			var self = this;

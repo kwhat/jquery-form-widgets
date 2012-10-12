@@ -1,23 +1,25 @@
 /*
- * jQuery UX Datebox @VERSION
+ * jQuery Form Datebox @VERSION
  *
- * Copyright 2012, AUTHORS.txt (http://code.google.com/p/jquery-ux-forms/)
- * Dual licensed under the MIT or GPL Version 2 licenses.
+ * Copyright 2012, AUTHORS.txt
+ * Released under the MIT license.
+ *
+ * http://code.google.com/p/jquery-form-widgets/
  *
  */
- 
+
 .ux-datebox {
 	display: inline-block;
 	width: 100%;
 
 	/* FIXME: Need to use something not quite white for the background */
 	background: #FFFFFF/*{bgColorDefault}*/ url(images/ui-bg_glass_65_ffffff_1x400.png)/*{bgImgUrlDefault}*/ 50%/*{bgDefaultXPos}*/ 50%/*{bgDefaultYPos}*/ repeat-x/*{bgDefaultRepeat}*/;
-	
+
 	overflow: hidden;
 	position: relative;
 	display: inline-block;
 	vertical-align: top;
-	
+
 	cursor: default;
 }
 
@@ -42,7 +44,7 @@
 	right: 0;
 	width: 23px;
 	height: 100%;
-	
+
 	/* FIXME: Doesnt handle mouse over correctly */
 	border-left: solid 1px #d3d3d3/*{borderColorDefault}*/;
 	background: #e6e6e6/*{bgColorDefault}*/ url(images/ui-bg_glass_75_e6e6e6_1x400.png)/*{bgImgUrlDefault}*/ 50%/*{bgDefaultXPos}*/ 50%/*{bgDefaultYPos}*/ repeat-x/*{bgDefaultRepeat}*/;

@@ -1,17 +1,19 @@
 /*
- * jQuery UX Textbox @VERSION
+ * jQuery Form Textbox @VERSION
  *
- * Copyright 2012, AUTHORS.txt (http://code.google.com/p/jquery-ux-forms/)
- * Dual licensed under the MIT or GPL Version 2 licenses.
+ * Copyright 2012, AUTHORS.txt
+ * Released under the MIT license.
+ *
+ * http://code.google.com/p/jquery-form-widgets/
  *
  * Depends:
- *	jquery.ux.inputbox.js
+ *	jquery.form.inputbox.js
  */
 (function( $, undefined ) {
-	$.widget('ux.textbox', $.ux.inputbox, {
+	$.widget('form.textbox', $.form.inputbox, {
 		_create: function() {
 			//Call super._create()
-			$.ux.inputbox.prototype._create.call(this);
+			this._super();
 
 			this.label.remove();
 
@@ -24,7 +26,7 @@
 			//changes and the DOM element is part of this widget, change events
 			//need to be stopped to prevent event bubbling.
 			this.element.bind(
-				'change.ux.inputbox', function(e) {
+				'change.form.textbox', function(e) {
 					e.stopPropagation();
 				}
 			);
@@ -40,12 +42,12 @@
 				.insertBefore(this.ux_element);
 
 			this.label = null;
-			
+
 			this.element
-				.unbind('.ux.textbox');
+				.unbind('.form.textbox');
 
 			//Call super._destroy()
-			$.ux.inputbox.prototype._destroy.call();
+			this._super();
 		}
 	});
 })( jQuery );

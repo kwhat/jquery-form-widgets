@@ -1,14 +1,17 @@
 /*
- * jQuery UX Inputbox @VERSION
+ * jQuery Form Inputbox @VERSION
  *
- * Copyright 2012, AUTHORS.txt (http://code.google.com/p/jquery-ux-forms/)
- * Dual licensed under the MIT or GPL Version 2 licenses.
+ * Copyright 2012, AUTHORS.txt
+ * Released under the MIT license.
+ *
+ * http://code.google.com/p/jquery-form-widgets/
  *
  * Depends:
  *
  */
+
 (function( $, undefined ) {
-	$.widget('ux.inputbox', {
+	$.widget('form.inputbox', {
 		version: '@VERSION',
 		defaultElement: '<input>',
 		options: {
@@ -132,8 +135,8 @@
 				}
 			}
 
-			// in 1.9 would use _super
-			$.Widget.prototype._setOption.call(this, key, value);
+			//Call super._setOption
+			this._super('_setOption', key, value);
 		},
 		refresh: function() {
 			var text = this.val();

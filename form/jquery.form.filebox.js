@@ -1,14 +1,17 @@
 /*
- * jQuery UX Filebox @VERSION
+ * jQuery Form Filebox @VERSION
  *
- * Copyright 2012, AUTHORS.txt (http://code.google.com/p/jquery-ux-forms/)
- * Dual licensed under the MIT or GPL Version 2 licenses.
+ * Copyright 2012, AUTHORS.txt
+ * Released under the MIT license.
+ *
+ * http://code.google.com/p/jquery-form-widgets/
  *
  * Depends:
- *	jquery.ux.inputbox.js
+ *	jquery.form.inputbox.js
  */
+
 (function( $, undefined ) {
-	$.widget('ux.filebox', $.ux.inputbox, {
+	$.widget('form.filebox', $.form.inputbox, {
 		options: {
 			icons: {
 				primary: 'ui-icon-folder-collapsed'
@@ -18,7 +21,7 @@
 			var self = this;
 
 			//Call super._create()
-			$.ux.inputbox.prototype._create.call(this);
+			self._super();
 
 			self.ux_element.bind({
 				'mouseup.ux.filebox': function() {
@@ -42,7 +45,7 @@
 		},
 		_destroy: function() {
 			//Call super._destroy()
-			$.ux.inputbox.prototype._destroy.call();
+			self._super();
 
 			this.ux_element.unbind('.ux.filebox');
 		}
