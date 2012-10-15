@@ -8,7 +8,7 @@
  *
  */
 
-.ux-selectbox-menu {
+.ui-selectbox-menu {
 	display: block;
 	width: auto;
 
@@ -20,14 +20,6 @@
 
 	overflow: auto;
 	white-space: nowrap;
-}
-
-.ux-selectbox-optgroup {
-	/* Nothing Yet */
-}
-
-.ux-selectbox-option {
-	/* Nothing Yet */
 }
 
 .ui-menu .ui-menu-item span {

@@ -9,7 +9,7 @@
  */
 
 /* Use some shifty techniques to hide the filebox. */
-.ux-filebox-input {
+.ui-filebox-input {
 	position: absolute;
 	top:-9999px;
 	left:-9999px;

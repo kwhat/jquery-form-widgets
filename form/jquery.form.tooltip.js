@@ -1,8 +1,10 @@
 /*
  * jQuery Form Tooltip @VERSION
  *
- * Copyright 2012, AUTHORS.txt (http://code.google.com/p/jquery-ux-forms/)
- * Dual licensed under the MIT or GPL Version 2 licenses.
+ * Copyright 2012, AUTHORS.txt
+ * Released under the MIT license.
+ *
+ * http://code.google.com/p/jquery-form-widgets/
  *
  * Depends:
  *
@@ -13,7 +15,7 @@
 		options: {
 			delay: 200,
 			icon: 'ui-icon ui-icon-alert',
-			style: 'ui-state-error ux-tooltip',
+			style: 'ui-state-error ui-tooltip',
 			duration: 'normal',
 			showAnim: null,
 			showOptions: {},
@@ -26,16 +28,16 @@
 
 			//Create the widget, make sure its hidden.
 			this.ux_element = $('<div/>')
-				.addClass('ui-helper-hidden ui-widget ui-corner-all ux-tooltip ' + this.options.style);
+				.addClass('ui-helper-hidden ui-widget ui-corner-all ui-tooltip ' + this.options.style);
 
 			//Create the label for the options.message
 			this.label = $('<span/>')
-				.addClass('ux-tooltip-label')
+				.addClass('ui-tooltip-label')
 				.appendTo(this.ux_element);
 
 			if (typeof(this.options.icon) == 'string') {
 				this.ux_element
-					.addClass('ux-inputbox-text-icon-secondary');
+					.addClass('ui-inputbox-text-icon-secondary');
 
 				this.label
 					.css('margin-left', '1.5em');
@@ -46,7 +48,7 @@
 
 				//Create a wrapper around the icon so it can be centered.
 				this.iconWrapper = $('<span/>')
-					.addClass('ux-inputbox-icon-secondary')
+					.addClass('ui-inputbox-icon-secondary')
 					.append(this.icon)
 					.appendTo(this.ux_element);
 			}

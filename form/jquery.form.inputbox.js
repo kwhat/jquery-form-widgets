@@ -29,18 +29,18 @@
 
 			//Create the inputbox widget.
 			this.ux_element = $('<div/>')
-				.addClass('ui-widget ui-state-default ui-corner-all ux-inputbox')
+				.addClass('ui-widget ui-state-default ui-corner-all ui-inputbox')
 				.insertAfter(this.element);
 
 			//Create the label and add it to the widget.
 			this.label = $('<div/>')
-				.addClass('ux-inputbox-text')
+				.addClass('ui-inputbox-text')
 				.appendTo(this.ux_element);
 
 			if (icons.primary != null) {
 				//Create padding on the left of the icon.
 				this.ux_element
-					.addClass('ux-inputbox-text-icon-primary');
+					.addClass('ui-inputbox-text-icon-primary');
 
 				//Create the icon.
 				this.iconPrimary = $('<span/>')
@@ -48,7 +48,7 @@
 
 				//Create a wrapper around the icon so it can be centered.
 				this.iconPrimaryWrapper = $('<span/>')
-					.addClass('ui-state-default ux-inputbox-icon-primary')
+					.addClass('ui-state-default ui-inputbox-icon-primary')
 					.append(this.iconPrimary)
 					.appendTo(this.ux_element);
 			}
@@ -56,7 +56,7 @@
 			if (icons.secondary != null) {
 				//Create padding on the left of the icon.
 				this.ux_element
-					.addClass('ux-inputbox-text-icon-secondary');
+					.addClass('ui-inputbox-text-icon-secondary');
 
 				//Create the icon.
 				this.iconSecondary = $('<span/>')
@@ -64,7 +64,7 @@
 
 				//Create a wrapper around the icon so it can be centered.
 				this.iconSecondaryWrapper = $('<span/>')
-					.addClass('ux-inputbox-icon-secondary')
+					.addClass('ui-inputbox-icon-secondary')
 					.append(this.iconSecondary)
 					.appendTo(this.ux_element);
 			}

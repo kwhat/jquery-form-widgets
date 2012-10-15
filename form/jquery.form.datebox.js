@@ -39,12 +39,7 @@
 						},
 						[
 							self.ux_element.offset().left + self.ux_element.outerWidth() - self.element.datepicker('widget').outerWidth(),
-							self.ux_element.offset().top + self.ux_element.outerHeight()
-							/*
-							(self.ux_element.position().top - widget.position().top < widget.height())
-								? self.ux_element.offset().top + self.ux_element.outerHeight()
-								: self.ux_element.offset().top + self.ux_element.outerHeight() - (self.ux_element.innerHeight() - self.element.innerHeight())
-							*/
+							self.ux_element.offset().top + self.ux_element.outerHeight() - 1
 						]
 					);
 				}

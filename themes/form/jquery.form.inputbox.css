@@ -8,7 +8,7 @@
  *
  */
 
-.ux-inputbox {
+.ui-inputbox {
 	display: block;
 	position: relative;
 	width: auto;
@@ -21,28 +21,28 @@
 /* Fix for input type=text and textarea where the left margins are not quite
  * right.
  */
-.ux-inputbox input[type=text], .ux-inputbox textarea {
+.ui-inputbox input[type=text], .ui-inputbox textarea {
 	margin-left: -.1em;
 }
 
 /* Fix for ui-state-error background override due to css ordering misshap.
- * Cannot override the background of ux-inputbox because it appers after the
+ * Cannot override the background of ui-inputbox because it appers after the
  * jquery ui css file.
  */
-.ux-inputbox:not(.ui-state-error) {
+.ui-inputbox:not(.ui-state-error) {
 	background: #FFFFFF url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
 }
 
 
-.ux-inputbox-text {
-	cursor: inherit;
+.ui-inputbox-text {
 	color: inherit;
+	cursor: inherit;
 	background: transparent none;
 	padding: .4em .2em;
 	white-space: nowrap;
 }
 
-.ux-inputbox-icon-primary {
+.ui-inputbox-icon-primary {
 	display: inline;
 	position: absolute;
 
@@ -59,7 +59,7 @@
 }
 
 
-.ux-inputbox-icon-secondary {
+.ui-inputbox-icon-secondary {
 	display: inline;
 	position: absolute;
 
@@ -69,15 +69,15 @@
 	width: 22px;
 }
 
-.ux-inputbox-text-icon-primary {
+.ui-inputbox-text-icon-primary {
 	padding-right: 22px;
 }
 
-.ux-inputbox-text-icon-secondary {
+.ui-inputbox-text-icon-secondary {
 	padding-left: 20px;
 }
 
-.ux-inputbox-icon-primary .ui-icon, .ux-inputbox-icon-secondary .ui-icon {
+.ui-inputbox-icon-primary .ui-icon, .ui-inputbox-icon-secondary .ui-icon {
 	position: absolute;
 
 	top: 50%;
@@ -88,6 +88,6 @@
 }
 
 /* Fix the primary icon turning read. */
-.ui-state-error .ux-inputbox-icon-primary .ui-icon {
+.ui-state-error .ui-inputbox-icon-primary .ui-icon {
 	background-image: url("images/ui-icons_888888_256x240.png");
 }

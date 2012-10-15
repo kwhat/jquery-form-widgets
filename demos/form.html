@@ -49,13 +49,13 @@
 				$('form').form({
 					ajax: true,
 					validation: {
-						'text_box': {
+						'textbox': {
 							live: true,
 							required: true,
 							minLength: 3,
 							maxLength: 25
 						},
-						'password_box': {
+						'passwordbox': {
 							live: false,
 							required: true
 						},
@@ -104,28 +104,28 @@
 					<table style="width: 100%;">
 						<tr>
 							<td>
-								<label for="text_box">Text Box</label>
+								<label for="textbox">Text Box</label>
 							</td>
 							<td>
-								<input type="text" name="text_box" id="text_box" maxlength="32" />
-							</td>
-						</tr>
-
-						<tr>
-							<td>
-								<label for="password_box">Password Box</label>
-							</td>
-							<td>
-								<input type="password" name="password_box" id="password_box" maxlength="16" />
+								<input type="text" name="textbox" id="textbox" maxlength="32" />
 							</td>
 						</tr>
 
 						<tr>
 							<td>
-								<label for="disabled_box">Disabled Box</label>
+								<label for="passwordbox">Password Box</label>
 							</td>
 							<td>
-								<input type="text" name="disabled_box" id="disabled_box" value="disabled" maxlength="32" disabled="disabled" />
+								<input type="password" name="passwordbox" id="passwordbox" maxlength="16" />
+							</td>
+						</tr>
+
+						<tr>
+							<td>
+								<label for="disabledbox">Disabled Box</label>
+							</td>
+							<td>
+								<input type="text" name="disabledbox" id="disabledbox" value="disabled" maxlength="32" disabled="disabled" />
 							</td>
 						</tr>
 
@@ -269,7 +269,7 @@
 							<td>
 								<input id="submit" type="submit" />
 								<input id="reset" type="reset" />
-								<input id="button" type="button" value="Disabled" onclick="$('#text_box').textbox('option', {disabled: true});"/>
+								<input id="button" type="button" value="Disabled" onclick="$('#textbox').textbox('option', {disabled: true});"/>
 							</td>
 						</tr>
 					</table>

@@ -1,8 +1,10 @@
 /*
  * jQuery Form Radio @VERSION
  *
- * Copyright 2012, AUTHORS.txt (http://code.google.com/p/jquery-ux-forms/)
- * Dual licensed under the MIT or GPL Version 2 licenses.
+ * Copyright 2012, AUTHORS.txt
+ * Released under the MIT license.
+ *
+ * http://code.google.com/p/jquery-form-widgets/
  *
  * Depends:
  *
@@ -17,7 +19,7 @@
 
 			//Create the widget
 			this.ux_element = $('<div/>')
-				.addClass('ui-state-default ui-corner-all ux-radio')
+				.addClass('ui-state-default ui-corner-all ui-radio')
 				//Add a click listener for the graphical radio button.
 				.bind({
 					'mouseover.form.radio': function() {

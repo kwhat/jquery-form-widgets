@@ -19,7 +19,7 @@
 
 			//Create the label and add it to the widget.
 			this.label = this.element
-				.addClass('ux-inputbox-text ux-textbox')
+				.addClass('ui-inputbox-text ui-textbox')
 				.appendTo(this.ux_element);
 
 			//Because the super class inputbox is already listening for element

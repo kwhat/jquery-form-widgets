@@ -32,12 +32,12 @@
 		_hideElement: function() {
 			//Apply some classes to the filebox to hide it.
 			this.element
-				.addClass('ux-filebox-input');
+				.addClass('ui-filebox-input');
 		},
 		_showElement: function() {
 			//Remove some classes to the filebox to hide it.
 			this.element
-				.removeClass('ux-filebox-input');
+				.removeClass('ui-filebox-input');
 		},
 		val: function() {
 			//Return just the file name if a path exists.
@@ -45,7 +45,7 @@
 		},
 		_destroy: function() {
 			//Call super._destroy()
-			self._super();
+			this._super();
 
 			this.ux_element.unbind('.ux.filebox');
 		}

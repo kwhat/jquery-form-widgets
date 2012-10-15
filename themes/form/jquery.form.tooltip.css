@@ -8,7 +8,7 @@
  *
  */
 
-.ux-tooltip {
+.ui-tooltip {
 	position: absolute;
 	z-index: 9999;
 
@@ -19,6 +19,6 @@
 	filter: alpha(opacity=75);
 }
 
-.ux-tooltip-label {
+.ui-tooltip-label {
 	white-space: nowrap;
 }

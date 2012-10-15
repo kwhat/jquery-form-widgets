@@ -1,8 +1,10 @@
 /*
- * jQuery UX Selectbox @VERSION
+ * jQuery Form Selectbox @VERSION
  *
- * Copyright 2012, AUTHORS.txt (http://code.google.com/p/jquery-ux-forms/)
- * Dual licensed under the MIT or GPL Version 2 licenses.
+ * Copyright 2012, AUTHORS.txt
+ * Released under the MIT license.
+ *
+ * http://code.google.com/p/jquery-form-widgets/
  *
  * Depends:
  *	jquery.form.inputbox.js
@@ -22,7 +24,7 @@
 
 			//Create the dropdown menu widget.
 			this.menu = $('<ul/>')
-				.addClass('ux-selectbox-menu')
+				.addClass('ui-selectbox-menu')
 				.data('timer', null)
 				.data('search', '');
 
@@ -285,7 +287,7 @@
 
 			//FIXME this is totally broken.
 			//
-			var scrollBox = control.hasClass('ux-selectbox') ? menu : menu.parent(),
+			var scrollBox = control.hasClass('ui-selectbox') ? menu : menu.parent(),
 				top = parseInt(li.offset().top - scrollBox.position().top),
 				bottom = parseInt(top + li.outerHeight());
 

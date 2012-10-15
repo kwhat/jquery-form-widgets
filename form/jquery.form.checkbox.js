@@ -19,7 +19,7 @@
 
 			//Create the widget
 			this.ux_element = $('<div/>')
-				.addClass('ui-state-default ui-corner-all ux-checkbox')
+				.addClass('ui-state-default ui-corner-all ui-checkbox')
 				//Add a click listener for the graphical checkbox.
 				.bind({
 					'mouseover.form.checkbox': function() {
@@ -39,7 +39,7 @@
 
 			//Create the checkbox that will be placed in the widget
 			this.icon = $('<a/>')
-				.addClass('ui-icon ux-icon-empty')
+				.addClass('ui-icon ui-icon-empty')
 				.appendTo(this.ux_element);
 
 			this.element
@@ -118,14 +118,14 @@
 
 				this.icon
 					.addClass('ui-icon-check')
-					.removeClass('ux-icon-empty');
+					.removeClass('ui-icon-empty');
 			}
 			else {
 				this.ux_element
 					.removeClass('ui-state-active');
 
 				this.icon
-					.addClass('ux-icon-empty')
+					.addClass('ui-icon-empty')
 					.removeClass('ui-icon-check');
 			}
 		},
