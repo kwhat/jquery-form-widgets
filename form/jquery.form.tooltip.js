@@ -27,16 +27,16 @@
 			var self = this;
 
 			//Create the widget, make sure its hidden.
-			this.ux_element = $('<div/>')
+			this.ui_widget = $('<div/>')
 				.addClass('ui-helper-hidden ui-widget ui-corner-all ui-tooltip ' + this.options.style);
 
 			//Create the label for the options.message
 			this.label = $('<span/>')
 				.addClass('ui-tooltip-label')
-				.appendTo(this.ux_element);
+				.appendTo(this.ui_widget);
 
 			if (typeof(this.options.icon) == 'string') {
-				this.ux_element
+				this.ui_widget
 					.addClass('ui-inputbox-text-icon-secondary');
 
 				this.label
@@ -50,11 +50,11 @@
 				this.iconWrapper = $('<span/>')
 					.addClass('ui-inputbox-icon-secondary')
 					.append(this.icon)
-					.appendTo(this.ux_element);
+					.appendTo(this.ui_widget);
 			}
 
 			//Add the error tip directly after the document.body
-			$('body').prepend(this.ux_element);
+			$('body').prepend(this.ui_widget);
 
 			//Call options
 			this.option(this.options);
@@ -63,21 +63,21 @@
 				'mouseover.form.tooltip': function(e) {
 					if (!self.options.disabled) {
 						//Start showing the tooltip
-						self.ux_element
+						self.ui_widget
 							.delay(self.options.delay)
 							.show(self.options.showAnim, self.options.showOptions, self.options.duration);
 					}
 				},
 				'mouseout.form.tooltip': function() {
 					//Stop showing the tooltip
-					self.ux_element
+					self.ui_widget
 						.delay(self.options.delay)
 						.hide(self.options.showAnim, self.options.showOptions, self.options.duration);
 				},
 				'mousemove.form.tooltip': function(e) {
 					//Track the tooltip
 					if (!self.options.disabled) {
-						self.ux_element.css({
+						self.ui_widget.css({
 							'top': e.pageY + self.options.top,
 							'left': e.pageX + self.options.left
 						});
@@ -89,7 +89,7 @@
 			this.icon.remove();
 			this.iconWrapper.remove();
 			this.label.remove();
-			this.ux_element.remove();
+			this.ui_widget.remove();
 
 			this.element
 				.unbind('.form.tooltip');

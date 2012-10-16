@@ -49,7 +49,7 @@
 		}
 	};
 
-	$.widget('ux.form', {
+	$.widget('form', {
 		version: '@VERSION',
 		options: {
 			ajax: false,
@@ -98,7 +98,7 @@
 						//Extend the items defiend options with the default option set.
 						validationOptions = $.extend(true, {}, validationDefaultOptions, validationOptions);
 
-						//Set the .ux.form validation item based on input:name
+						//Set the .form validation item based on input:name
 						$(options.validation).prop($(this).attr('name'), validationOptions);
 
 						//Create an error widget for the form item.
@@ -107,7 +107,7 @@
 						//If we are doing live validation.
 						if (validationOptions.live == true) {
 							widget.bind({
-								'change.ux.form': function() {
+								'change.form': function() {
 									self._validate(element, widget);
 								}
 							});

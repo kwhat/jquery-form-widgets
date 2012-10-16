@@ -60,7 +60,7 @@
 			if (this.element.attr('multiple')) {
 				this._hideElement();
 
-				this.ux_element = this.menu
+				this.ui_widget = this.menu
 					.menu()
 					.addClass('ui-state-default')
 					.attr('title', this.element.attr('title') || '')
@@ -87,7 +87,7 @@
 				this.element.bind(
 					'change.form.inputbox', function(e) {
 						self.refresh();
-						self.ux_element.change();
+						self.ui_widget.change();
 					}
 				);
 			}
@@ -120,7 +120,7 @@
 
 
 				//Bind the widget to show and hide menu
-				this.ux_element
+				this.ui_widget
 					.bind({
 						'mouseup.form.selectbox': function(e) {
 							//Display or Hide the menu when the box is clicked.
@@ -147,7 +147,7 @@
 				$(document).bind('mouseup.form.selectbox', function(e) {
 					if (self.menu.is(':visible')) {
 						//We need to make sure that we are not a child of the widget either.
-						if (self.ux_element.find($(e.target)).length == 0 && self.menu.find($(e.target)).length == 0 && !self.ux_element.is($(e.target))) {
+						if (self.ui_widget.find($(e.target)).length == 0 && self.menu.find($(e.target)).length == 0 && !self.ui_widget.is($(e.target))) {
 							self._hideMenu();
 						}
 					}
@@ -183,7 +183,7 @@
 			this.icon.remove();
 			this.iconWrapper.remove();
 
-			this.ux_element.remove();
+			this.ui_widget.remove();
 			this.element
 				.removeClass('ui-helper-hidden')
 				.unbind('.form.selectbox');
@@ -234,10 +234,10 @@
 			this.refresh();
 		},
 		widget: function() {
-			return this.ux_element;
+			return this.ui_widget;
 		},
 		_showMenu: function() {
-			var widget = this.ux_element;
+			var widget = this.ui_widget;
 			var menu = this.menu;
 
 			widget
@@ -271,7 +271,7 @@
 				.removeClass('ui-corner-bottom')
 				.addClass('ui-corner-all');
 
-			this.ux_element
+			this.ui_widget
 				.removeClass('ui-state-focus  ui-corner-top')
 				.addClass('ui-state-default ui-corner-all');
 
@@ -282,7 +282,7 @@
 
 			if( !li || li.length === 0 ) return;
 
-			var control = this.ux_element;
+			var control = this.ui_widget;
 			var menu = control.data('menu');
 
 			//FIXME this is totally broken.
@@ -314,7 +314,7 @@
 				i = 0;
 
 			//FIXME
-			if( self.ux_element.is(':disabled') ) return;
+			if( self.ui_widget.is(':disabled') ) return;
 
 			switch( event.keyCode ) {
 				case 8: // backspace
@@ -391,7 +391,7 @@
 				menu = self.menu;
 
 			//FIXME
-			if( self.ux_element.is(':disabled') ) return;
+			if( self.ui_widget.is(':disabled') ) return;
 
 			switch( event.keyCode ) {
 				case 9: // tab

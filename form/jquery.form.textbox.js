@@ -20,7 +20,7 @@
 			//Create the label and add it to the widget.
 			this.label = this.element
 				.addClass('ui-inputbox-text ui-textbox')
-				.appendTo(this.ux_element);
+				.appendTo(this.ui_widget);
 
 			//Because the super class inputbox is already listening for element
 			//changes and the DOM element is part of this widget, change events
@@ -39,7 +39,7 @@
 		},
 		_destroy: function() {
 			this.label
-				.insertBefore(this.ux_element);
+				.insertBefore(this.ui_widget);
 
 			this.label = null;
 

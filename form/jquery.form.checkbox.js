@@ -18,18 +18,18 @@
 			var self = this;
 
 			//Create the widget
-			this.ux_element = $('<div/>')
+			this.ui_widget = $('<div/>')
 				.addClass('ui-state-default ui-corner-all ui-checkbox')
 				//Add a click listener for the graphical checkbox.
 				.bind({
 					'mouseover.form.checkbox': function() {
 						if (!self.element.is(':disabled')) {
-							self.ux_element.addClass('ui-state-hover');
+							self.ui_widget.addClass('ui-state-hover');
 						}
 					},
 					'mouseout.form.checkbox': function() {
 						if (!self.element.is(':disabled')) {
-							self.ux_element.removeClass('ui-state-hover');
+							self.ui_widget.removeClass('ui-state-hover');
 						}
 					},
 					'click.form.checkbox': function() {
@@ -40,18 +40,18 @@
 			//Create the checkbox that will be placed in the widget
 			this.icon = $('<a/>')
 				.addClass('ui-icon ui-icon-empty')
-				.appendTo(this.ux_element);
+				.appendTo(this.ui_widget);
 
 			this.element
 				//Hide the checkbox.
 				.addClass('ui-helper-hidden')
 				//Watch the actual DOM checkbox for changes.
-				.bind('change.ux.checkbox', function() {
+				.bind('change.form.checkbox', function() {
 					self.refresh();
-					self.ux_element.change();
+					self.ui_widget.change();
 				})
 				//Add the graphical checkbox directly after the hidden checkbox.
-				.after(this.ux_element);
+				.after(this.ui_widget);
 		},
 		_init: function() {
 			this._setOption('default', this.element.is(':checked'));
@@ -63,7 +63,7 @@
 		_destroy: function() {
 			this.icon.remove();
 
-			this.ux_element
+			this.ui_widget
 				.unbind('.form.checkbox')
 				.remove();
 
@@ -84,12 +84,12 @@
 						.bind({
 							'mouseover.form.checkbox': function() {
 								if (!self.element.is(':disabled')) {
-									self.ux_element.addClass('ui-state-hover');
+									self.ui_widget.addClass('ui-state-hover');
 								}
 							},
 							'mouseout.form.checkbox': function() {
 								if (!self.element.is(':disabled')) {
-									self.ux_element.removeClass('ui-state-hover');
+									self.ui_widget.removeClass('ui-state-hover');
 								}
 							}
 						});
@@ -102,18 +102,18 @@
 		refresh: function() {
 			//Display the checkbox's disabled state
 			if (this.element.is(':disabled')) {
-				this.ux_element
+				this.ui_widget
 					.addClass('ui-state-disabled')
 					.removeClass('ui-state-hover');
 			}
 			else {
-				this.ux_element
+				this.ui_widget
 					.removeClass('ui-state-disabled');
 			}
 
 			//Display the checkbox's checked state
 			if (this.element.is(':checked')) {
-				this.ux_element
+				this.ui_widget
 					.addClass('ui-state-active');
 
 				this.icon
@@ -121,7 +121,7 @@
 					.removeClass('ui-icon-empty');
 			}
 			else {
-				this.ux_element
+				this.ui_widget
 					.removeClass('ui-state-active');
 
 				this.icon
@@ -134,7 +134,7 @@
 			this.refresh();
 		},
 		widget: function() {
-			return this.ux_element;
+			return this.ui_widget;
 		}
 	});
 })( jQuery );

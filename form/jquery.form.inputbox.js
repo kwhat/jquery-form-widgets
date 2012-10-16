@@ -28,18 +28,18 @@
 			this._hideElement();
 
 			//Create the inputbox widget.
-			this.ux_element = $('<div/>')
+			this.ui_widget = $('<div/>')
 				.addClass('ui-widget ui-state-default ui-corner-all ui-inputbox')
 				.insertAfter(this.element);
 
 			//Create the label and add it to the widget.
 			this.label = $('<div/>')
 				.addClass('ui-inputbox-text')
-				.appendTo(this.ux_element);
+				.appendTo(this.ui_widget);
 
 			if (icons.primary != null) {
 				//Create padding on the left of the icon.
-				this.ux_element
+				this.ui_widget
 					.addClass('ui-inputbox-text-icon-primary');
 
 				//Create the icon.
@@ -50,12 +50,12 @@
 				this.iconPrimaryWrapper = $('<span/>')
 					.addClass('ui-state-default ui-inputbox-icon-primary')
 					.append(this.iconPrimary)
-					.appendTo(this.ux_element);
+					.appendTo(this.ui_widget);
 			}
 
 			if (icons.secondary != null) {
 				//Create padding on the left of the icon.
-				this.ux_element
+				this.ui_widget
 					.addClass('ui-inputbox-text-icon-secondary');
 
 				//Create the icon.
@@ -66,28 +66,28 @@
 				this.iconSecondaryWrapper = $('<span/>')
 					.addClass('ui-inputbox-icon-secondary')
 					.append(this.iconSecondary)
-					.appendTo(this.ux_element);
+					.appendTo(this.ui_widget);
 			}
 
 			//Watch the actual DOM checkbox for changes.
 			this.element.bind(
-				'change.ux.inputbox', function(e) {
+				'change.form.inputbox', function(e) {
 					self.refresh();
-					self.ux_element.change();
+					self.ui_widget.change();
 				}
 			);
 
-			this.ux_element.bind({
-				'mouseover.ux.inputbox': function() {
+			this.ui_widget.bind({
+				'mouseover.form.inputbox': function() {
 					//if (this.options.validation)
-					self.ux_element.addClass('ui-state-hover');
+					self.ui_widget.addClass('ui-state-hover');
 
 					if (icons.primary != null) {
 						self.iconPrimaryWrapper.addClass('ui-state-hover');
 					}
 				},
-				'mouseout.ux.inputbox': function() {
-					self.ux_element.removeClass('ui-state-hover');
+				'mouseout.form.inputbox': function() {
+					self.ui_widget.removeClass('ui-state-hover');
 
 					if (icons.primary != null) {
 						self.iconPrimaryWrapper.removeClass('ui-state-hover');
@@ -113,15 +113,15 @@
 			return this.element.val();
 		},
 		_destroy: function() {
-			this.ux_element.unbind('.ux.inputbox');
+			this.ui_widget.unbind('.form.inputbox');
 
 			this.label.remove();
 			this.iconPrimary.remove();
 			this.iconPrimaryWrapper.remove();
 			this.iconSecondary.remove();
 			this.iconSecondaryWrapper.remove();
-			this.element.unwrap(this.ux_element);
-			this.ux_element.remove();
+			this.element.unwrap(this.ui_widget);
+			this.ui_widget.remove();
 
 			$.Widget.prototype.destroy.call(this);
 		},
@@ -151,7 +151,7 @@
 
 			//Add mouse over listeners to apply hover classes.
 			if (this.option('disabled')) {
-				this.ux_element.unbind('.ux.inputbox');
+				this.ui_widget.unbind('.form.inputbox');
 			}
 
 			this.label.text(text);
@@ -161,7 +161,7 @@
 			this.refresh();
 		},
 		widget: function() {
-			return this.ux_element;
+			return this.ui_widget;
 		}
 	});
 })( jQuery );

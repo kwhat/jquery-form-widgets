@@ -18,15 +18,15 @@
 			var self = this;
 
 			//Create the widget
-			this.ux_element = $('<div/>')
+			this.ui_widget = $('<div/>')
 				.addClass('ui-state-default ui-corner-all ui-radio')
 				//Add a click listener for the graphical radio button.
 				.bind({
 					'mouseover.form.radio': function() {
-						self.ux_element.addClass('ui-state-hover');
+						self.ui_widget.addClass('ui-state-hover');
 					},
 					'mouseout.form.radio': function() {
-						self.ux_element.removeClass('ui-state-hover');
+						self.ui_widget.removeClass('ui-state-hover');
 					},
 					'click.form.radio': function() {
 						self.element.click();
@@ -36,11 +36,11 @@
 			//Create the radio button that will be placed in the widget
 			this.icon = $('<a/>')
 				.addClass('ui-icon')
-				.appendTo(this.ux_element);
+				.appendTo(this.ui_widget);
 
 			//Set the correct button state.
 			if (this.element.is(':checked')) {
-				this.ux_element.addClass('ui-state-active');
+				this.ui_widget.addClass('ui-state-active');
 				this.icon.addClass('ui-icon-bullet');
 			}
 			else {
@@ -53,10 +53,10 @@
 				//Watch the actual DOM checkbox for changes.
 				.bind('change.form.radio', function() {
 					self.refresh();
-					self.ux_element.change();
+					self.ui_widget.change();
 				})
 				//Add the graphical radio button directly after the hidden radio button.
-				.after(this.ux_element);
+				.after(this.ui_widget);
 		},
 		_init: function() {
 			this._setOption('default', this.element.is(':checked'));
@@ -66,7 +66,7 @@
 		_destroy: function() {
 			this.icon.remove();
 
-			this.ux_element
+			this.ui_widget
 				.unbind('.form.radio')
 				.remove();
 
@@ -77,19 +77,19 @@
 		refresh: function() {
 			//Display the checkbox's disabled state
 			if (this.element.is(':disabled')) {
-				this.ux_element
+				this.ui_widget
 					.addClass('ui-state-disabled')
 					.removeClass('ui-state-default');
 			}
 			else {
-				this.ux_element
+				this.ui_widget
 					.removeClass('ui-state-disabled')
 					.addClass('ui-state-default');
 			}
 
 			//Display the radio button's checked state
 			if (this.element.is(':checked')) {
-				this.ux_element
+				this.ui_widget
 					.addClass('ui-state-active');
 
 				this.icon
@@ -106,7 +106,7 @@
 					.radio('refresh');
 			}
 			else {
-				this.ux_element
+				this.ui_widget
 					.removeClass('ui-state-active');
 
 				this.icon
@@ -119,7 +119,7 @@
 			this.refresh();
 		},
 		widget: function() {
-			return this.ux_element;
+			return this.ui_widget;
 		}
 	});
 })( jQuery );

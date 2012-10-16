@@ -23,8 +23,8 @@
 			//Call super._create()
 			self._super();
 
-			self.ux_element.bind({
-				'mouseup.ux.filebox': function() {
+			self.ui_widget.bind({
+				'mouseup.form.filebox': function() {
 					self.element.click();
 				}
 			});
@@ -47,7 +47,7 @@
 			//Call super._destroy()
 			this._super();
 
-			this.ux_element.unbind('.ux.filebox');
+			this.ui_widget.unbind('.form.filebox');
 		}
 	});
 })( jQuery );

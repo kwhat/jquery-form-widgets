@@ -24,7 +24,7 @@
 			//Call super._create()
 			self._super();
 
-			self.ux_element.bind({
+			self.ui_widget.bind({
 				'mouseup.form.datebox': function() {
 					//self.element.datepicker('show');
 					self.element.datepicker(
@@ -38,8 +38,8 @@
 							}
 						},
 						[
-							self.ux_element.offset().left + self.ux_element.outerWidth() - self.element.datepicker('widget').outerWidth(),
-							self.ux_element.offset().top + self.ux_element.outerHeight() - 1
+							self.ui_widget.offset().left + self.ui_widget.outerWidth() - self.element.datepicker('widget').outerWidth(),
+							self.ui_widget.offset().top + self.ui_widget.outerHeight() - 1
 						]
 					);
 				}
@@ -49,7 +49,7 @@
 			//Call super._destroy()
 			this._super();
 
-			this.ux_element.unbind('.form.datebox');
+			this.ui_widget.unbind('.form.datebox');
 		}
 	});
 })( jQuery );
