@@ -14,42 +14,38 @@
 (function( $, undefined ) {
 	$.widget('form.datebox', $.form.inputbox, {
 		options: {
+			datepicker: {
+				'altField': this.element
+			},
 			icons: {
 				primary: 'ui-icon-calendar'
 			}
 		},
 		_create: function() {
-			var self = this;
-
 			//Call super._create()
-			self._super();
-
-			self.ui_widget.bind({
-				'mouseup.form.datebox': function() {
-					//self.element.datepicker('show');
-					self.element.datepicker(
-						'dialog',
-						new Date(self.val()),
-						null,
-						{
-							'altField': self.element,
-							onClose: function() {
-								self.refresh();
-							}
-						},
-						[
-							self.ui_widget.offset().left + self.ui_widget.outerWidth() - self.element.datepicker('widget').outerWidth(),
-							self.ui_widget.offset().top + self.ui_widget.outerHeight() - 1
-						]
-					);
-				}
-			});
-		},
-		_destroy: function() {
-			//Call super._destroy()
 			this._super();
 
-			this.ui_widget.unbind('.form.datebox');
+			this._on(this.ui_widget, {
+				click: 'dropdown'
+			});
+		},
+		dropdown: function() {
+		   //console.debug($.datepicker._dialogDatepicker);
+		   var self = this;
+
+			this.ui_widget.datepicker(
+				'dialog',
+				new Date(this.val()),
+				function(date) {
+					self.val(date);
+					self._refresh();
+				},
+				this.options.datepicker,
+				[	// FIXME this needs to account for displaying above the widget when there is no room.
+					this.ui_widget.offset().left + this.ui_widget.outerWidth() - this.element.datepicker('widget').outerWidth(),
+					this.ui_widget.offset().top + this.ui_widget.outerHeight() - 1
+				]
+			);
 		}
 	});
 })( jQuery );

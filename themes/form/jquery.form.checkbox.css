@@ -8,14 +8,6 @@
  *
  */
 
-.ui-checkbox {
-	display: inline-block;
-	width: 17px;
-	height: 17px;
-	margin-right: 0px;
-	vertical-align: text-bottom;
-}
-
 .ui-icon-empty {
 	background-position: -240px 0;
 }

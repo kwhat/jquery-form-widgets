@@ -25,29 +25,25 @@
 			//Because the super class inputbox is already listening for element
 			//changes and the DOM element is part of this widget, change events
 			//need to be stopped to prevent event bubbling.
-			this.element.bind(
-				'change.form.textbox', function(e) {
-					e.stopPropagation();
+			this._on(this.element, {
+				change: function(event) {
+					event.stopPropagation();
 				}
-			);
+			});
 		},
-		_hideElement: function() {
-			//Do Nothing
-		},
-		_showElement: function() {
-			//Do Nothing
-		},
+		_hideElement: function() { /* Do Nothing */ },
+		_showElement: function() { /* Do Nothing */ },
 		_destroy: function() {
+			//Pull the textbox back out.
 			this.label
 				.insertBefore(this.ui_widget);
 
+			//Set the label to null so we dont distroy the textbox
 			this.label = null;
-
-			this.element
-				.unbind('.form.textbox');
 
 			//Call super._destroy()
 			this._super();
-		}
+		},
+		_refresh: function() { /* Do Nothing */ }
 	});
 })( jQuery );

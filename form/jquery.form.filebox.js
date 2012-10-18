@@ -23,8 +23,8 @@
 			//Call super._create()
 			self._super();
 
-			self.ui_widget.bind({
-				'mouseup.form.filebox': function() {
+			this._on(this.ui_widget, {
+				click: function(event) {
 					self.element.click();
 				}
 			});
@@ -41,13 +41,7 @@
 		},
 		val: function() {
 			//Return just the file name if a path exists.
-			return this.element.val().replace('\u00A0', '').match('[^\\\\/]*$')[0];
-		},
-		_destroy: function() {
-			//Call super._destroy()
-			this._super();
-
-			this.ui_widget.unbind('.form.filebox');
+			return this._super().match('[^\\\\/]*$')[0];
 		}
 	});
 })( jQuery );
