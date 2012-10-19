@@ -33,14 +33,6 @@
 	background: #FFFFFF url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
 }
 
-.ui-selectbox {
-	display: inline-block;
-	width: 17px;
-	height: 17px;
-	margin-right: 0px;
-	vertical-align: text-bottom;
-}
-
 .ui-inputbox-text {
 	color: inherit;
 	cursor: inherit;

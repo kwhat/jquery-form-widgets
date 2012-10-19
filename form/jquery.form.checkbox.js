@@ -23,7 +23,8 @@
 
 			//Create the widget
 			this.ui_widget = $('<div/>')
-				.addClass('ui-state-default ui-corner-all ui-selectbox')
+				.addClass('ui-state-default ui-corner-all ui-checkbox');
+				//.css('');
 
 			//Create the checkbox that will be placed in the widget
 			this.icon = $('<a/>')
@@ -58,27 +59,32 @@
 			this._refresh();
 		},
 		_refresh: function() {
-			var icos = this.options.icons,
-				ico_check = icos.selected,
-				ico_empty = icos.deselected;
-
 			//Display the checkbox's checked state
-			if (this.element.is(':checked')) {
-				this.ui_widget
+			this.selected(this.element.is(':checked'));
+		},
+		selected: function(state) {
+			if (state) {
+				this._select();
+			}
+			else {
+				this._deselect();
+			}
+		},
+		_select: function() {
+			this.ui_widget
 					.addClass('ui-state-active');
 
 				this.icon
-					.addClass(ico_check)
-					.removeClass(ico_empty);
-			}
-			else {
-				this.ui_widget
+					.addClass(this.options.icons.selected)
+					.removeClass(this.options.icons.deselected);
+		},
+		_deselect: function() {
+			this.ui_widget
 					.removeClass('ui-state-active');
 
 				this.icon
-					.addClass(ico_empty)
-					.removeClass(ico_check);
-			}
+					.addClass(this.options.icons.deselected)
+					.removeClass(this.options.icons.selected);
 		}
 	});
 })( jQuery );

@@ -18,6 +18,14 @@
 				selected: 'ui-icon-bullet',
 				deselected: 'ui-icon-radio-off'
 			}
+		},
+		_select: function() {
+			this._super();
+
+			//Notify other radio buttons that a change occured.
+			$('input[name=' + this.element.attr('name') + ']')
+					.not(this.element)
+					.change();
 		}
 	});
 })( jQuery );

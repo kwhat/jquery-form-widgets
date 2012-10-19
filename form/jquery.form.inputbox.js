@@ -80,8 +80,6 @@
 			//Watch this.element for changes.
 			this._on({
 				change: function() {
-					//Watch the actual DOM checkbox for changes and send the
-					//changes to the ui_widget.
 					self.ui_widget.change();
 				}
 			});
