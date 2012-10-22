@@ -12,7 +12,7 @@
 	display: block;
 	width: auto;
 
-	outline: 0;
+	outline: none;
 	float: none;
 
 	/* FIXME: Need to use something not quite white for the background */
@@ -23,15 +23,17 @@
 }
 
 .ui-menu .ui-menu-item span {
-	text-decoration:none;
-	display:block;
-	padding:.1em .1em;
+	text-decoration: none;
+	text-overflow: ellipsis;
+	display: block;
+	padding: 2px .1em;
 	line-height:1.5;
 	zoom:1;
 }
 
 .ui-menu .ui-menu-item a {
 	cursor: pointer;
+	text-overflow: ellipsis;
 
 	/* JQuery UI Outline Fix */
 	outline: 0;

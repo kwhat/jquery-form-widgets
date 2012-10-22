@@ -16,6 +16,8 @@
 	text-align: left;
 	overflow: hidden;
 	cursor: text; /* default */
+
+	outline: none;
 }
 
 /* Fix for input type=text and textarea where the left margins are not quite
@@ -40,6 +42,7 @@
 	padding: .4em .2em;
 	white-space: nowrap;
 	min-height: 1.1em;
+	text-overflow: ellipsis;
 }
 
 .ui-inputbox-icon-primary {

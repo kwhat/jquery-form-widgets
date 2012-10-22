@@ -24,7 +24,6 @@
 			//Create the widget
 			this.ui_widget = $('<div/>')
 				.addClass('ui-state-default ui-corner-all ui-checkbox');
-				//.css('');
 
 			//Create the checkbox that will be placed in the widget
 			this.icon = $('<a/>')

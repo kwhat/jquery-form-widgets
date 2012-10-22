@@ -12,7 +12,6 @@
 
 (function( $, undefined ) {
 	$.widget ('form.radio', $.form.checkbox, {
-	//$.widget ('form.radio', {
 		options: {
 			icons: {
 				selected: 'ui-icon-bullet',

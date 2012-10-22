@@ -24,9 +24,11 @@
 
 			//Create the dropdown menu widget.
 			this.menu = $('<ul/>')
-				.addClass('ui-selectbox-menu')
+				.addClass('ui-selectbox-menu');
+				/*
 				.data('timer', null)
 				.data('search', '');
+				//*/
 
 			//Create a menu based on the options.
 			var options = this.element.find('option, optgroup');
@@ -55,142 +57,149 @@
 				});
 			}
 
+			this.menu
+				.menu({'role': 'listbox'})
+				.removeClass('ui-widget ui-widget-content ui-corner-all');
 
 			// Generate control
 			if (this.element.attr('multiple')) {
 				this._hideElement();
 
-				this.ui_widget = this.menu
-					.menu()
-					.addClass('ui-state-default')
+				// Create the widget and wrapper.
+				this.ui_widget = this.wrapper = $('<div/>')
+					.addClass('ui-widget ui-state-default ui-corner-all ui-selectbox-menu')
 					.attr('title', this.element.attr('title') || '')
 					.attr('tabindex', this.element.attr('tabindex') || '')
-					.insertAfter(this.element);
+					.css('overflow-y', 'auto')
+					.append(this.menu)
+					.insertAfter(this.element)
+					.height(self.menu.children().first().outerHeight() * (this.element.attr('size') || 10));
 
-				//Add mouse up listener for child items.
-				this.menu
-					.children('[role="presentation"]')
-					.bind({
-						'mouseup.form.selectbox': function(e) {
-							var item = self.element
-								.find('option[value="' + $(e.target).attr('rel') + '"]');
+				this._on(this.menu.children('[role="presentation"]'), {
+					click: function(event) {
+						//Locate the selected item.
+						var item = self.element
+							.find('option[value="' + $(event.target).attr('rel') + '"]');
 
-							item.attr('selected', !item.attr('selected'));
+						//Toggle the hidden select boxes value.
+						item.attr('selected', !item.attr('selected'));
 
-							self.element.change();
-						}
-					});
+						//Fire a change event to cause a refresh.
+						self.element.change();
+					}
+				});
 
-				//Because the super elements _create method is never called, a
-				//simple bind needes to be add for the change listener.
-				//This event is unbound by the super element on _destroy.
-				this.element.bind(
-					'change.form.inputbox', function(e) {
-						self.refresh();
+				//Because the super elements _create method is never called, the
+				//following items need to be called directly.
+
+				//Set the widget to hoverable
+				this._hoverable(this.ui_widget);
+
+				//Watch this.element for changes.
+				this._on({
+					change: function() {
 						self.ui_widget.change();
 					}
-				);
+				});
+
+				this._on(this.ui_widget, {
+					change: this._refresh
+				});
+
+				//Set some initial options.
+				this._setOptions({
+					'default': this.element.val(),
+					'disabled': this.element.is(':disabled')
+				});
+
+				this._refresh();
 			}
 			else {
 				//Call super._create()
 				this._super();
 
 				//Make sure the menu is hidden by default.
-				this.menu
-					.menu()
+				this.wrapper = $('<div/>')
+					.addClass('ui-widget ui-state-default ui-selectbox-menu')
 					.css({
-						'display': 'none',
+						'overflow-y': 'auto',
 						'position': 'absolute',
 						'z-index': '99999'
 					})
+					.append(this.menu)
 					.appendTo(document.body)
-					.children('[role="presentation"]')
-					.bind({
-						'mouseup.form.selectbox': function(e) {
-							//Hide the menu.
-							self._hideMenu();
+					.height(self.menu.children().first().outerHeight() * (this.element.attr('size') || 10))
+					.hide();
 
-							//Set the hidden select boxes value.
-							self.element.val($(e.target).attr('rel'));
+				this._on(this.menu.children('[role="presentation"]'), {
+					click: function(event) {
+						//Hide the menu.
+						self._hideMenu();
 
-							//Fire a change event to cause a refresh.
-							self.element.change();
-						}
-					});
+						//Set the hidden select boxes value.
+						self.element.val($(event.target).attr('rel'));
 
+						//Fire a change event to cause a refresh.
+						self.element.change();
+					}
+				});
 
 				//Bind the widget to show and hide menu
-				this.ui_widget
-					.bind({
-						'mouseup.form.selectbox': function(e) {
-							//Display or Hide the menu when the box is clicked.
-							if (! self.menu.is(':visible')) {
-								self._showMenu();
-							}
-							else {
-								self._hideMenu();
-							}
-						},
-						'keydown.form.selectbox': function(e) {
-							self._handleKeyDown(e);
-						},
-						'keypress.form.selectbox': function(e) {
-							self._handleKeyPress(e);
-						},
-						'selectstart.form.selectbox': function(e) {
-							//Prevent the hidden select box from showing
-							e.preventDefault();
+				this._on(this.ui_widget, {
+					click: function() {
+						//Display or Hide the menu when the box is clicked.
+						if (! self.menu.is(':visible')) {
+							self._showMenu();
 						}
-					});
+						else {
+							self._hideMenu();
+						}
+					},
+					keydown: function(event) {
+						console.debug("keydown");
+						self._handleKeyDown(event);
+					},
+					keypress: function(event) {
+						console.debug("keyup");
+						self._handleKeyPress(event);
+					},
+					selectstart: function(event) {
+						//Prevent the hidden select box from showing
+						event.preventDefault();
+					}
+				});
 
 				//Hide the menu if we click anywhere else
-				$(document).bind('mouseup.form.selectbox', function(e) {
-					if (self.menu.is(':visible')) {
-						//We need to make sure that we are not a child of the widget either.
-						if (self.ui_widget.find($(e.target)).length == 0 && self.menu.find($(e.target)).length == 0 && !self.ui_widget.is($(e.target))) {
-							self._hideMenu();
+				this._on($(document), {
+					mouseup: function(event) {
+						if (self.menu.is(':visible')) {
+							//We need to make sure that we are not a child of the widget either.
+							if (self.ui_widget.find($(event.target)).length == 0 && self.menu.find($(event.target)).length == 0 && !self.ui_widget.is($(event.target))) {
+								self._hideMenu();
+							}
 						}
 					}
 				});
 			}
 
-			//Setup the class hovers and selections for the menus children
-			this.menu
-				.children()
-				.bind({
-					'mouseover.form.selectbox': function(e) {
-						self.menu.addClass('ui-state-hover');
-
-						$(e.target).removeClass('ui-state-highlight');
-					},
-					'mouseout.form.selectbox': function(e) {
-						self.menu.removeClass('ui-state-hover');
-
-						if (self.element.has('option[value="' + $(e.target).attr('rel') + '"]:selected').length != 0) {
-							$(e.target).addClass('ui-state-highlight');
-						}
+			/* FIXME This should be handled by CSS.
+			//Allow highlighted classes to have a hover state.
+			this._on(this.menu.children(), {
+				mouseover: function(event) {
+					$(event.target).removeClass('ui-state-highlight');
+				},
+				mouseout: function(event) {
+					if (self.element.has('option[value="' + $(event.target).attr('rel') + '"]:selected').length != 0) {
+						$(event.target).addClass('ui-state-highlight');
 					}
-				});
+				}
+			});
+			//*/
 		},
-		_init: function() {
-			this._setOption('default',  $(this.element).find('option:selected'));
-			this._setOption('disabled', this.element.is(':disabled'));
-
-			this.refresh();
-		},
-		_destroy: function() {
-			this.label.remove();
-			this.icon.remove();
-			this.iconWrapper.remove();
-
-			this.ui_widget.remove();
-			this.element
-				.removeClass('ui-helper-hidden')
-				.unbind('.form.selectbox');
-		},
-		refresh: function() {
+		_refresh: function() {
 			var self = this;
 
+			/*
 			var isDisabled = this.element.is(':disabled');
 			if (isDisabled !== this.options.disabled) {
 				this._setOption('disabled', isDisabled);
@@ -200,9 +209,12 @@
 				//if( $(this).attr('disabled') ) li.addClass('selectBox-disabled');
 				//if( $(this).attr('selected') ) li.addClass('selectBox-selected');
 			}
+			*/
 
 			//Remove all previously selected items.
-			this.menu.find('.ui-state-highlight').removeClass('ui-state-highlight');
+			this.menu
+				.find('.ui-state-highlight')
+				.removeClass('ui-state-highlight');
 
 			//need to search by data element.
 			var selected = this.element.find('option:selected');
@@ -225,57 +237,44 @@
 				//Set the label text to the current selected item.
 				if (!multipul) {
 					self.label
-						.text($(this).text() || '\u00A0');
+						.text($(this).text());
 				}
 			});
 		},
-		reset: function() {
-			//TODO implement.
-			this.refresh();
-		},
-		widget: function() {
-			return this.ui_widget;
-		},
 		_showMenu: function() {
 			var widget = this.ui_widget;
-			var menu = this.menu;
+			var wrapper = this.wrapper;
 
 			widget
 				.removeClass('ui-state-default ui-corner-all')
 				.addClass('ui-state-focus ui-corner-top');
 
 			// Show menu
-			menu
+			wrapper
 				.css({
 					width: widget.outerWidth() - (
 								parseInt(widget.css('borderLeftWidth')) +
 								parseInt(widget.css('borderRightWidth')) +
-								parseInt(menu.css('padding-left')) +
-								parseInt(menu.css('padding-right'))
+								parseInt(wrapper.css('padding-left')) +
+								parseInt(wrapper.css('padding-right'))
 							),
 					top: widget.offset().top + widget.outerHeight()- (parseInt(widget.css('borderBottomWidth'))),
 					left: widget.offset().left
 				})
-				.removeClass('ui-corner-all')
-				.addClass('ui-corner-bottom');
+				.addClass('ui-corner-bottom ui-state-focus');
 
-			menu.show();
-
-			// Center on selected option
-			//var li = menu.find('.ui-state-highlight:first');
-			//this._keepOptionInView(li, true);
+			wrapper.show().focus();
 		},
 		_hideMenu: function() {
-			var menu = this.menu;
-			menu
-				.removeClass('ui-corner-bottom')
-				.addClass('ui-corner-all');
+			var wrapper = this.wrapper;
+			wrapper
+				.removeClass('ui-corner-bottom ui-state-focus');
 
 			this.ui_widget
 				.removeClass('ui-state-focus  ui-corner-top')
 				.addClass('ui-state-default ui-corner-all');
 
-			menu.hide();
+			wrapper.hide();
 		}
 		/*,
 		_keepOptionInView: function(li, center) {
