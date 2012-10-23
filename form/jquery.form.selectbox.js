@@ -57,8 +57,14 @@
 				});
 			}
 
+			//Setup the menu roll and selection callback.
 			this.menu
-				.menu({'role': 'listbox'})
+				.menu({
+					role: 'listbox',
+					select: function(event, ui) {
+						self._select(ui.item);
+					}
+				})
 				.removeClass('ui-widget ui-widget-content ui-corner-all');
 
 			// Generate control
@@ -75,20 +81,6 @@
 					.insertAfter(this.element)
 					.height(self.menu.children().first().outerHeight() * (this.element.attr('size') || 10));
 
-				this._on(this.menu.children('[role="presentation"]'), {
-					click: function(event) {
-						//Locate the selected item.
-						var item = self.element
-							.find('option[value="' + $(event.target).attr('rel') + '"]');
-
-						//Toggle the hidden select boxes value.
-						item.attr('selected', !item.attr('selected'));
-
-						//Fire a change event to cause a refresh.
-						self.element.change();
-					}
-				});
-
 				//Because the super elements _create method is never called, the
 				//following items need to be called directly.
 
@@ -103,7 +95,10 @@
 				});
 
 				this._on(this.ui_widget, {
-					change: this._refresh
+					change: this._refresh,
+					focus: function() {
+						this.menu.focus();
+					}
 				});
 
 				//Set some initial options.
@@ -131,19 +126,6 @@
 					.height(self.menu.children().first().outerHeight() * (this.element.attr('size') || 10))
 					.hide();
 
-				this._on(this.menu.children('[role="presentation"]'), {
-					click: function(event) {
-						//Hide the menu.
-						self._hideMenu();
-
-						//Set the hidden select boxes value.
-						self.element.val($(event.target).attr('rel'));
-
-						//Fire a change event to cause a refresh.
-						self.element.change();
-					}
-				});
-
 				//Bind the widget to show and hide menu
 				this._on(this.ui_widget, {
 					click: function() {
@@ -154,14 +136,6 @@
 						else {
 							self._hideMenu();
 						}
-					},
-					keydown: function(event) {
-						console.debug("keydown");
-						self._handleKeyDown(event);
-					},
-					keypress: function(event) {
-						console.debug("keyup");
-						self._handleKeyPress(event);
 					},
 					selectstart: function(event) {
 						//Prevent the hidden select box from showing
@@ -241,6 +215,29 @@
 				}
 			});
 		},
+		_select: function(item) {
+			var val = item.children('a:last').prop('rel');
+
+			if (this.element.attr('multiple')) {
+				var option = this.element
+					//Locate the selected item in the element.
+					.find('option[value="' + val + '"]');
+
+					//Toggle the hidden select boxes value.
+					option.prop('selected', !option.is(':selected'));
+			}
+			else {
+				//Hide the dropdown menu.
+				this._hideMenu();
+
+				//Set the hidden select boxes value.
+				this.element
+					.val(val);
+			}
+
+			//Fire a change event to cause a refresh.
+			this.element.change();
+		},
 		_showMenu: function() {
 			var widget = this.ui_widget;
 			var wrapper = this.wrapper;
@@ -263,7 +260,8 @@
 				})
 				.addClass('ui-corner-bottom ui-state-focus');
 
-			wrapper.show().focus();
+			wrapper.show();
+			this.menu.focus();
 		},
 		_hideMenu: function() {
 			var wrapper = this.wrapper;
@@ -302,133 +300,6 @@
 				}
 			}
 			//
-		},
-		_handleKeyDown: function(event) {
-			// Handles open/close and arrow key functionality
-
-			select = $(this.element);
-			var self = this,
-				menu = self.menu,
-				totalOptions = 0,
-				i = 0;
-
-			//FIXME
-			if( self.ui_widget.is(':disabled') ) return;
-
-			switch( event.keyCode ) {
-				case 8: // backspace
-					event.preventDefault();
-					typeSearch = '';
-				break;
-
-				case 9: // tab
-				case 27: // esc
-					self._hideMenu();
-				break;
-
-				case 10:
-				case 13: // enter
-					if (menu.is(':visible')) {
-						var curr = menu.find('.ui-state-focus').not(':disabled').last();
-						if (curr.length < 1) {
-							curr = menu.find('.ui-state-highlight').last();
-						}
-
-						curr.mousedown();
-					}
-					else {
-						this._showMenu();
-					}
-				break;
-
-				case 38: // up
-				case 37: // left
-					event.preventDefault();
-
-					if (menu.is(':visible')) {
-						var prev = menu.find('.ui-state-focus').parent().prevAll('li:has(a)').not(':disabled').first();
-						if (prev.length < 1) {
-							prev = menu.find('.ui-state-highlight').parent().prevAll('li:has(a)').first();
-						}
-
-
-						prev.mouseover();
-						//FIXME keepOptionInView(select, next);
-					}
-					else {
-						self._showMenu();
-					}
-				break;
-
-				case 40: // down
-				case 39: // right
-					event.preventDefault();
-
-					if (menu.is(':visible')) {
-						var next = menu.find('.ui-state-focus').parent().nextAll('li:has(a)').not(':disabled').first();
-						if (next.length < 1) {
-							next = menu.find('.ui-state-highlight').parent().nextAll('li:has(a)').first();
-						}
-
-
-						next.mouseover();
-						//FIXME keepOptionInView(select, next);
-					}
-					else {
-						self._showMenu();
-					}
-				break;
-
-			}
-
-		},
-		_handleKeyPress: function(event) {
-			// Handles type-to-find functionality
-
-			select = $(this.element);
-			var self = this,
-				menu = self.menu;
-
-			//FIXME
-			if( self.ui_widget.is(':disabled') ) return;
-
-			switch( event.keyCode ) {
-				case 9: // tab
-				case 27: // esc
-				case 13: // enter
-				case 38: // up
-				case 37: // left
-				case 40: // down
-				case 39: // right
-					// Don't interfere with the keydown event!
-				break;
-
-				default: // Type to find
-					event.preventDefault();
-
-					if (! menu.is(':visible')) {
-						this._showMenu();
-					}
-
-					clearTimeout(menu.data('timer'));
-					menu.data('search', menu.data('search') + String.fromCharCode(event.charCode || event.keyCode));
-
-					menu.find('li > a').each(function() {
-						if( $(this).text().substr(0, menu.data('search').length).toLowerCase() == menu.data('search').toLowerCase() ) {
-							$(this).parent().mouseover();
-							//keepOptionInView(select, $(this).parent());
-							return false;
-						}
-					});
-
-					// Clear after a brief pause
-					menu.data('timer', setTimeout(function() {
-						menu.data('search', '');
-					}, 1000));
-				break;
-
-			}
-
 		}
 		*/
 	});
