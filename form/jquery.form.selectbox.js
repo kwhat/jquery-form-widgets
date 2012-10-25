@@ -23,8 +23,7 @@
 			var self = this;
 
 			//Create the dropdown menu widget.
-			this.menu = $('<ul/>')
-				.addClass('ui-selectbox-menu');
+			this.menu = $('<ul/>');
 				/*
 				.data('timer', null)
 				.data('search', '');
@@ -72,14 +71,31 @@
 				this._hideElement();
 
 				// Create the widget and wrapper.
-				this.ui_widget = this.wrapper = $('<div/>')
+				this.wrapper = $('<div/>')
 					.addClass('ui-widget ui-state-default ui-corner-all ui-selectbox-menu')
 					.attr('title', this.element.attr('title') || '')
 					.attr('tabindex', this.element.attr('tabindex') || '')
-					.css('overflow-y', 'auto')
 					.append(this.menu)
-					.insertAfter(this.element)
-					.height(self.menu.children().first().outerHeight() * (this.element.attr('size') || 10));
+					.insertAfter(this.element);
+
+				//Because self.menu.children().first().outerHeight() would have
+				//been to easy...  This is why I hate the web; and yes I
+				//understand why it doesnt work.
+				var clone = this.wrapper.clone();
+				clone
+					.appendTo(document.body)
+					.css({
+						'position':'absolute',
+						'visibility':'hidden',
+						'top': '-9999',
+						'left': '-9999'
+					});
+				var height = clone.find('li').first().outerHeight();
+				clone.remove();
+
+				//Set the ui_wrapper and its height
+				this.ui_widget = this.wrapper
+					.height(height * (this.element.attr('size') || 10));
 
 				//Because the super elements _create method is never called, the
 				//following items need to be called directly.
@@ -89,13 +105,13 @@
 
 				//Watch this.element for changes.
 				this._on({
-					change: function() {
-						self.ui_widget.change();
+					change: function(event) {
+						this._change(event);
+						this._refresh();
 					}
 				});
 
 				this._on(this.ui_widget, {
-					change: this._refresh,
 					focus: function() {
 						this.menu.focus();
 					}

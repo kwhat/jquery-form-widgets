@@ -10,7 +10,7 @@
  *
  */
 (function( $, undefined ) {
-	$.widget('form.tooltip', {
+	$.widget('form.errortip', {
 		version: '@VERSION',
 		options: {
 			delay: 200,

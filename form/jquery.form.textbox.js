@@ -25,9 +25,10 @@
 			//Because the super class inputbox is already listening for element
 			//changes and the DOM element is part of this widget, change events
 			//need to be stopped to prevent event bubbling.
-			this._on(this.element, {
+			this._on({
 				change: function(event) {
 					event.stopPropagation();
+					this._change(event);
 				}
 			});
 		},

@@ -36,13 +36,17 @@
 
 			//Watch this.element for changes.
 			this._on({
-				change: function() {
-					this.ui_widget.change();
+				change: function(event) {
+					this._change(event, {
+						value: this.val(),
+						selected: this.selected()
+					});
+
+					this._refresh();
 				}
 			});
 
 			this._on(this.ui_widget, {
-				change: this._refresh,
 				click: function() {
 					this.element.click();
 				}
@@ -59,15 +63,21 @@
 		},
 		_refresh: function() {
 			//Display the checkbox's checked state
-			this.selected(this.element.is(':checked'));
+			this.selected(this.selected());
 		},
 		selected: function(state) {
-			if (state) {
-				this._select();
+			if (arguments.length > 0) {
+				this.element.prop('checked', state);
+
+				if (state) {
+					this._select();
+				}
+				else {
+					this._deselect();
+				}
 			}
-			else {
-				this._deselect();
-			}
+
+			return this.element.is(':checked');
 		},
 		_select: function() {
 			this.ui_widget

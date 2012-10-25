@@ -81,13 +81,10 @@
 
 			//Watch this.element for changes.
 			this._on({
-				change: function() {
-					self.ui_widget.change();
+				change: function(event) {
+					this._trigger('change', event);
+					change: this._refresh();
 				}
-			});
-
-			this._on(this.ui_widget, {
-				change: this._refresh
 			});
 
 			//Set some initial options.
@@ -104,9 +101,24 @@
 		_showElement: function() {
 			this.element.show();
 		},
-		val: function() {
+		_change: function(event, data) {
+			if (!data) {
+				data = { value: this.val() };
+			}
+
+			this._trigger('change', event, data);
+		},
+		//TODO Change function name to 'value' for consistancy.
+		val: function(value) {
 			//Call this.element as a getter or a setter.
-			return $.fn.val.apply(this.element, arguments);
+			var val = $.fn.val.apply(this.element, arguments);
+
+			//If the value was set, make sure a change event is fired.
+			if (value) {
+				this.element.change();
+			}
+
+			return val;
 		},
 		_destroy: function() {
 			this.ui_widget.remove();
