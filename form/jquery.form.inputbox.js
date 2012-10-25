@@ -82,8 +82,8 @@
 			//Watch this.element for changes.
 			this._on({
 				change: function(event) {
-					this._trigger('change', event);
-					change: this._refresh();
+					this._change(event);
+					this._refresh();
 				}
 			});
 
@@ -102,9 +102,11 @@
 			this.element.show();
 		},
 		_change: function(event, data) {
-			if (!data) {
-				data = { value: this.val() };
-			}
+			//If no data was specified, send the value.
+			data = data || {
+				value: this.val(),
+				widget: this.widget()
+			};
 
 			this._trigger('change', event, data);
 		},

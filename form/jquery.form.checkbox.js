@@ -37,12 +37,14 @@
 			//Watch this.element for changes.
 			this._on({
 				change: function(event) {
-					this._change(event, {
-						value: this.val(),
-						selected: this.selected()
-					});
-
+					console.debug('change');
 					this._refresh();
+
+					this._change(event, {
+						selected: this.selected(),
+						value: this.val(),
+						widget: this.widget()
+					});
 				}
 			});
 
@@ -63,21 +65,29 @@
 		},
 		_refresh: function() {
 			//Display the checkbox's checked state
-			this.selected(this.selected());
+			//this.selected(this.selected());
+			this.selected( this.element.is(':checked') );
 		},
 		selected: function(state) {
-			if (arguments.length > 0) {
-				this.element.prop('checked', state);
+			if (state) {
+				//FIXME This part is broken and causing refresh not to pain the checkbox...
+				if (this.selected() != state) {
+					//NOIFIY CHANGE!!!!
+					if (state) {
+						this._select();
+					}
+					else {
+						this._deselect();
+					}
+				}
 
-				if (state) {
-					this._select();
-				}
-				else {
-					this._deselect();
-				}
+				this.element.prop('checked', state);
+			}
+			else {
+				state = this.element.is(':checked');
 			}
 
-			return this.element.is(':checked');
+			return state;
 		},
 		_select: function() {
 			this.ui_widget

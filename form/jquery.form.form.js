@@ -37,14 +37,16 @@
 			return true;
 		},
 		success: function(widget) {
-			$(widget)
+			widget
 				.removeClass('ui-state-error')
-				.tooltip({'disabled': true});
+				.errortip({'disabled': true});
 		},
 		failure: function(widget) {
-			$(widget)
+			console.debug(widget);
+
+			widget
 				.addClass('ui-state-error')
-				.tooltip({
+				.errortip({
 					'message': this.tooltip.message,
 					'disabled': false
 				});
@@ -59,8 +61,6 @@
 		},
 		_create: function() {
 			var self = this;
-
-			console.debug('test');
 
 			//Bind submit and reset events for this form.
 			this._on({
@@ -81,58 +81,47 @@
 					validation = valopts.prop(name);
 
 				if (element.is(':button, :reset, :submit')) {
-					element.button({
-						change: function(e) {
-							console.debug(e);
-							//self._validate;
-						}
-					});
+					element.button();
 				}
 				else if (element.is(':checkbox')) {
 					element.checkbox({
-						change: function(e) {
-							console.debug(e);
-							//self._validate;
+						change: function(event, data) {
+							self._validate($(event.target), data.widget);
 						}
 					});
 				}
 				else if (element.is(':radio')) {
 					element.radio({
-						change: function(e) {
-							console.debug(e);
-							//self._validate;
+						change: function(event, data) {
+							self._validate($(event.target), data.widget);
 						}
 					});
 				}
 				else if (element.is(':file')) {
 					element.filebox({
-						change: function(e) {
-							console.debug(e);
-							//self._validate;
+						change: function(event, data) {
+							self._validate($(event.target), data.widget);
 						}
 					});
 				}
 				else if (element.is(':text') && element.hasClass('date')) {
 					element.datebox({
-						change: function(e) {
-							console.debug(e);
-							//self._validate;
+						change: function(event, data) {
+							self._validate($(event.target), data.widget);
 						}
 					});
 				}
 				else if (element.is(':text') || element.is('textarea') || element.is(':password')) {
 					element.textbox({
 						change: function(event, data) {
-							console.debug(event);
-							//self._validate;
+							self._validate($(event.target), data.widget);
 						}
 					});
 				}
 				else if (element.is('select')) {
 					element.selectbox({
-						change: function(e) {
-							console.debug(e);
-							//self._validate;
+						change: function(event, data) {
+							self._validate($(event.target), data.widget);
 						}
 					});
 				}
@@ -151,7 +140,7 @@
 			//TODO implement
 		},
 		_validate: function(element, widget) {
-			var	valopts = $(self.options.validation),
+			var	valopts = $(this.options.validation),
 				//Get the predefined validation options for form item names.
 				name = element.prop('name'),
 				validation = valopts.prop(name);
@@ -161,7 +150,7 @@
 
 			if (validation != undefined) {
 				//If there are validation rules continue
-				var siblings = this.element.find($(element).prop('nodeName') + '[name="' + name + '"]');
+				var siblings = this.element.find(element.prop('nodeName') + '[name="' + name + '"]');
 				if (siblings.is(':checkbox, :radio')) {
 					siblings = siblings.filter(':checked');
 				}

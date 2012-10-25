@@ -28,7 +28,6 @@
 			this._on({
 				change: function(event) {
 					event.stopPropagation();
-					this._change(event);
 				}
 			});
 		},
