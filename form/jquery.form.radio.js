@@ -18,26 +18,18 @@
 				deselected: 'ui-icon-radio-off'
 			}
 		},
-		_change:function() {
-			//Make sure every radio button knows a change occured.
-			$('input[name=' + this.element.attr('name') + ']')
-				.change();
-
-			this._super();
-		}
-		/*
 		_create: function() {
 			this._super();
 
-			this._off(this.ui_widget, 'click');
-			this._on(this.ui_widget, {
-				click: function() {
-					this.element.click();
-
-
+			//Watch this.element for changes.
+			this._on({
+				change: function(event) {
+					//Make sure every radio button knows a change occured.
+					$.each($('input[name=' + this.element.attr('name') + ']').not(this.element), function(index, value) {
+						$(this).radio('selected', false);
+					});
 				}
 			});
 		}
-		*/
 	});
 })( jQuery );

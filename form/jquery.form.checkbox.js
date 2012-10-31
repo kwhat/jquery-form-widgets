@@ -37,14 +37,8 @@
 			//Watch this.element for changes.
 			this._on({
 				change: function(event) {
-					console.debug('change');
+					//Do not fire a change request or call selected()!
 					this._refresh();
-
-					this._change(event, {
-						selected: this.selected(),
-						value: this.val(),
-						widget: this.widget()
-					});
 				}
 			});
 
@@ -65,45 +59,42 @@
 		},
 		_refresh: function() {
 			//Display the checkbox's checked state
-			//this.selected(this.selected());
-			this.selected( this.element.is(':checked') );
-		},
-		selected: function(state) {
-			if (state) {
-				//FIXME This part is broken and causing refresh not to pain the checkbox...
-				if (this.selected() != state) {
-					//NOIFIY CHANGE!!!!
-					if (state) {
-						this._select();
-					}
-					else {
-						this._deselect();
-					}
-				}
-
-				this.element.prop('checked', state);
-			}
-			else {
-				state = this.element.is(':checked');
-			}
-
-			return state;
-		},
-		_select: function() {
-			this.ui_widget
+			if (this.selected()) {
+				this.ui_widget
 					.addClass('ui-state-active');
 
 				this.icon
 					.addClass(this.options.icons.selected)
 					.removeClass(this.options.icons.deselected);
-		},
-		_deselect: function() {
-			this.ui_widget
+			}
+			else {
+				this.ui_widget
 					.removeClass('ui-state-active');
 
 				this.icon
 					.addClass(this.options.icons.deselected)
 					.removeClass(this.options.icons.selected);
+			}
+		},
+		selected: function(state) {
+			if (typeof state == 'boolean') {
+				this.element.prop('checked', state);
+
+				this._refresh();
+
+				//Notify that a change occured.
+				this._change({
+					selected: this.selected(),
+					value: this.val(),
+					widget: this.widget()
+				});
+			}
+			else {
+				//Not calling the setter so just return the state.
+				state = this.element.is(':checked');
+			}
+
+			return state;
 		}
 	});
 })( jQuery );
