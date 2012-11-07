@@ -62,16 +62,13 @@
 		<echo message="Concatenating files..." />
 
 		<!-- Create a folder and remove the old file -->
-		<mkdir dir="${dir.dist}/form" />
-		<mkdir dir="${dir.dist}/themes/form" />
 		<delete file="${dir.dist}/form/${ant.project.name}-${ant.project.version}.js" />
-		<delete file="${dir.dist}/themes/form/${ant.project.name}-${ant.project.version}.css" />
+		<delete file="${dir.dist}/themes/${ant.project.name}-${ant.project.version}.css" />
 
 		<!-- Create 1 file from all js files in src dir -->
 		<concat destfile="${dir.dist}/form/${ant.project.name}-${ant.project.version}.js">
 			<!-- Because order matters, inputbox must come before the reset of the form items -->
 			<fileset dir="${dir.src}">
-				<include name="jquery.ui.*.js" />
 				<include name="jquery.form.form.js" />
 				<include name="jquery.form.inputbox.js" />
 			</fileset>
@@ -83,9 +80,9 @@
 			</fileset>
 		</concat>
 
-		<!-- Create 1 file from all css files in themes/form dir -->
-		<concat destfile="${dir.dist}/themes/form/${ant.project.name}-${ant.project.version}.css">
-			<fileset dir="themes/form" includes="jquery.*.css" excludes="jquery.form.all.css" />
+		<!-- Create 1 file from all css files in themes dir -->
+		<concat destfile="${dir.dist}/themes/${ant.project.name}-${ant.project.version}.css">
+			<fileset dir="themes" includes="jquery.form.*.css" excludes="jquery.form.all.css" />
 		</concat>
 
 		<echo message="Concatenation complete." />
@@ -95,7 +92,7 @@
 	<target name="minify" depends="concatenate" description="Remove all comments and whitespace, no compression, great in combination with GZip">
 		<echo message="Minifing files..." />
 		<mkdir dir="${dir.dist}/form/minified" />
-		<mkdir dir="${dir.dist}/themes/form/minified" />
+		<mkdir dir="${dir.dist}/themes/minified" />
 
 		<parallel threadsperprocessor="1">
 			<apply executable="java" parallel="false">
@@ -111,28 +108,28 @@
 			</apply>
 
 			<apply executable="java" parallel="false">
-				<fileset dir="${dir.dist}/themes/form" includes="*.css" />
+				<fileset dir="${dir.dist}/themes" includes="*.css" />
 				<arg line="-jar" />
 				<arg path="${jar.yuicompressor}" />
 				<arg line="--charset utf-8" />
 				<arg line="-v" />
 				<srcfile />
 				<arg line="-o" />
-				<mapper type="glob" from="*.css" to="${dir.dist}/themes/form/minified/*.min.css" />
+				<mapper type="glob" from="*.css" to="${dir.dist}/themes/minified/*.min.css" />
 				<targetfile/>
 			</apply>
 		</parallel>
 
 		<!-- Update minified css includes -->
 		<replaceregexp match=".css" replace=".min.css" flags="g">
-			<fileset dir="${dir.dist}/themes/form/minified">
+			<fileset dir="${dir.dist}/themes/minified">
 				<include name="*.all.min.css"/>
 			</fileset>
 		</replaceregexp>
 
 		<!-- make a copy of all theme images to ensure that relative paths in minified css files work -->
-		<copy todir="${dir.dist}/themes/form/minified/images" >
-			<fileset dir="themes/form/images" />
+		<copy todir="${dir.dist}/themes/minified/images" >
+			<fileset dir="themes/images" />
 		</copy>
 
 		<echo message="Minification complete." />
@@ -143,8 +140,8 @@
 		<replaceregexp match="@VERSION" replace="${ant.project.version}" flags="g" byline="true">
 		    <fileset dir="${dir.dist}/form" includes="*.js"/>
 			<fileset dir="${dir.dist}/form/minified" includes="*.js"/>
-			<fileset dir="${dir.dist}/themes/form" includes="*.css"/>
-			<fileset dir="${dir.dist}/themes/form/minified" includes="*.css"/>
+			<fileset dir="${dir.dist}/themes" includes="*.css"/>
+			<fileset dir="${dir.dist}/themes/minified" includes="*.css"/>
 		</replaceregexp>
 		<echo message="Replaced all @VERSION to ${ant.project.version}." />
 	</target>
@@ -157,12 +154,13 @@
 		<copy todir="${dir.dist}/headers" overwrite="true">
 			<fileset
 				dir="${dir.dist}/form"
-				includes="*.js"
+				includes="jquery.form.*.js"
 				excludes="${ant.project.name}-${ant.project.version}*.js"
 			/>
 			<fileset
 				dir="${dir.dist}/themes"
 				includes="jquery.form.*.css"
+				excludes="${ant.project.name}-${ant.project.version}*.css"
 			/>
 		</copy>
 
@@ -178,8 +176,8 @@
 		<for param="file">
 			<path>
 				<fileset dir="${dir.dist}">
-					<include name="form/minified/*.js" />
-					<include name="themes/form/minified/*.css" />
+					<include name="form/minified/jquery.form.*.js" />
+					<include name="themes/minified/jquery.form.*.css" />
 					<exclude name="form/minified/${ant.project.name}-${ant.project.version}*.js" />
 				</fileset>
 			</path>
@@ -195,6 +193,8 @@
 			</sequential>
 		</for>
 
+		<echo>test</echo>
+
 		<!-- Create a header for the complete minified js file -->
 		<concat destfile="${dir.dist}/headered/${ant.project.name}-${ant.project.version}.min.js">
 			<header file="${dir.dist}/headers/jquery.form.all.css" />
@@ -205,7 +205,7 @@
 			<fileset dir="${dir.dist}/headered/" includes="*.js" />
 		</copy>
 
-		<copy todir="${dir.dist}/themes/form/minified" overwrite="true">
+		<copy todir="${dir.dist}/themes/minified" overwrite="true">
 			<fileset dir="${dir.dist}/headered/" includes="*.css" />
 		</copy>
 
