@@ -1,0 +1,52 @@
+/*
+ * jQuery Form Selectbox @VERSION
+ *
+ * Copyright 2012, AUTHORS.txt
+ * Released under the MIT license.
+ *
+ * http://code.google.com/p/jquery-form-widgets/
+ *
+ */
+
+.ui-selectbox-menu {
+	display: block;
+	width: auto;
+
+	outline: none;
+	float: none;
+
+	/* FIXME: Need to use something not quite white for the background */
+	background: #FFFFFF/*{bgColorDefault}*/ url(images/ui-bg_glass_65_ffffff_1x400.png)/*{bgImgUrlDefault}*/ 50%/*{bgDefaultXPos}*/ 50%/*{bgDefaultYPos}*/ repeat-x/*{bgDefaultRepeat}*/;
+
+	overflow-x: hidden;
+	overflow-y: auto;
+	text-overflow: ellipsis;
+
+	white-space: nowrap;
+}
+
+.ui-menu .ui-menu-item span {
+	display: block;
+	text-decoration: none;
+	padding: 2px .1em;
+	line-height:1.5;
+	zoom:1;
+}
+
+.ui-menu .ui-menu-item a {
+	cursor: pointer;
+
+	/* JQuery UI Outline Fix */
+	outline: 0;
+}
+
+/* JQuery UI Highlight Fix */
+.ui-menu .ui-menu-item {
+	border: 1px solid transparent;
+	margin-left: -1px;
+}
+
+.ui-menu .ui-menu-item a.ui-state-highlight {
+	font-weight: normal;
+	margin: -1px;
+}

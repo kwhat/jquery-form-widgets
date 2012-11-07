@@ -42,8 +42,6 @@
 				.errortip({'disabled': true});
 		},
 		failure: function(widget) {
-			console.debug(widget);
-
 			widget
 				.addClass('ui-state-error')
 				.errortip({
@@ -54,6 +52,7 @@
 	};
 
 	$.widget('form.form', {
+		defaultElement: '<form>',
 		version: '@VERSION',
 		options: {
 			ajax: false,
@@ -78,52 +77,38 @@
 					valopts = $(self.options.validation),
 					//Get the predefined validation options for form item names.
 					name = element.prop('name'),
-					validation = valopts.prop(name);
+					validation = valopts.prop(name)
+					widgetOptions = {};
+
+
+				if (validation && validation.live) {
+					widgetOptions = {
+						change: function(event, data) {
+							self._validate($(event.target), data.widget);
+						}
+					};
+				}
 
 				if (element.is(':button, :reset, :submit')) {
 					element.button();
 				}
 				else if (element.is(':checkbox')) {
-					element.checkbox({
-						change: function(event, data) {
-							self._validate($(event.target), data.widget);
-						}
-					});
+					element.checkbox(widgetOptions);
 				}
 				else if (element.is(':radio')) {
-					element.radio({
-						change: function(event, data) {
-							self._validate($(event.target), data.widget);
-						}
-					});
+					element.radio(widgetOptions);
 				}
 				else if (element.is(':file')) {
-					element.filebox({
-						change: function(event, data) {
-							self._validate($(event.target), data.widget);
-						}
-					});
+					element.filebox(widgetOptions);
 				}
 				else if (element.is(':text') && element.hasClass('date')) {
-					element.datebox({
-						change: function(event, data) {
-							self._validate($(event.target), data.widget);
-						}
-					});
+					element.datebox(widgetOptions);
 				}
 				else if (element.is(':text') || element.is('textarea') || element.is(':password')) {
-					element.textbox({
-						change: function(event, data) {
-							self._validate($(event.target), data.widget);
-						}
-					});
+					element.textbox(widgetOptions);
 				}
 				else if (element.is('select')) {
-					element.selectbox({
-						change: function(event, data) {
-							self._validate($(event.target), data.widget);
-						}
-					});
+					element.selectbox(widgetOptions);
 				}
 
 				//Check to see if this element has any validation options set.
@@ -234,12 +219,22 @@
 			var self = this,
 				status = true;
 
-			//Apply validation rules
-			$.each(this.options.validation, function(key, value) {
-				$.each($(event.target).find('[name="' + key + '"]'), function() {
-					status = status && self._validate(this);
+			//Apply validation rules by looping over each rule
+			$.each(this.options.validation, function(name) {
+				//Look for form elements that have have the rule name.
+				$.each($(event.target).find('[name="' + name + '"]'), function(index, element) {
+					//Loop over the data map to try and find the widget data
+					//item by looking for the form prefix in the key name.
+					$.each($(this).data(), function(key, value) {
+						if (key.match(/^form/i)) {
+							status = self._validate($(element), value.widget()) && status;
+
+							return false;
+						}
+					});
 				});
 			});
+
 
 			//We must prevent the form submit because there is an error or it
 			//will be sent via ajax.

@@ -1,0 +1,14 @@
+/*
+ * jQuery Form Radio @VERSION
+ *
+ * Copyright 2012, AUTHORS.txt
+ * Released under the MIT license.
+ *
+ * http://code.google.com/p/jquery-form-widgets/
+ *
+ */
+
+/* JQuery UI fix for the icon positioning being off */
+.ui-icon-bullet {
+	background-position: -79px -144px;
+}

@@ -161,8 +161,8 @@
 				excludes="${ant.project.name}-${ant.project.version}*.js"
 			/>
 			<fileset
-				dir="${dir.dist}/themes/form"
-				includes="*.css"
+				dir="${dir.dist}/themes"
+				includes="jquery.form.*.css"
 			/>
 		</copy>
 
