@@ -219,6 +219,8 @@
 			var self = this,
 				status = true;
 
+			self._trigger('submit', event);
+
 			//Apply validation rules by looping over each rule
 			$.each(this.options.validation, function(name) {
 				//Look for form elements that have have the rule name.
@@ -257,8 +259,7 @@
 						else {
 							$.each(obj.data, function(key, value) {
 								self.element.find('[name="' + key + '"]')
-									.error('option', {
-										error: true,
+									.errortip('option', {
 										message: value
 									});
 							});
@@ -274,6 +275,8 @@
 		},
 		_reset: function(event) {
 			var self = this;
+
+			self._trigger('reset', event);
 
 			//We must prevent the default action for the form reset because resets DO NOT trigger chagne events on form elements.
 			event.preventDefault();
