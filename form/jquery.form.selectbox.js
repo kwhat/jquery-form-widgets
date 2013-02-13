@@ -289,6 +289,10 @@
 				.addClass('ui-state-default ui-corner-all');
 
 			wrapper.hide();
+		},
+		_destroy: function() {
+			this.menu.menu('destroy');
+			this._super();
 		}
 		/*,
 		_keepOptionInView: function(li, center) {

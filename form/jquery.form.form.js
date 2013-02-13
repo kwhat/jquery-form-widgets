@@ -258,10 +258,15 @@
 						}
 						else {
 							$.each(obj.data, function(key, value) {
-								self.element.find('[name="' + key + '"]')
-									.errortip('option', {
-										message: value
-									});
+								var	valopts = $(self.options.validation),
+									validation = valopts.prop(key),
+									element = self.element.find('[name="' + key + '"]'),
+									widget = self._callWidget(element, 'widget');
+
+								if (validation != undefined) {
+									validation.tooltip.message = value;
+									validation.failure(widget);
+								}
 							});
 
 							self._trigger('failure', null, obj.data);
