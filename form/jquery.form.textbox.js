@@ -1,7 +1,7 @@
 /*
  * jQuery Form Textbox @VERSION
  *
- * Copyright 2012, AUTHORS.txt
+ * Copyright 2013, AUTHORS.txt
  * Released under the MIT license.
  *
  * http://code.google.com/p/jquery-form-widgets/
@@ -21,15 +21,6 @@
 			this.label = this.element
 				.addClass('ui-inputbox-text ui-textbox')
 				.appendTo(this.ui_widget);
-
-			//Because the super class inputbox is already listening for element
-			//changes and the DOM element is part of this widget, change events
-			//need to be stopped to prevent event bubbling.
-			this._on({
-				change: function(event) {
-					event.stopPropagation();
-				}
-			});
 		},
 		_hideElement: function() { /* Do Nothing */ },
 		_showElement: function() { /* Do Nothing */ },
@@ -44,6 +35,6 @@
 			//Call super._destroy()
 			this._super();
 		},
-		_refresh: function() { /* Do Nothing */ }
+		refresh: function() { /* Do Nothing */ }
 	});
 })( jQuery );

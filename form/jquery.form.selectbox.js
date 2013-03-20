@@ -1,7 +1,7 @@
 /*
  * jQuery Form Selectbox @VERSION
  *
- * Copyright 2012, AUTHORS.txt
+ * Copyright 2013, AUTHORS.txt
  * Released under the MIT license.
  *
  * http://code.google.com/p/jquery-form-widgets/
@@ -106,8 +106,8 @@
 				//Watch this.element for changes.
 				this._on({
 					change: function(event) {
-						this._change(event);
-						this._refresh();
+						self.refresh();
+						self.options.change(event);
 					}
 				});
 
@@ -123,7 +123,7 @@
 					'disabled': this.element.is(':disabled')
 				});
 
-				this._refresh();
+				this.refresh();
 			}
 			else {
 				//Call super._create()
@@ -186,7 +186,7 @@
 			});
 			//*/
 		},
-		_refresh: function() {
+		refresh: function() {
 			var self = this;
 
 			/*

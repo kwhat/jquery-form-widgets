@@ -1,7 +1,7 @@
 /*
  * jQuery Form Inputbox @VERSION
  *
- * Copyright 2012, AUTHORS.txt
+ * Copyright 2013, AUTHORS.txt
  * Released under the MIT license.
  *
  * http://code.google.com/p/jquery-form-widgets/
@@ -18,7 +18,9 @@
 			icons: {
 				primary: null,
 				secondary: null
-			}
+			},
+			change: $.noop,
+			click: $.noop
 		},
 		_create: function() {
 			var self = this,
@@ -29,8 +31,7 @@
 			//Create the inputbox widget.
 			this.ui_widget = $('<div/>')
 				.addClass('ui-widget ui-state-default ui-corner-all ui-inputbox')
-				.attr('title', this.element.attr('title') || '')
-				.attr('tabindex', this.element.attr('tabindex') || '')
+				.attr('tabindex', this.element.attr('tabindex') || '0')
 				.insertAfter(this.element);
 
 			//Set the widget to hoverable
@@ -53,6 +54,10 @@
 				//Create a wrapper around the icon so it can be centered.
 				this.iconPrimaryWrapper = $('<span/>')
 					.addClass('ui-state-default ui-inputbox-icon-primary')
+					.click(function(event) {
+						event.target = self.element;
+						self.options.click(event);
+					})
 					.append(this.iconPrimary)
 					.appendTo(this.ui_widget);
 
@@ -79,11 +84,11 @@
 				this._hoverable(this.iconPrimaryWrapper);
 			}
 
-			//Watch this.element for changes.
+			//Watch this.element for events that need to be forwarded.
 			this._on({
 				change: function(event) {
-					this._change(event);
-					this._refresh();
+					self.refresh();
+					self.options.change(event);
 				}
 			});
 
@@ -93,7 +98,7 @@
 				'disabled': this.element.is(':disabled')
 			});
 
-			this._refresh();
+			this.refresh();
 		},
 		_hideElement: function() {
 			this.element.hide();
@@ -101,17 +106,7 @@
 		_showElement: function() {
 			this.element.show();
 		},
-		_change: function(event, data) {
-			//If no data was specified, send the value.
-			data = data || {
-				value: this.val(),
-				widget: this.widget()
-			};
-
-			this._trigger('change', event, data);
-		},
-		//TODO Change function name to 'value' for consistancy.
-		val: function(value) {
+		value: function(value) {
 			//Call this.element as a getter or a setter.
 			var val = $.fn.val.apply(this.element, arguments);
 
@@ -139,12 +134,12 @@
 			//Call super._setOption
 			this._super(key, value);
 		},
-		_refresh: function() {
-			this.label.text(this.val());
+		refresh: function() {
+			this.label.text(this.value());
 		},
 		reset: function() {
 			this.element.val(this.option('default'));
-			this._refresh();
+			this.refresh();
 		},
 		widget: function() {
 			return this.ui_widget;

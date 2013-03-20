@@ -1,7 +1,7 @@
 /*
  * jQuery Form Radio @VERSION
  *
- * Copyright 2012, AUTHORS.txt
+ * Copyright 2013, AUTHORS.txt
  * Released under the MIT license.
  *
  * http://code.google.com/p/jquery-form-widgets/

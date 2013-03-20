@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 
 <head>
@@ -17,31 +16,26 @@
 		}
 	</style>
 
-	<link rel="stylesheet" type="text/css" href="../themes/jquery-ui-1.9.2.css" />
+	<link rel="stylesheet" type="text/css" href="../themes/jquery-ui-1.10.2.css" />
 
 	<link rel="stylesheet" type="text/css" href="../themes/jquery.form.inputbox.css" />
-	<link rel="stylesheet" type="text/css" href="../themes/jquery.form.tooltip.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/jquery.form.textbox.css" />
-	<link rel="stylesheet" type="text/css" href="../themes/jquery.form.datebox.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/jquery.form.filebox.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/jquery.form.selectbox.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/jquery.form.checkbox.css" />
 	<link rel="stylesheet" type="text/css" href="../themes/jquery.form.radio.css" />
 
 
-	<script type="text/javascript" src="../jquery-1.8.3.js"></script>
-	<script type="text/javascript" src="../jquery-ui-1.9.2.js"></script>
+	<script type="text/javascript" src="../jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="../jquery-ui-1.10.2.js"></script>
 
 	<script type="text/javascript" src="../form/jquery.form.form.js"></script>
 	<script type="text/javascript" src="../form/jquery.form.inputbox.js"></script>
-	<script type="text/javascript" src="../form/jquery.form.tooltip.js"></script>
 	<script type="text/javascript" src="../form/jquery.form.textbox.js"></script>
-	<script type="text/javascript" src="../form/jquery.form.datebox.js"></script>
 	<script type="text/javascript" src="../form/jquery.form.filebox.js"></script>
 	<script type="text/javascript" src="../form/jquery.form.selectbox.js"></script>
 	<script type="text/javascript" src="../form/jquery.form.checkbox.js"></script>
 	<script type="text/javascript" src="../form/jquery.form.radio.js"></script>
-
 
 	<script type="text/JavaScript">
 		$(document).ready(
@@ -70,7 +64,8 @@
 						'gender': {
 							live: true,
 							required: true,
-							check: function() {
+							check: function(widget) {
+								widget.attr('title', 'Always an error');
 								return false;
 							}
 						}
@@ -105,25 +100,6 @@
 								<input type="text" name="textbox" id="textbox" maxlength="32" />
 							</td>
 						</tr>
-
-						<tr>
-							<td>
-								<label for="passwordbox">Password Box</label>
-							</td>
-							<td>
-								<input type="password" name="passwordbox" id="passwordbox" maxlength="16" />
-							</td>
-						</tr>
-
-						<tr>
-							<td>
-								<label for="disabledbox">Disabled Box</label>
-							</td>
-							<td>
-								<input type="text" name="disabledbox" id="disabledbox" value="disabled" maxlength="32" disabled="disabled" />
-							</td>
-						</tr>
-
 
 						<tr>
 							<td>
@@ -183,16 +159,6 @@
 								<input type="file" name="file_box" id="file_box" style="width: 100%;" />
 							</td>
 						</tr>
-
-						<tr>
-							<td>
-								<label for="date_box">Date Box</label>
-							</td>
-							<td>
-								<input type="text" name="date_box" id="date_box" class="date" style="width: 100%;" />
-							</td>
-						</tr>
-
 
 						<tr>
 							<td>
@@ -264,7 +230,6 @@
 							<td>
 								<input id="submit" type="submit" />
 								<input id="reset" type="reset" />
-								<input id="button" type="button" value="Disabled" onclick="$('#textbox').textbox('option', {disabled: true});"/>
 							</td>
 						</tr>
 					</table>

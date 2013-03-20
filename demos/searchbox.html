@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>JQuery Form Searchbox</title>
+
+	<style type="text/css">
+		/* Fix the make themes look like they do on jqueryui.com */
+		body {
+			margin: 0;
+			padding: 0 0 20px;
+			min-height: 100%;
+			font-family: "Arial", "Helvetica", "Verdana", "sans-serif";
+			font-size: 10px;
+		}
+	</style>
+
+	<link rel="stylesheet" type="text/css" href="../themes/jquery-ui-1.10.2.css" />
+	<link rel="stylesheet" type="text/css" href="../themes/jquery.form.inputbox.css" />
+	<link rel="stylesheet" type="text/css" href="../themes/jquery.form.textbox.css" />
+
+	<script type="text/javascript" src="../jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="../jquery-ui-1.10.2.js"></script>
+	<script type="text/javascript" src="../form/jquery.form.inputbox.js"></script>
+	<script type="text/javascript" src="../form/jquery.form.textbox.js"></script>
+
+	<script type="text/JavaScript">
+		$(document).ready(function() {
+			 var availableTags = [
+				'ActionScript',
+				'AppleScript',
+				'Asp',
+				'BASIC',
+				'C',
+				'C++',
+				'Clojure',
+				'COBOL',
+				'ColdFusion',
+				'Erlang',
+				'Fortran',
+				'Groovy',
+				'Haskell',
+				'Java',
+				'JavaScript',
+				'Lisp',
+				'Perl',
+				'PHP',
+				'Python',
+				'Ruby',
+				'Scala',
+				'Scheme'
+			];
+
+			var _create = $.ui.autocomplete.prototype._create;
+			$.ui.autocomplete.prototype._create = function() {
+				var self = this;
+				_create.call(self);
+
+				this.element.bind('keydown.autocomplete', function(e) {
+					var keyCode = $.ui.keyCode;
+					switch (e.keyCode) {
+						case keyCode.ENTER:
+						case keyCode.NUMPAD_ENTER:
+							//passthrough - ENTER and TAB both select the current element
+						case keyCode.TAB:
+							//Slect the current search tearm regardless of focus
+							if ( !self.menu.active ) {
+								// reset the term after the select event
+								// this allows custom select handling to work properly
+								var item = {
+									'label': self.element.val(),
+									'value': null
+								};
+								$(e.target)
+									.autocomplete('option', 'change')
+									.call(e.target, e, { 'item': item });
+
+								self.close(e);
+								self.previous = self.selectedItem;
+								self.selectedItem = item;
+							}
+						break;
+					}
+				});
+			};
+
+			var _suggest = $.ui.autocomplete.prototype._suggest;
+			$.ui.autocomplete.prototype._suggest = function(items) {
+				var self = this;
+
+				self.options.position["offset"] = "0 1";
+
+				_suggest.call(self, items);
+			};
+
+
+			$.ui.autocomplete.prototype._resizeMenu = function() {
+				var ul = this.menu.element;
+				ul.outerWidth( Math.max(
+					// Firefox wraps long text (possibly a rounding bug)
+					// so we add 1px to avoid the wrapping (#7513)
+					ul.width('').outerWidth() + 1,
+					$('#searchbox').textbox('widget').outerWidth()
+				) );
+			};
+
+			$('#searchbox')
+				.textbox({
+					icons: {
+						primary: 'ui-icon-search'
+					}
+				})
+				.autocomplete({
+					source: availableTags,
+					minLength: 1
+					/*
+					position: {
+						//Something like this makes sense, but it doesnt work.
+						my : "right top",
+						at: "right bottom",
+						of: $('#searchbox').textbox('widget')
+						//If anyone can figure out how to use this, let me know.
+						using: function(hash, feedback)  {
+							console.debug(hash);
+							console.debug(feedback);
+
+							$(feedback.target).css({'top': 25, 'left': 25});
+
+						}
+					}
+					*/
+				});
+		});
+	</script>
+</head>
+
+<body>
+	<div id="demo">
+		<div id="wrapper" style="width: 300px;">
+			<input type="text" name="searchbox" id="searchbox" />
+		</div>
+	</div><!-- End demo -->
+
+	<div>
+		<p>
+			Examples of the searchbox widget.
+		</p>
+	</div><!-- End demo-description -->
+</body>
+</html>

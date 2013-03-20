@@ -1,7 +1,7 @@
 /*
  * jQuery Form @VERSION
  *
- * Copyright 2012, AUTHORS.txt
+ * Copyright 2013, AUTHORS.txt
  * Released under the MIT license.
  *
  * http://code.google.com/p/jquery-form-widgets/
@@ -9,15 +9,11 @@
  * Depends:
  *	jquery.form.inputbox.js
  *	jquery.form.checkbox.js
-
- *	jquery.form.tooltip.js
-
  *	jquery.form.filebox.js
  *	jquery.form.radio.js
  *	jquery.form.selectbox.js
  *	jquery.form.textbox.js
- *	jquery.form.button.js
- *	jquery.ui.datepicker.js
+ *	jquery.ui.button.js
  */
 
 (function( $, undefined ) {
@@ -29,24 +25,34 @@
 		numeric: false,
 		minLength: undefined,
 		maxLength: undefined,
-		tooltip: {
-			disabled: true,
-			message: undefined
-		},
+		message: 'An error occured.',
 		check: function(widget) {
 			return true;
 		},
 		success: function(widget) {
 			widget
 				.removeClass('ui-state-error')
-				.errortip({'disabled': true});
+				.removeAttr('title')
+				.filter(':data("ui-tooltip")')
+				.tooltip('destroy');
 		},
 		failure: function(widget) {
 			widget
 				.addClass('ui-state-error')
-				.errortip({
-					'message': this.tooltip.message,
-					'disabled': false
+				.attr('title', this.message)
+				.tooltip({
+					track: true,
+					tooltipClass: "ui-state-error"
+					/*,
+					content: function() {
+						// Something like this should be used
+						if ($(this).is('[title]')) {
+							return $(this).attr('title');
+						}
+
+					   return msg;
+					}
+					*/
 				});
 		}
 	};
@@ -80,11 +86,11 @@
 					validation = valopts.prop(name)
 					widgetOptions = {};
 
-
+				// If enabled setup live validation.
 				if (validation && validation.live) {
 					widgetOptions = {
-						change: function(event, data) {
-							self._validate($(event.target), data.widget);
+						change: function(event) {
+							self._validate($(event.target));
 						}
 					};
 				}
@@ -92,23 +98,8 @@
 				if (element.is(':button, :reset, :submit')) {
 					element.button();
 				}
-				else if (element.is(':checkbox')) {
-					element.checkbox(widgetOptions);
-				}
-				else if (element.is(':radio')) {
-					element.radio(widgetOptions);
-				}
-				else if (element.is(':file')) {
-					element.filebox(widgetOptions);
-				}
-				else if (element.is(':text') && element.hasClass('date')) {
-					element.datebox(widgetOptions);
-				}
-				else if (element.is(':text') || element.is('textarea') || element.is(':password')) {
-					element.textbox(widgetOptions);
-				}
-				else if (element.is('select')) {
-					element.selectbox(widgetOptions);
+				else {
+					self._callWidget(element, widgetOptions);
 				}
 
 				//Check to see if this element has any validation options set.
@@ -124,93 +115,95 @@
 		_destroy: function() {
 			//TODO implement
 		},
-		_validate: function(element, widget) {
-			var	valopts = $(this.options.validation),
+		_validate: function(element) {
+			var	self = this,
+				valopts = $(this.options.validation),
 				//Get the predefined validation options for form item names.
 				name = element.prop('name'),
 				validation = valopts.prop(name);
 
-			//Create an error widget for the form item.
-			//widget.tooltip(validation.tooltip);
-
 			if (validation != undefined) {
 				//If there are validation rules continue
 				var siblings = this.element.find(element.prop('nodeName') + '[name="' + name + '"]');
-				if (siblings.is(':checkbox, :radio')) {
-					siblings = siblings.filter(':checked');
-				}
+				console.debug(siblings);
+				//if (siblings.is(':checkbox, :radio')) {
+				//	siblings = siblings.filter(':checked');
+				//}
 
-				var valid = true
-					msg = null;
+				var valid = true;
 				$.each(siblings, function() {
+					var widget = self._callWidget($(this), 'widget');
+
 					//Do automated check for empty
 					if (valid && validation.required == true) {
-						if ($(element).val() == null || $(element).val().length == 0) {
+						if ($(this).val() == null || $(this).val().length == 0) {
 							valid = false;
-							msg = 'This field is required.';
+							validation.message = 'This field is required.';
 						}
 					}
 
 					//Do automated check for numeric
 					if (valid && validation.numeric == true) {
-						if (! $(element).val().match('^[0-9\.\-]*$')) {
+						if (! $(this).val().match('^[0-9\.\-]*$')) {
 							valid = false;
-							msg = 'This field must be a numeric value.';
+							validation.message = 'This field must be a numeric value.';
 						}
 					}
 
 					//Do automated check for valid email
 					if (valid && validation.email == true) {
-						if (! $(element).val().match('^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$')) {
+						if (! $(this).val().match('^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$')) {
 							valid = false;
-							msg = 'This field must be a valid email address.';
+							validation.message = 'This field must be a valid email address.';
 						}
 					}
 
 					//Do automated check for valid date
 					if (valid && validation.date == true) {
-						var date, day, month, year;
-						day = $.datepicker.parseDate('dd', $(element).datepicker('getDate'));
-						month = $.datepicker.parseDate('mm', $(element).datepicker('getDate'));
-						year = $.datepicker.parseDate('yy', $(element).datepicker('getDate'));
+						if (!$(this).is(':data("ui-datepicker")')) {
+							$(this).datepicker();
+						}
+
+						var date = $(this).datepicker('getDate'),
+							day, month, year;
+						day = $.datepicker.parseDate('dd', date);
+						month = $.datepicker.parseDate('mm', date);
+						year = $.datepicker.parseDate('yy', date);
 
 						date = new Date(year, month, day);
 
 						if (date.getFullYear() != year || date.getMonth() != month || date.getDate() != day) {
 							valid = false;
-							msg = 'This field must be a valid date.';
+							validation.message = 'This field must be a valid date.';
 						}
 					}
 
 					//Do automated check for minimum length
 					if (valid && validation.minLength != undefined) {
-						if ($(element).val().length < validation.minLength) {
+						if ($(this).val().length < validation.minLength) {
 							valid = false;
-							msg = 'The minimum length of this field is ' + validation.minLength + ' characters.';
+							validation.message = 'The minimum length of this field is ' + validation.minLength + ' characters.';
 						}
 					}
 
 					//Do automated check for maximum length
 					if (valid && validation.maxLength != undefined) {
-						if ($(element).val().length > validation.maxLength) {
+						if ($(this).val().length > validation.maxLength) {
 							valid = false;
-							msg = 'The maximum length of this field is ' + validation.maxLength + ' characters.';
+							validation.message = 'The maximum length of this field is ' + validation.maxLength + ' characters.';
 						}
 					}
 
 					//Run the check function for custom validation.
-					valid = valid && validation.check(element);
-					if (msg != null) {
-						validation.tooltip.message = msg;
+					valid = valid && validation.check(widget);
+
+					if (valid) {
+						validation.success(widget);
+					}
+					else {
+						validation.failure(widget);
 					}
 				});
-			}
-
-			if (valid) {
-				validation.success(widget);
-			}
-			else {
-				validation.failure(widget);
 			}
 
 			return valid;
@@ -288,17 +281,18 @@
 
 			//Default form reset callback.  Just blanks out the form.
 			var inputs = $(this.element).find('input,select,textarea');
+			var i = 0;
 			$.each(inputs, function() {
+				console.debug('test' + (++i));
 				self._callWidget($(this), 'reset');
 			});
+
+			console.debug('done');
 		},
 		_callWidget: function(element, method) {
 			var val = undefined;
 
-			if(element.is(':button, :reset, :submit')) {
-				val = element.button(method);
-			}
-			else if (element.is(':checkbox')) {
+			if (element.is(':checkbox')) {
 				val = element.checkbox(method);
 			}
 			else if (element.is(':radio')) {
@@ -306,9 +300,6 @@
 			}
 			else if (element.is(':file')) {
 				val = element.filebox(method);
-			}
-			else if (element.is(':text') && element.hasClass('date')) {
-				val = element.datebox(method);
 			}
 			else if (element.is(':text') || element.is('textarea') || element.is(':password')) {
 				val = element.textbox(method);

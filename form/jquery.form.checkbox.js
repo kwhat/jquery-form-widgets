@@ -1,7 +1,7 @@
 /*
  * jQuery Form Checkbox @VERSION
  *
- * Copyright 2012, AUTHORS.txt
+ * Copyright 2013, AUTHORS.txt
  * Released under the MIT license.
  *
  * http://code.google.com/p/jquery-form-widgets/
@@ -23,6 +23,7 @@
 
 			//Create the widget
 			this.ui_widget = $('<div/>')
+				.attr('tabindex', this.element.attr('tabindex') || '0')
 				.addClass('ui-state-default ui-corner-all ui-checkbox');
 
 			//Create the checkbox that will be placed in the widget
@@ -34,11 +35,12 @@
 				//Add the graphical checkbox directly after the hidden checkbox.
 				.after(this.ui_widget);
 
-			//Watch this.element for changes.
+
+			//Watch this.element for events that need to be forwarded.
 			this._on({
 				change: function(event) {
-					//Do not fire a change request or call selected()!
-					this._refresh();
+					this.refresh();
+					this.options.change(event);
 				}
 			});
 
@@ -55,9 +57,9 @@
 				'disabled': this.element.is(':disabled')
 			});
 
-			this._refresh();
+			this.refresh();
 		},
-		_refresh: function() {
+		refresh: function() {
 			//Display the checkbox's checked state
 			if (this.selected()) {
 				this.ui_widget
@@ -78,16 +80,9 @@
 		},
 		selected: function(state) {
 			if (typeof state == 'boolean') {
+				// FIXME Do not send a change event, the radio button is listening...
 				this.element.prop('checked', state);
-
-				this._refresh();
-
-				//Notify that a change occured.
-				this._change({
-					selected: this.selected(),
-					value: this.val(),
-					widget: this.widget()
-				});
+				this.refresh();
 			}
 			else {
 				//Not calling the setter so just return the state.

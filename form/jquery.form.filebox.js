@@ -1,7 +1,7 @@
 /*
  * jQuery Form Filebox @VERSION
  *
- * Copyright 2012, AUTHORS.txt
+ * Copyright 2013, AUTHORS.txt
  * Released under the MIT license.
  *
  * http://code.google.com/p/jquery-form-widgets/
@@ -23,8 +23,8 @@
 			//Call super._create()
 			self._super();
 
-			this._on(this.ui_widget, {
-				click: function(event) {
+			self._on(self.ui_widget, {
+				click: function() {
 					self.element.click();
 				}
 			});
@@ -39,7 +39,7 @@
 			this.element
 				.removeClass('ui-filebox-input');
 		},
-		val: function() {
+		value: function() {
 			//Return just the file name if a path exists.
 			return this._super().match('[^\\\\/]*$')[0];
 		}
