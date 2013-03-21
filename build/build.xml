@@ -30,7 +30,7 @@
 	</taskdef>
 
 	<!-- External Jars -->
-	<property description="Google Closure" name="jar.closure" value="${dir.build}/lib/closure-compiler-20120917.jar" />
+	<property description="Google Closure" name="jar.closure" value="${dir.build}/lib/closure-compiler-20130228.jar" />
 	<property description="YUI Compressor" name="jar.yuicompressor" value="${dir.build}/lib/yuicompressor-2.4.7.jar" />
 
 

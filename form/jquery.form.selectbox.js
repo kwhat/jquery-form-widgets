@@ -209,6 +209,9 @@
 			//need to search by data element.
 			var selected = this.element.find('option:selected');
 			var multipul = this.element.attr('multiple');
+
+			/* This section is causing problems but I dont know why.  Everything
+			 * appears to work correctly without it so its disabled.
 			if (!multipul) {
 				//Select only the last attr if we are not a multiple select box.
 				selected = selected
@@ -216,6 +219,7 @@
 					.last()
 					.attr('selected', true);
 			}
+			*/
 
 			$.each(selected, function() {
 				//Hightlight the currently selected item.

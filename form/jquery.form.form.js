@@ -125,7 +125,6 @@
 			if (validation != undefined) {
 				//If there are validation rules continue
 				var siblings = this.element.find(element.prop('nodeName') + '[name="' + name + '"]');
-				console.debug(siblings);
 				//if (siblings.is(':checkbox, :radio')) {
 				//	siblings = siblings.filter(':checked');
 				//}
