@@ -31,7 +31,7 @@
 
 			//Create a menu based on the options.
 			var options = this.element.find('option, optgroup');
-			if( options.length == 0 ) {
+			if (options.length == 0) {
 				//Create an empty option.
 				self.menu.append('<li>\u00A0</li>');
 			}
@@ -66,6 +66,12 @@
 				})
 				.removeClass('ui-widget ui-widget-content ui-corner-all');
 
+			var subitem = this.menu.find('li:first');
+			var subitem_count = this.menu.children().length;
+			if (subitem_count > 10) {
+				subitem_count = 10;
+			}
+
 			// Generate control
 			if (this.element.attr('multiple')) {
 				this._hideElement();
@@ -78,24 +84,11 @@
 					.append(this.menu)
 					.insertAfter(this.element);
 
-				//Because self.menu.children().first().outerHeight() would have
-				//been to easy...  This is why I hate the web; and yes I
-				//understand why it doesnt work.
-				var clone = this.wrapper.clone();
-				clone
-					.appendTo(document.body)
-					.css({
-						'position':'absolute',
-						'visibility':'hidden',
-						'top': '-9999',
-						'left': '-9999'
-					});
-				var height = clone.find('li').first().outerHeight();
-				clone.remove();
-
-				//Set the ui_wrapper and its height
-				this.ui_widget = this.wrapper
-					.height(height * (this.element.attr('size') || 10));
+				// Set the menu hight, and make sure it is hidden by default.
+				this.ui_widget = this.wrapper.height(
+						(this.wrapper.outerHeight() - this.wrapper.innerHeight()) +
+						(subitem.outerHeight() * (this.element.attr('size') || subitem_count))
+				);
 
 				//Because the super elements _create method is never called, the
 				//following items need to be called directly.
@@ -129,7 +122,7 @@
 				//Call super._create()
 				this._super();
 
-				//Make sure the menu is hidden by default.
+				// Create a wrapper so that we can scroll though the list if it is too long.
 				this.wrapper = $('<div/>')
 					.addClass('ui-widget ui-state-default ui-selectbox-menu')
 					.css({
@@ -138,9 +131,14 @@
 						'z-index': '99999'
 					})
 					.append(this.menu)
-					.appendTo(document.body)
-					.height(self.menu.children().first().outerHeight() * (this.element.attr('size') || 10))
-					.hide();
+					.appendTo(document.body);
+
+				// Set the menu hight, and make sure it is hidden by default.
+				this.wrapper.height(
+						(this.wrapper.outerHeight() - this.wrapper.innerHeight()) +
+						(subitem.outerHeight() * (this.element.attr('size') || subitem_count))
+				)
+				.hide();
 
 				//Bind the widget to show and hide menu
 				this._on(this.ui_widget, {
@@ -270,12 +268,10 @@
 			wrapper
 				.css({
 					width: widget.outerWidth() - (
-								parseInt(widget.css('borderLeftWidth')) +
 								parseInt(widget.css('borderRightWidth')) +
-								parseInt(wrapper.css('padding-left')) +
-								parseInt(wrapper.css('padding-right'))
+								parseInt(wrapper.css('borderLeftWidth'))
 							),
-					top: widget.offset().top + widget.outerHeight()- (parseInt(widget.css('borderBottomWidth'))),
+					top: widget.offset().top + widget.outerHeight() - parseInt(wrapper.css('borderBottomWidth')),
 					left: widget.offset().left
 				})
 				.addClass('ui-corner-bottom ui-state-focus');

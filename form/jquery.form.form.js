@@ -159,19 +159,7 @@
 
 					//Do automated check for valid date
 					if (valid && validation.date == true) {
-						if (!$(this).is(':data("ui-datepicker")')) {
-							$(this).datepicker();
-						}
-
-						var date = $(this).datepicker('getDate'),
-							day, month, year;
-						day = $.datepicker.parseDate('dd', date);
-						month = $.datepicker.parseDate('mm', date);
-						year = $.datepicker.parseDate('yy', date);
-
-						date = new Date(year, month, day);
-
-						if (date.getFullYear() != year || date.getMonth() != month || date.getDate() != day) {
+						if ($.datepicker.formatDate('mm/dd/yy', new Date($(this).val())) != $(this).val()) {
 							valid = false;
 							validation.message = 'This field must be a valid date.';
 						}
@@ -211,6 +199,7 @@
 			var self = this,
 				status = true;
 
+			event.preventDefault();
 			self._trigger('submit', event);
 
 			//Apply validation rules by looping over each rule
@@ -243,29 +232,29 @@
 					url: this.element.attr('action'),
 					data: this.element.serialize(),
 					success: function(data) {
-						var obj = $.parseJSON(data);
+						self._trigger('success', null, $.parseJSON(data));
+					},
+					error: function(xhr, status, message) {
+						var json = $.parseJSON(xhr.responseText);
 
-						if (obj.success == true) {
-							self._trigger('success', null, obj.data);
-						}
-						else {
-							$.each(obj.data, function(key, value) {
+						if (typeof json === 'object') {
+							$.each(json, function(key, value) {
 								var	valopts = $(self.options.validation),
 									validation = valopts.prop(key),
 									element = self.element.find('[name="' + key + '"]'),
 									widget = self._callWidget(element, 'widget');
 
-								if (validation != undefined) {
-									validation.tooltip.message = value;
+								if (validation !== undefined) {
+									validation.message = value;
 									validation.failure(widget);
 								}
 							});
 
-							self._trigger('failure', null, obj.data);
+							self._trigger('failure', null, json);
 						}
-					},
-					error: function(jqXHR, textStatus, errorThrown) {
-						self._trigger('error', jqXHR, textStatus, errorThrown);
+						else {
+							self._trigger('error', xhr, status, message);
+						}
 					}
 				});
 			}

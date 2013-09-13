@@ -31,7 +31,6 @@
 			//Create the inputbox widget.
 			this.ui_widget = $('<div/>')
 				.addClass('ui-widget ui-state-default ui-corner-all ui-inputbox')
-				.attr('tabindex', this.element.attr('tabindex') || '0')
 				.insertAfter(this.element);
 
 			//Set the widget to hoverable
