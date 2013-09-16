@@ -199,7 +199,6 @@
 			var self = this,
 				status = true;
 
-			event.preventDefault();
 			self._trigger('submit', event);
 
 			//Apply validation rules by looping over each rule
