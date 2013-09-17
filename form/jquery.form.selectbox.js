@@ -66,37 +66,52 @@
 				})
 				.removeClass('ui-widget ui-widget-content ui-corner-all');
 
+			// Figure out how many sub items we should display.
 			var subitem = this.menu.find('li:first');
 			var subitem_count = this.menu.children().length;
 			if (subitem_count > 10) {
 				subitem_count = 10;
 			}
 
-			// Generate control
+			// Create a wrapper so that we can scroll though the list if it is too long.
+			this.wrapper = $('<div/>')
+				.addClass('ui-widget ui-state-default ui-selectbox-menu')
+				.css({
+					'position': 'absolute',
+					'visibility': 'hidden'
+				})
+				.append(this.menu)
+				.appendTo(document.body);
+
+			// Caclulate the correct hight for the menu.
+			this.wrapper
+				.height(
+					(this.wrapper.outerHeight() - this.wrapper.innerHeight()) +
+					(subitem.outerHeight() * (this.element.attr('size') || subitem_count))
+				);
+
+			// Generate control.
 			if (this.element.attr('multiple')) {
 				this._hideElement();
 
-				// Create the widget and wrapper.
-				this.wrapper = $('<div/>')
-					.addClass('ui-widget ui-state-default ui-corner-all ui-selectbox-menu')
+				// Adjust the widget for the multiple context.
+				this.ui_widget = this.wrapper
+					.addClass('ui-corner-all')
+					.css({
+						'position': 'static',
+						'visibility': 'visible'
+					})
 					.attr('title', this.element.attr('title') || '')
 					.attr('tabindex', this.element.attr('tabindex') || '')
-					.append(this.menu)
 					.insertAfter(this.element);
 
-				// Set the menu hight, and make sure it is hidden by default.
-				this.ui_widget = this.wrapper.height(
-						(this.wrapper.outerHeight() - this.wrapper.innerHeight()) +
-						(subitem.outerHeight() * (this.element.attr('size') || subitem_count))
-				);
+				// Because the super elements _create method is never called,
+				// the following items need to be called directly.
 
-				//Because the super elements _create method is never called, the
-				//following items need to be called directly.
-
-				//Set the widget to hoverable
+				// Set the widget to hoverable.
 				this._hoverable(this.ui_widget);
 
-				//Watch this.element for changes.
+				// Watch this.element for changes.
 				this._on({
 					change: function(event) {
 						self.refresh();
@@ -122,23 +137,17 @@
 				//Call super._create()
 				this._super();
 
-				// Create a wrapper so that we can scroll though the list if it is too long.
-				this.wrapper = $('<div/>')
-					.addClass('ui-widget ui-state-default ui-selectbox-menu')
+				// Adjust the widget for the selectbox context.
+				this.wrapper = this.wrapper
 					.css({
-						'overflow-y': 'auto',
-						'position': 'absolute',
-						'z-index': '99999'
+						/* 'position': 'absolute', // already set above. */
+						'z-index': '99999',
+						'visibility': 'visible',
+						'overflow-y': 'auto'
 					})
 					.append(this.menu)
-					.appendTo(document.body);
-
-				// Set the menu hight, and make sure it is hidden by default.
-				this.wrapper.height(
-						(this.wrapper.outerHeight() - this.wrapper.innerHeight()) +
-						(subitem.outerHeight() * (this.element.attr('size') || subitem_count))
-				)
-				.hide();
+					.appendTo(document.body)
+					.hide();
 
 				//Bind the widget to show and hide menu
 				this._on(this.ui_widget, {
