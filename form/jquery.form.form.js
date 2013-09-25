@@ -17,52 +17,51 @@
  */
 
 (function( $, undefined ) {
-	var validationDefaultOptions = {
-		live: false,
-		required: false,
-		email: false,
-		date: false,
-		numeric: false,
-		minLength: undefined,
-		maxLength: undefined,
-		message: 'An error occured.',
-		check: function(widget) {
-			return true;
-		},
-		success: function(widget) {
-			widget
-				.removeClass('ui-state-error')
-				.removeAttr('title')
-				.filter(':data("ui-tooltip")')
-				.tooltip('destroy');
-		},
-		failure: function(widget) {
-			widget
-				.addClass('ui-state-error')
-				.attr('title', this.message)
-				.tooltip({
-					track: true,
-					tooltipClass: "ui-state-error"
-					/*,
-					content: function() {
-						// Something like this should be used
-						if ($(this).is('[title]')) {
-							return $(this).attr('title');
-						}
-
-					   return msg;
-					}
-					*/
-				});
-		}
-	};
-
 	$.widget('form.form', {
 		defaultElement: '<form>',
 		version: '@VERSION',
 		options: {
 			ajax: false,
 			validation: {}
+		},
+		_defaultValidation: {
+			live: false,
+			required: false,
+			email: false,
+			date: false,
+			numeric: false,
+			minLength: undefined,
+			maxLength: undefined,
+			message: 'An error occured.',
+			check: function(widget) {
+				return true;
+			},
+			success: function(widget) {
+				widget
+					.removeClass('ui-state-error')
+					.removeAttr('title')
+					.filter(':data("ui-tooltip")')
+					.tooltip('destroy');
+			},
+			failure: function(widget) {
+				widget
+					.addClass('ui-state-error')
+					.attr('title', this.message)
+					.tooltip({
+						track: true,
+						tooltipClass: "ui-state-error"
+						/*,
+						content: function() {
+							// Something like this should be used
+							if ($(this).is('[title]')) {
+								return $(this).attr('title');
+							}
+
+						   return msg;
+						}
+						*/
+					});
+			}
 		},
 		_create: function() {
 			var self = this;
@@ -105,7 +104,7 @@
 				//Check to see if this element has any validation options set.
 				if (validation != undefined) {
 					//Merge the elements defiend options with the default options.
-					validation = $.extend(true, {}, validationDefaultOptions, validation);
+					validation = $.extend(true, {}, self._defaultValidation, validation);
 
 					//Set the .form validation item based on input:name
 					valopts.prop(name, validation);
@@ -270,11 +269,8 @@
 			var inputs = $(this.element).find('input,select,textarea');
 			var i = 0;
 			$.each(inputs, function() {
-				console.debug('test' + (++i));
 				self._callWidget($(this), 'reset');
 			});
-
-			console.debug('done');
 		},
 		_callWidget: function(element, method) {
 			var val = undefined;
