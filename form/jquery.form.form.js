@@ -229,30 +229,42 @@
 					type: this.element.attr('method'),
 					url: this.element.attr('action'),
 					data: this.element.serialize(),
-					success: function(data) {
-						self._trigger('success', null, $.parseJSON(data));
-					},
-					error: function(xhr, status, message) {
-						var json = $.parseJSON(xhr.responseText);
+					success: function(resp) {
+						if (typeof resp == 'object') {
+							// Use json data to determin result status.
+							if (resp.success === true) {
+								// All is good, trigger success.
+								self._trigger('success', null, resp.data);
+							}
+							else if (resp.success === false) {
+								// Check to see if an object was returned, if not
+								// simply pass data to failure.
+								if (typeof resp.data == 'object') {
+									// Check for validation errors...
+									$.each(resp.data, function(key, value) {
+										var	valopts = $(self.options.validation),
+											validation = valopts.prop(key),
+											element = self.element.find('[name="' + key + '"]'),
+											widget = self._callWidget(element, 'widget');
 
-						if (typeof json === 'object') {
-							$.each(json, function(key, value) {
-								var	valopts = $(self.options.validation),
-									validation = valopts.prop(key),
-									element = self.element.find('[name="' + key + '"]'),
-									widget = self._callWidget(element, 'widget');
-
-								if (validation !== undefined) {
-									validation.message = value;
-									validation.failure(widget);
+										if (validation !== undefined) {
+											validation.message = value;
+											validation.failure(widget);
+										}
+									});
 								}
-							});
 
-							self._trigger('failure', null, json);
+								self._trigger('failure', null, resp.data);
+							}
 						}
 						else {
-							self._trigger('error', xhr, status, message);
+							// Undefiend or non-boolean value!
+							self._trigger('error', null, resp);
 						}
+					},
+					error: function(xhr, status, message) {
+						// This should only be for protocol and other non-applicaiton errors!
+						self._trigger('error', xhr.responseText, status, message);
 					}
 				});
 			}
