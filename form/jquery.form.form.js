@@ -110,6 +110,33 @@
 					valopts.prop(name, validation);
 				}
 			});
+
+			if (this.element.find('input[type=file]').length > 0) {
+				// Do an iframe post to accomodate garbage browsers like IE < 10!
+				var iframe_target = 'jquery_ui_form_hack',
+					iframe = $('<iframe/>')
+						.attr('id', iframe_target)
+						.attr('name', iframe_target)
+						.attr('src', '#')
+						.css('display', 'none')
+						.load(function(e){
+							var content = $(e.target).contents().text(),
+								resp = content;
+
+							try {
+								resp = $.parseJSON(content);
+							}
+							catch (ex) {
+								// Do Nothing.
+							}
+
+							self._response(resp);
+						});
+
+				this.element.attr('target', 'jquery_ui_form_hack')
+							.attr('enctype', 'multipart/form-data')
+							.before(iframe);
+			}
 		},
 		_destroy: function() {
 			//TODO implement
@@ -216,57 +243,28 @@
 				});
 			});
 
-
-			//We must prevent the form submit because there is an error or it
-			//will be sent via ajax.
-			if (!status || this.options.ajax) {
+			// Check to see if we are uploading files.
+			var do_ajax = this.options.ajax && this.element.find('input[type=file]').length == 0;
+			if (status && do_ajax) {
 				event.preventDefault();
-			}
 
-			if (status && this.options.ajax) {
 				//Do AJAX Post
 				$.ajax({
 					type: this.element.attr('method'),
 					url: this.element.attr('action'),
 					data: this.element.serialize(),
 					success: function(resp) {
-						if (typeof resp == 'object') {
-							// Use json data to determin result status.
-							if (resp.success === true) {
-								// All is good, trigger success.
-								self._trigger('success', null, resp.data);
-							}
-							else if (resp.success === false) {
-								// Check to see if an object was returned, if not
-								// simply pass data to failure.
-								if (typeof resp.data == 'object') {
-									// Check for validation errors...
-									$.each(resp.data, function(key, value) {
-										var	valopts = $(self.options.validation),
-											validation = valopts.prop(key),
-											element = self.element.find('[name="' + key + '"]'),
-											widget = self._callWidget(element, 'widget');
-
-										if (validation !== undefined) {
-											validation.message = value;
-											validation.failure(widget);
-										}
-									});
-								}
-
-								self._trigger('failure', null, resp.data);
-							}
-						}
-						else {
-							// Undefiend or non-boolean value!
-							self._trigger('error', null, resp);
-						}
+						self._response(resp);
 					},
 					error: function(xhr, status, message) {
 						// This should only be for protocol and other non-applicaiton errors!
 						self._trigger('error', xhr.responseText, status, message);
 					}
 				});
+			}
+			else if (!status) {
+				// We must prevent the form submit because there is an error!
+				event.preventDefault();
 			}
 		},
 		_reset: function(event) {
@@ -283,6 +281,41 @@
 			$.each(inputs, function() {
 				self._callWidget($(this), 'reset');
 			});
+		},
+		_response: function(resp) {
+			var self = this;
+
+			if (typeof resp == 'object') {
+				// Use json data to determin result status.
+				if (resp.success === true) {
+					// All is good, trigger success.
+					self._trigger('success', null, resp.data);
+				}
+				else if (resp.success === false) {
+					// Check to see if an object was returned, if not
+					// simply pass data to failure.
+					if (typeof resp.data == 'object') {
+						// Check for validation errors...
+						$.each(resp.data, function(key, value) {
+							var	valopts = $(self.options.validation),
+								validation = valopts.prop(key),
+								element = self.element.find('[name="' + key + '"]'),
+								widget = self._callWidget(element, 'widget');
+
+							if (validation !== undefined) {
+								validation.message = value;
+								validation.failure(widget);
+							}
+						});
+					}
+
+					self._trigger('failure', null, resp.data);
+				}
+			}
+			else {
+				// Undefiend or non-boolean value!
+				self._trigger('error', null, resp);
+			}
 		},
 		_callWidget: function(element, method) {
 			var val = undefined;
